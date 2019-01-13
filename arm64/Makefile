@@ -1,4 +1,6 @@
 chain=pivx
+datadir=/root/chaindata/$(chain)
+
 PIVX_VERSION=3.1.1
 PIVX_URL=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)/$(PIVX_FILE)
 PIVX_FILE=pivx-$(PIVX_VERSION)-aarch64-linux-gnu.tar.gz
@@ -8,8 +10,11 @@ install-pivx: prepare-install
 	cp pivx-$(PIVX_VERSION)/bin/* /usr/local/bin/
 
 start-pivx: check-datadir
-	pivxd -conf=config/pivx.conf -datadir=$(datadir)
+	mkdir -p $(datadir) && \
+	pivxd -conf=config/$(chain).conf -datadir=$(datadir)
 
+stop-pivx:
+	$(chain)-cli -conf=config/$(chain).conf stop
 
 
 prepare-install:
