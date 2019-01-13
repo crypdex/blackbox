@@ -11,7 +11,7 @@ install-pivx: prepare-install
 	tar -xvf $(PIVX_FILE) && \
 	cp pivx-$(PIVX_VERSION)/bin/* /usr/local/bin/
 
-start-pivx:
+start-pivx: check-datadir
 	pivxd -conf=config/pivx.conf -datadir=$(datadir)
 
 check-datadir:
