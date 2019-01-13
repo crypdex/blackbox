@@ -30,7 +30,7 @@ install-systemd:
 	systemctl start $(chain).service
 
 # Uninstalls the service
-uninstall-systemd: uninstall
+uninstall-systemd:
 	systemctl stop $(chain).service
 	systemctl disable $(chain).service
 	rm /etc/systemd/system/$(chain).service
