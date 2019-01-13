@@ -11,8 +11,13 @@ install-pivx: prepare-install
 	tar -xvf $(PIVX_FILE) && \
 	cp pivx-$(PIVX_VERSION)/bin/* /usr/local/bin/
 
-pivx:
-	cd clients/pivx-3.1.1/bin && ./pivxd -conf=/root/conf/pivx.conf -datadir=/root/chaindata/pivx
+start-pivx:
+	pivxd -conf=config/pivx.conf -datadir=$(datadir)
+
+check-datadir:
+ifndef datadir
+	$(error 'datadir' is undefined)
+endif
 
 
 # PIVX (and maybe other chains) require a swap file to function properly.
