@@ -1,19 +1,33 @@
+chain=pivx
 PIVX_VERSION=3.1.1
 PIVX_URL=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)/$(PIVX_FILE)
 PIVX_FILE=pivx-$(PIVX_VERSION)-aarch64-linux-gnu.tar.gz
 
-prepare-install:
-	rm -rf downloads && mkdir -p downloads
-
 install-pivx: prepare-install
-	cd downloads && \
-	wget $(PIVX_URL) && \
-	tar -xvf $(PIVX_FILE) && \
+	cd downloads && wget $(PIVX_URL) && tar -xvf $(PIVX_FILE) && \
 	cp pivx-$(PIVX_VERSION)/bin/* /usr/local/bin/
 
 start-pivx: check-datadir
 	pivxd -conf=config/pivx.conf -datadir=$(datadir)
 
+
+
+prepare-install:
+	rm -rf downloads && mkdir -p downloads
+
+# Installs the systemd service, enables it and starts it
+install-systemd:
+	cp services/$(chain).service /etc/systemd/system/
+	systemctl enable /etc/systemd/system/$(chain).service
+	systemctl start $(chain).service
+
+# Uninstalls the service
+uninstall-systemd: uninstall
+	systemctl stop $(chain).service
+	systemctl disable $(chain).service
+	rm /etc/systemd/system/$(chain).service
+
+# datadir=/path/to/pivxdata
 check-datadir:
 ifndef datadir
 	$(error 'datadir' is undefined)
