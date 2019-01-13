@@ -1,5 +1,7 @@
+# Defaults
 chain=pivx
 datadir=/root/chaindata/$(chain)
+configfile=config/$(chain).conf
 
 PIVX_VERSION=3.1.1
 PIVX_URL=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)/$(PIVX_FILE)
@@ -11,11 +13,12 @@ install-pivx: prepare-install
 
 start-pivx: check-datadir
 	mkdir -p $(datadir) && \
-	pivxd -conf=config/$(chain).conf -datadir=$(datadir)
+	pivxd -conf=$(realpath $(configfile)) -datadir=$(datadir)
 
 stop-pivx:
-	$(chain)-cli -conf=config/$(chain).conf stop
+	$(chain)-cli -conf=$(realpath $(configfile)) stop
 
+# Utility targets
 
 prepare-install:
 	rm -rf downloads && mkdir -p downloads
