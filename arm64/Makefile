@@ -2,7 +2,8 @@
 CHAIN=pivx
 CHAIN_DIR=/root/.$(CHAIN)
 CHAIN_CONF=$(CHAIN_DIR)/$(CHAIN).conf
-DATA_DIR=$(CHAIN_DIR)
+# This is not in the default location to better allow for replacements
+DATA_DIR=/root/chaindata/$(CHAIN)
 DEFAULT_CONFIG_FILE=$(realpath config/$(CHAIN).conf)
 
 # PIVX variables
