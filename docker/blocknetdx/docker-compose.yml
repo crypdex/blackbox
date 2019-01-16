@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  blocknet:
+    image: crypdex/blocknetdx:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes: # HOST:CONTAINER
+      - ${DATA_DIR:?DATA_DIR required}/blocknetdx:/home/blocknetdx/.blocknetdx
+      - ${CONF_DIR:?CONF_DIR required}/blocknetdx.conf:/home/blocknetdx/.blocknetdx/blocknetdx.conf
+    # Put additional commands in the conf file
+    command: -conf=/home/blocknetdx/.blocknetdx/blocknetdx.conf -rpcallowip=172.0.0.0/8
+    ports:
+      # - '127.0.0.1:41414:41414' # internal only - good default
+      # - '41414:41414' # open to the network - the exposes you!
+      - ${BLOCKNETDX_PORTS:-127.0.0.1:41414:41414} # open to the network

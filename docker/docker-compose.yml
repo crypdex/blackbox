@@ -1,0 +1,15 @@
+version: '3'
+
+services:
+  pivx:
+    build:
+      context: ../pivx
+  blocknet:
+    build:
+      context: ../blocknetdx
+  zcoin:
+    build:
+      context: ../zcoin
+  dash:
+    build:
+      context: ../dash

@@ -12,3 +12,7 @@
 *.out
 
 arm64/downloads
+
+.DS_Store
+.idea
+.vccode

@@ -1,0 +1,17 @@
+version: '3'
+
+services:
+  zcoin:
+    image: crypdex/zcoin:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes: # HOST:CONTAINER
+      - ${DATA_DIR:?DATA_DIR required}/zcoin:/home/zcoin/.zcoin
+      - ${CONF_DIR:?CONF_DIR required}/zcoin.conf:/home/zcoin/zcoin.conf
+    command: -conf=/home/zcoin/zcoin.conf -rpcallowip=172.0.0.0/8
+    ports: # HOST:CONTAINER
+      # - '127.0.0.1:8168:8168' # internal only - good default
+      # - '8888:8888' # open to the network - the exposes you!
+      - ${ZCOIN_PORTS:-127.0.0.1:8888:8888} # open to the network
+

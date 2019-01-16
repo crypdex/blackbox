@@ -1,0 +1,26 @@
+# This config should be placed in following path:
+#   ~/.local/share/io.parity.ethereum/config.toml
+
+[parity]
+mode = "active"
+# base_path = "$HOME/.local/share/io.parity.ethereum"
+
+
+
+[rpc]
+# interface = "0.0.0.0"
+
+[network]
+min_peers = 250
+
+[footprint]
+pruning = "fast"
+
+[mining]
+# Prepare a block to seal even when there are no miners connected.
+# force_sealing = true
+# Pending block will be created with maximal possible gas limit and will execute all transactions in the queue. Note that such block is invalid and should never be attempted to be mined.
+# infinite_pending_block = true
+
+[misc]
+log_file = "/var/log/parity.log"

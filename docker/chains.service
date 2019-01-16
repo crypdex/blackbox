@@ -1,0 +1,23 @@
+[Unit]
+Description=Docker Compose container starter
+After=docker.service network-online.target
+Requires=docker.service network-online.target
+
+[Service]
+# User=crypdex
+# Group=crypdex
+Environment=DATA_DIR=/mnt/disks/chaindata
+WorkingDirectory=/home/dmichael/chains
+Type=simple
+RemainAfterExit=yes
+
+# ExecStartPre=-/usr/local/bin/docker-compose pull --quiet
+ExecStart=/usr/local/bin/docker-compose up
+ExecStop=/usr/local/bin/docker-compose down
+
+# ExecReload=/usr/local/bin/docker-compose pull --quiet
+# ExecReload=/usr/local/bin/docker-compose up -d
+# Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
