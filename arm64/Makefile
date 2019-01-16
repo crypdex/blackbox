@@ -12,7 +12,7 @@ PIVX_URL=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)
 PIVX_BIN=pivx-$(PIVX_VERSION)/bin
 
 
-pivx-install: prepare-install
+pivx: prepare-install
 	cd downloads && wget $(PIVX_URL) && \
 	tar -xvf $(PIVX_FILE) && \
 	cp $(PIVX_BIN)/* /usr/local/bin/ && \
