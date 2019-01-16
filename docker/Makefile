@@ -14,7 +14,7 @@ config-all:
 	docker-compose -p chains $(compose-files) -f docker-compose.yml config
 
 up: check-chain
-	docker-compose -p $(chain) -f $(chain)/docker-compose.yml up --build
+	DATA_DIR=$(DATA_DIR) docker-compose -p $(chain) -f $(chain)/docker-compose.yml up --build
 
 # .PHONY: config
 config: check-chain
