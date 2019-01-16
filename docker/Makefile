@@ -8,17 +8,17 @@ chains = pivx blocknetdx zcoin dash
 compose-files := $(foreach chain,$(chains),-f $(chain)/docker-compose.yml)
 
 up-all:
-	docker-compose -p chains $(compose-files) -f docker-compose.yml up
+	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up
 
 config-all:
-	docker-compose -p chains $(compose-files) -f docker-compose.yml config
+	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml config
 
 up: check-chain
-	DATA_DIR=$(DATA_DIR) docker-compose -p $(chain) -f $(chain)/docker-compose.yml up --build
+	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p $(chain) -f $(chain)/docker-compose.yml up --build
 
 # .PHONY: config
 config: check-chain
-	docker-compose -p $(chain) -f $(chain)/docker-compose.yml config
+	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p $(chain) -f $(chain)/docker-compose.yml config
 
 # PIVX (and maybe other chains) require a swap file to function properly.
 # - This must be run as root and is NOT idempotent
