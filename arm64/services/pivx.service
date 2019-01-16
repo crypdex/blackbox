@@ -5,8 +5,8 @@ Requires=network-online.target
 
 [Service]
 WorkingDirectory=/root/node/arm64
-ExecStart=/usr/bin/make start-pivx
-ExecStop=/usr/bin/make stop-pivx
+ExecStart=/usr/bin/make pivx-start
+ExecStop=/usr/bin/make pivx-stop
 
 [Install]
 WantedBy=multi-user.target

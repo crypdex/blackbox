@@ -11,21 +11,18 @@ PIVX_BIN=pivx-$(PIVX_VERSION)/bin
 PIVX_DIR=/root/.pivx
 PIVX_CONF=$(PIVX_DIR)/$(CHAIN).conf
 
-interp:
-	@echo pivxd -conf=$(PIVX_DIR)/$(CHAIN).conf -datadir=$(DATA_DIR)
-
-install-pivx: prepare-install
+pivx-install: prepare-install
 	cd downloads && wget $(PIVX_URL) && \
 	tar -xvf $(PIVX_FILE) && \
 	cp $(PIVX_BIN)/* /usr/local/bin/ && \
 	mkdir -p $(PIVX_DIR) && \
 	cp $(DEFAULT_CONFIG_FILE) $(PIVX_DIR)
 
-start-pivx: check-datadir
+pivx-start: check-datadir
 	mkdir -p $(DATA_DIR) && \
 	pivxd -conf=$(PIVX_CONF) -datadir=$(DATA_DIR)
 
-stop-pivx:
+pivx-stop:
 	$(CHAIN)-cli -conf=$(PIVX_CONF) stop
 
 # Utility targets
@@ -34,13 +31,13 @@ prepare-install:
 	rm -rf downloads && mkdir -p downloads
 
 # Installs the systemd service, enables it and starts it
-install-systemd:
+systemd-install:
 	cp services/$(CHAIN).service /etc/systemd/system/
 	systemctl enable /etc/systemd/system/$(CHAIN).service
 	systemctl start $(CHAIN).service
 
 # Uninstalls the service
-uninstall-systemd:
+systemd-uninstall:
 	systemctl stop $(CHAIN).service
 	systemctl disable $(CHAIN).service
 	rm /etc/systemd/system/$(CHAIN).service
