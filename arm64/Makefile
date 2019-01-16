@@ -1,7 +1,7 @@
 # Defaults
 CHAIN=pivx
 DATA_DIR=/root/chaindata/$(CHAIN)
-CONFIG_FILE=$(CHAIN).conf
+DEFAULT_CONFIG_FILE=$(realpath config/$(CHAIN).conf)
 
 # PIVX variables
 PIVX_VERSION=3.1.1
@@ -18,8 +18,8 @@ install-pivx: prepare-install
 	cd downloads && wget $(PIVX_URL) && \
 	tar -xvf $(PIVX_FILE) && \
 	cp $(PIVX_BIN)/* /usr/local/bin/ && \
-	mkdir -p $(PIVX_CONF_DIR) && \
-	cp $(realpath config/$(CONFIG_FILE)) $(PIVX_DIR)
+	mkdir -p $(PIVX_DIR) && \
+	cp $(DEFAULT_CONFIG_FILE) $(PIVX_DIR)
 
 start-pivx: check-datadir
 	mkdir -p $(DATA_DIR) && \
