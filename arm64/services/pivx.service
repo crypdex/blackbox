@@ -5,7 +5,7 @@ Requires=network-online.target
 
 [Service]
 Environment=CHAIN=pivx
-WorkingDirectory=/root/node/arm64
+WorkingDirectory=/root/blackbox/arm64
 ExecStart=/usr/bin/make start
 ExecStop=/usr/bin/make stop
 
