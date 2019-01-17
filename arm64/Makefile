@@ -34,11 +34,11 @@ blocknetdx: prepare-install
 	mkdir -p $(CHAIN_DIR) && \
 	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
 
-start: check-datadir
+start: check-datadir check-chain
 	mkdir -p $(DATA_DIR) && \
 	$(CHAIN)d -conf=$(CHAIN_CONF) -datadir=$(DATA_DIR)
 
-stop:
+stop: check-chain
 	$(CHAIN)-cli -conf=$(CHAIN_CONF) stop
 
 # Utility targets
@@ -47,13 +47,13 @@ prepare-install: check-chain
 	rm -rf downloads && mkdir -p downloads
 
 # Installs the systemd service, enables it and starts it
-systemd-install:
+systemd-install: check-chain
 	cp services/$(CHAIN).service /etc/systemd/system/
 	systemctl enable /etc/systemd/system/$(CHAIN).service
 	systemctl start $(CHAIN).service
 
 # Uninstalls the service
-systemd-uninstall:
+systemd-uninstall:check-chain
 	systemctl stop $(CHAIN).service
 	systemctl disable $(CHAIN).service
 	rm /etc/systemd/system/$(CHAIN).service
