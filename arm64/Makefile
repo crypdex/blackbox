@@ -1,22 +1,36 @@
 # Defaults
-CHAIN=pivx
+# CHAIN=pivx
 CHAIN_DIR=/root/.$(CHAIN)
 CHAIN_CONF=$(CHAIN_DIR)/$(CHAIN).conf
 # This is not in the default location to better allow for replacements
 DATA_DIR=/root/chaindata/$(CHAIN)
 DEFAULT_CONFIG_FILE=$(realpath config/$(CHAIN).conf)
 
-# PIVX variables
+# [START PIVX]
 PIVX_VERSION=3.1.1
 PIVX_FILE=pivx-$(PIVX_VERSION)-aarch64-linux-gnu.tar.gz
 PIVX_URL=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)/$(PIVX_FILE)
 PIVX_BIN=pivx-$(PIVX_VERSION)/bin
+# [END PIVX]
 
+# [START BLOCKNETDX]
+BLOCKNETDX_VERSION=3.10.5# More recent versions are not build for arm64
+BLOCKNETDX_FILE=blocknetdx-$(BLOCKNETDX_VERSION)-aarch64-linux-gnu.tar.gz
+BLOCKNETDX_URL=https://github.com/BlocknetDX/BlockDX/releases/download/$(BLOCKNETDX_VERSION)-redesign/$(BLOCKNETDX_FILE)
+BLOCKNETDX_BIN=blocknetdx-$(BLOCKNETDX_VERSION)/bin
+# [END PIVX]
 
 pivx: prepare-install
 	cd downloads && wget $(PIVX_URL) && \
 	tar -xvf $(PIVX_FILE) && \
 	cp $(PIVX_BIN)/* /usr/local/bin/ && \
+	mkdir -p $(CHAIN_DIR) && \
+	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
+
+blocknetdx: prepare-install
+	cd downloads && wget $(BLOCKNETDX_URL) && \
+	tar -xvf $(BLOCKNETDX_FILE) && \
+	cp $(BLOCKNETDX_BIN)/* /usr/local/bin/ && \
 	mkdir -p $(CHAIN_DIR) && \
 	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
 
@@ -29,7 +43,7 @@ stop:
 
 # Utility targets
 
-prepare-install:
+prepare-install: check-chain
 	rm -rf downloads && mkdir -p downloads
 
 # Installs the systemd service, enables it and starts it
@@ -48,6 +62,11 @@ systemd-uninstall:
 check-datadir:
 ifndef DATA_DIR
 	$(error 'DATA_DIR' is undefined)
+endif
+
+check-chain:
+ifndef CHAIN
+	$(error 'CHAIN' is undefined)
 endif
 
 
