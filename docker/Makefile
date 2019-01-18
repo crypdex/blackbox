@@ -7,8 +7,11 @@ CONF_DIR=$(realpath config)
 chains = pivx blocknetdx zcoin dash
 compose-files := $(foreach chain,$(chains),-f $(chain)/docker-compose.yml)
 
-up-all:
+start:
 	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up
+
+stop:
+	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml down
 
 config-all:
 	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml config
