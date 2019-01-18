@@ -10,7 +10,7 @@ Environment=DATA_DIR=/root/chaindata
 Environment=CONF_DIR=/root/conf
 WorkingDirectory=/root/blackbox/docker
 
-ExecStart=/usr/bin/make up-all
+ExecStart=/usr/bin/make start
 ExecStop=/usr/bin/make stop
 
 # ExecReload=/usr/local/bin/docker-compose pull --quiet
