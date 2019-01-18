@@ -1,23 +1,23 @@
 # Defaults
 # CHAIN=pivx
-CHAIN_DIR=/root/.$(CHAIN)
-CHAIN_CONF=$(CHAIN_DIR)/$(CHAIN).conf
+CHAIN_DIR?=/root/.$(CHAIN)
+CHAIN_CONF?=$(CHAIN_DIR)/$(CHAIN).conf
 # This is not in the default location to better allow for replacements
-DATA_DIR=/root/chaindata/$(CHAIN)
-DEFAULT_CONFIG_FILE=$(realpath config/$(CHAIN).conf)
+DATA_DIR?=/root/chaindata/$(CHAIN)
+DEFAULT_CONFIG_FILE?=$(realpath config/$(CHAIN).conf)
 
 # [START PIVX]
-PIVX_VERSION=3.1.1
-PIVX_FILE=pivx-$(PIVX_VERSION)-aarch64-linux-gnu.tar.gz
-PIVX_URL=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)/$(PIVX_FILE)
-PIVX_BIN=pivx-$(PIVX_VERSION)/bin
+PIVX_VERSION?=3.1.1
+PIVX_FILE?=pivx-$(PIVX_VERSION)-aarch64-linux-gnu.tar.gz
+PIVX_URL?=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)/$(PIVX_FILE)
+PIVX_BIN?=pivx-$(PIVX_VERSION)/bin
 # [END PIVX]
 
 # [START BLOCKNETDX]
-BLOCKNETDX_VERSION=3.10.5# More recent versions are not build for arm64
-BLOCKNETDX_FILE=blocknetdx-$(BLOCKNETDX_VERSION)-aarch64-linux-gnu.tar.gz
-BLOCKNETDX_URL=https://github.com/BlocknetDX/BlockDX/releases/download/$(BLOCKNETDX_VERSION)-redesign/$(BLOCKNETDX_FILE)
-BLOCKNETDX_BIN=blocknetdx-$(BLOCKNETDX_VERSION)/bin
+BLOCKNETDX_VERSION?=3.10.5# More recent versions are not build for arm64
+BLOCKNETDX_FILE?=blocknetdx-$(BLOCKNETDX_VERSION)-aarch64-linux-gnu.tar.gz
+BLOCKNETDX_URL?=https://github.com/BlocknetDX/BlockDX/releases/download/$(BLOCKNETDX_VERSION)-redesign/$(BLOCKNETDX_FILE)
+BLOCKNETDX_BIN?=blocknetdx-$(BLOCKNETDX_VERSION)/bin
 # [END PIVX]
 
 pivx: prepare-install

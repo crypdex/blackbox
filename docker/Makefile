@@ -8,7 +8,7 @@ chains = pivx blocknetdx zcoin dash
 compose-files := $(foreach chain,$(chains),-f $(chain)/docker-compose.yml)
 
 start:
-	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up
+	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up --build
 
 stop:
 	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml down
