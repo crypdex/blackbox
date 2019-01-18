@@ -1,7 +1,7 @@
 
-DATA_DIR=/root/chaindata
+DATA_DIR?=/root/chaindata
 # Default configs ... good in lockdown case
-CONF_DIR=$(realpath config)
+CONF_DIR?=$(realpath config)
 
 
 chains = pivx blocknetdx zcoin dash
