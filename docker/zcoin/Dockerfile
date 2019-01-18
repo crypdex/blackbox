@@ -10,22 +10,22 @@ RUN useradd -r $USER \
   && apt-get install -y curl gnupg unzip wget \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
-# https://github.com/zcoinofficial/zcoin/releases/download/v0.13.7.6/zcoin-0.13.7.6-linux64.tar.gz
+
 # Get the PGP keys: For verifying the gosu signature
 # Some of these keyservers seem not to work
-RUN set -ex \
-  && for key in \
-  B42F6819007F00F88E364FD4036A9C25BF357DD4 \
-  ; do \
-  gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
-  gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
-  gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
-  gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
-  done
+# RUN set -ex \
+#   && for key in \
+#   B42F6819007F00F88E364FD4036A9C25BF357DD4 \
+#   ; do \
+#   gpg --keyserver pgp.mit.edu --recv-keys "$key" || \
+#   gpg --keyserver keyserver.pgp.com --recv-keys "$key" || \
+#   gpg --keyserver ha.pool.sks-keyservers.net --recv-keys "$key" || \
+#   gpg --keyserver hkp://p80.pool.sks-keyservers.net:80 --recv-keys "$key" ; \
+#   done
 
 RUN curl -o /usr/local/bin/gosu -fSL https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture) \
   && curl -o /usr/local/bin/gosu.asc -fSL https://github.com/tianon/gosu/releases/download/${GOSU_VERSION}/gosu-$(dpkg --print-architecture).asc \
-  && gpg --verify /usr/local/bin/gosu.asc \
+  # && gpg --verify /usr/local/bin/gosu.asc \
   && rm /usr/local/bin/gosu.asc \
   && chmod +x /usr/local/bin/gosu
 
