@@ -1,19 +1,17 @@
 [Unit]
-Description=Docker Compose container starter
+Description=Crypdex Chains daemon
 After=docker.service network-online.target
 Requires=docker.service network-online.target
 
 [Service]
 # User=crypdex
 # Group=crypdex
-Environment=DATA_DIR=/mnt/disks/chaindata
-WorkingDirectory=/home/dmichael/chains
-Type=simple
-RemainAfterExit=yes
+Environment=DATA_DIR=/root/chaindata
+Environment=CONF_DIR=/root/config
+WorkingDirectory=/root/blackbox/docker
 
-# ExecStartPre=-/usr/local/bin/docker-compose pull --quiet
-ExecStart=/usr/local/bin/docker-compose up
-ExecStop=/usr/local/bin/docker-compose down
+ExecStart=/usr/bin/make start
+ExecStop=/usr/bin/make stop
 
 # ExecReload=/usr/local/bin/docker-compose pull --quiet
 # ExecReload=/usr/local/bin/docker-compose up -d
