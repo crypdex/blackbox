@@ -13,3 +13,6 @@ services:
   dash:
     build:
       context: ../dash
+  litecoin:
+    build:
+      context: ../litecoin

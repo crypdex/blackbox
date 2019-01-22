@@ -4,7 +4,7 @@ DATA_DIR?=/root/chaindata
 CONF_DIR?=$(realpath config)
 
 
-chains = pivx blocknetdx zcoin dash
+chains = pivx blocknetdx zcoin dash litecoin
 compose-files := $(foreach chain,$(chains),-f $(chain)/docker-compose.yml)
 
 start:

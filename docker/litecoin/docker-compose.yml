@@ -1,0 +1,16 @@
+version: '3'
+
+services:
+  litecoin:
+    image: crypdex/litecoin:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    volumes: # HOST:CONTAINER
+      - ${DATA_DIR:?DATA_DIR required}/litecoin:/home/litecoin/.litecoin
+      - ${CONF_DIR:?CONF_DIR required}/litecoin.conf:/home/litecoin/litecoin.conf
+    command: -conf=/home/litecoin/litecoin.conf -rpcallowip=172.0.0.0/8
+    ports: # HOST:CONTAINER
+      # - '127.0.0.1:8168:8168' # internal only - good default
+      # - '8888:8888' # open to the network - the exposes you!
+      - ${LITECOIN_PORTS:-127.0.0.1:9332:9332} # open to the network
