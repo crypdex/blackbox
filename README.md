@@ -22,6 +22,8 @@ Regardless of the deployent environment, the following setup should be followed 
 
 The update strategy is a simple `git pull`, but to do so on a private repository (like this one), requires that this repository has a common "deploy key" set, which it does.
 
+**If you remove the deploy key or rename the repo then remote updates will break.** There currently is no strategy for rotating the deploy keys on remote machines.
+
 ## 1. SSH Identity
 
 On the Black Box, add following to `~/.ssh/config`
