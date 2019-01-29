@@ -4,11 +4,11 @@ After=docker.service network-online.target
 Requires=docker.service network-online.target
 
 [Service]
-# User=crypdex
-# Group=crypdex
-Environment=DATA_DIR=/root/chaindata
-Environment=CONF_DIR=/root/config
-WorkingDirectory=/root/blackbox/docker
+User=crypdex
+Group=crypdex
+Environment=DATA_DIR=/home/crypdex/chaindata
+Environment=CONF_DIR=/home/crypdex/config
+WorkingDirectory=/home/crypdex/blackbox/docker
 
 ExecStart=/usr/bin/make start
 ExecStop=/usr/bin/make stop
