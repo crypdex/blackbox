@@ -8,7 +8,7 @@ services:
     #   dockerfile: Dockerfile
     volumes: # HOST:CONTAINER
       - ${DATA_DIR:?DATA_DIR required}/ethereum:/home/parity/.local/share/io.parity.ethereum/
-      # - ${CONF_DIR:?CONF_DIR required}:/home/parity/.local/share/config
+      - ${CONF_DIR:?CONF_DIR required}:/home/parity/.local/share/config
     command: --base-path /home/parity/.local/share/io.parity.ethereum/ --config /home/parity/.local/share/io.parity.ethereum/parity.toml
     ports: # HOST:CONTAINER
       # - ${ETHEREUM_PORTS:-127.0.0.1:8545:8545} # open to the network
