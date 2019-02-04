@@ -4,7 +4,6 @@ FROM ubuntu:bionic as builder
 USER root
 ENV VERSION=3.1.1
 ENV ARCH=aarch64
-ENV DATA_DIR=/home/pivx/.pivx
 ARG USER=pivx
 # ARG GOSU_VERSION=1.11
 
@@ -58,15 +57,20 @@ RUN mkdir pivx-$VERSION \
   && cd ~ \
   && rm -rf /tmp/pivx-$VERSION
 
+# --------
+# PART 2
+# --------
+
+
 FROM ubuntu:bionic as final
 
+ENV DATA_DIR=/home/pivx/.pivx
 ENV USER pivx
 RUN apt-get update && apt-get upgrade -y
 
 COPY --from=builder /usr/local/bin/* /usr/local/bin/
 
 VOLUME ["/home/pivx/.pivx"]
-
 
 # add user to the system
 RUN useradd -d /home/"${USER}" -s /bin/sh -G users "${USER}"
