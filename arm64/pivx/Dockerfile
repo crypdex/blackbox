@@ -4,10 +4,11 @@ ENV VERSION=3.1.1
 ENV ARCH=aarch64
 ENV DATA_DIR=/home/pivx/.pivx
 ARG USER=pivx
+ARG GROUP=pivx
 # ARG GOSU_VERSION=1.11
 
 RUN apk add --update --no-cache curl unzip wget su-exec \
-  && adduser -S $USER
+  && addgroup $GROUP && adduser -G $GROUP -S $USER
 
 # RUN useradd -r $USER \
 #   && apt-get update -y \
@@ -46,8 +47,8 @@ RUN wget -O pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz \
 RUN mkdir pivx-$VERSION \
   && tar xzpvf pivx-$VERSION-$ARCH-linux-gnu.tar.gz -C pivx-$VERSION --strip-components 1\
   && cd pivx-$VERSION \
-  && chown pivx bin/* \
   && cp bin/* /usr/bin/ \
+  && chown pivx:pivx bin/pivxd \
   && cd ~ \
   && rm -rf /tmp/pivx-$VERSION
 
