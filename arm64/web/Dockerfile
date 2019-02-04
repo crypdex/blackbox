@@ -1,4 +1,4 @@
-FROM golang:alpine
+FROM arm64v8/golang
 
 ADD ./ /go/app
 WORKDIR /go/app
