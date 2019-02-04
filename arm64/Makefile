@@ -6,36 +6,36 @@ CHAIN_CONF?=$(CHAIN_DIR)/$(CHAIN).conf
 DATA_DIR?=/root/chaindata/$(CHAIN)
 DEFAULT_CONFIG_FILE?=$(realpath config/$(CHAIN).conf)
 
-# [START PIVX]
-PIVX_VERSION?=3.1.1
-PIVX_FILE?=pivx-$(PIVX_VERSION)-aarch64-linux-gnu.tar.gz
-PIVX_URL?=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)/$(PIVX_FILE)
-PIVX_BIN?=pivx-$(PIVX_VERSION)/bin
-# [END PIVX]
+# # [START PIVX]
+# PIVX_VERSION?=3.1.1
+# PIVX_FILE?=pivx-$(PIVX_VERSION)-aarch64-linux-gnu.tar.gz
+# PIVX_URL?=https://github.com/PIVX-Project/PIVX/releases/download/v$(PIVX_VERSION)/$(PIVX_FILE)
+# PIVX_BIN?=pivx-$(PIVX_VERSION)/bin
+# # [END PIVX]
 
-# [START BLOCKNETDX]
-BLOCKNETDX_VERSION?=3.10.5# More recent versions are not build for arm64
-BLOCKNETDX_FILE?=blocknetdx-$(BLOCKNETDX_VERSION)-aarch64-linux-gnu.tar.gz
-BLOCKNETDX_URL?=https://github.com/BlocknetDX/BlockDX/releases/download/$(BLOCKNETDX_VERSION)-redesign/$(BLOCKNETDX_FILE)
-BLOCKNETDX_BIN?=blocknetdx-$(BLOCKNETDX_VERSION)/bin
-# [END PIVX]
+# # [START BLOCKNETDX]
+# BLOCKNETDX_VERSION?=3.10.5# More recent versions are not build for arm64
+# BLOCKNETDX_FILE?=blocknetdx-$(BLOCKNETDX_VERSION)-aarch64-linux-gnu.tar.gz
+# BLOCKNETDX_URL?=https://github.com/BlocknetDX/BlockDX/releases/download/$(BLOCKNETDX_VERSION)-redesign/$(BLOCKNETDX_FILE)
+# BLOCKNETDX_BIN?=blocknetdx-$(BLOCKNETDX_VERSION)/bin
+# # [END PIVX]
 
 chains = pivx web
 compose-files := $(foreach chain,$(chains),-f $(chain)/docker-compose.yml)
 
-pivx: prepare-install
-	cd downloads && wget $(PIVX_URL) && \
-	tar -xvf $(PIVX_FILE) && \
-	cp $(PIVX_BIN)/* /usr/local/bin/ && \
-	mkdir -p $(CHAIN_DIR) && \
-	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
+# pivx: prepare-install
+# 	cd downloads && wget $(PIVX_URL) && \
+# 	tar -xvf $(PIVX_FILE) && \
+# 	cp $(PIVX_BIN)/* /usr/local/bin/ && \
+# 	mkdir -p $(CHAIN_DIR) && \
+# 	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
 
-blocknetdx: prepare-install
-	cd downloads && wget $(BLOCKNETDX_URL) && \
-	tar -xvf $(BLOCKNETDX_FILE) && \
-	cp $(BLOCKNETDX_BIN)/* /usr/local/bin/ && \
-	mkdir -p $(CHAIN_DIR) && \
-	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
+# blocknetdx: prepare-install
+# 	cd downloads && wget $(BLOCKNETDX_URL) && \
+# 	tar -xvf $(BLOCKNETDX_FILE) && \
+# 	cp $(BLOCKNETDX_BIN)/* /usr/local/bin/ && \
+# 	mkdir -p $(CHAIN_DIR) && \
+# 	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
 
 start:
 	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up --build
@@ -52,20 +52,20 @@ stop:
 
 # Utility targets
 
-prepare-install: check-chain
-	rm -rf downloads && mkdir -p downloads
+# prepare-install: check-chain
+# 	rm -rf downloads && mkdir -p downloads
 
 # Installs the systemd service, enables it and starts it
-systemd-install: check-chain
-	cp services/$(CHAIN).service /etc/systemd/system/
-	systemctl enable /etc/systemd/system/$(CHAIN).service
-	systemctl start $(CHAIN).service
+systemd-install:
+	cp services/blackbox.service /etc/systemd/system/
+	systemctl enable /etc/systemd/system/blackbox.service
+	systemctl start blackbox.service
 
 # Uninstalls the service
 systemd-uninstall:check-chain
-	systemctl stop $(CHAIN).service
-	systemctl disable $(CHAIN).service
-	rm /etc/systemd/system/$(CHAIN).service
+	systemctl stop blackbox.service
+	systemctl disable blackbox.service
+	rm /etc/systemd/system/blackbox.service
 
 # DATA_DIR=/path/to/pivxdata
 check-datadir:
