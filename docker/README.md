@@ -15,3 +15,14 @@ CONF_DIR=/path/to/configs
 ```
 make config-all
 ```
+
+## Local Development
+
+When using the Black Box for local development (for the main system), you should set these in a `.env` file in `docker/` so that Docker Compose will pick them up.
+
+```
+BLOCKNETDX_PORTS=41414:41414
+DASH_PORTS=9998:9998
+PIVX_PORTS=51473:51473
+ZCOIN_PORTS=8888:8888
+```
