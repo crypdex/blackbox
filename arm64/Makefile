@@ -38,7 +38,7 @@ compose-files := $(foreach chain,$(chains),-f $(chain)/docker-compose.yml)
 # 	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
 
 start:
-	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up --build
+	git pull origin master && DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up --build
 
 stop:
 	docker-compose down --remove-orphans
