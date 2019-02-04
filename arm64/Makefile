@@ -39,12 +39,16 @@ blocknetdx: prepare-install
 
 start:
 	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up --build
+
+stop:
+	docker-compose down --remove-orphans
+
 # start: check-datadir check-chain
 # 	mkdir -p $(DATA_DIR) && \
 # 	$(CHAIN)d -conf=$(CHAIN_CONF) -datadir=$(DATA_DIR)
 
-stop: check-chain
-	$(CHAIN)-cli -conf=$(CHAIN_CONF) stop
+# stop: check-chain
+# 	$(CHAIN)-cli -conf=$(CHAIN_CONF) stop
 
 # Utility targets
 

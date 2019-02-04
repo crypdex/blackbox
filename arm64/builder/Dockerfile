@@ -3,4 +3,4 @@ RUN [ "cross-build-start" ]
 
 RUN apk --upgrade add curl
 
-# RUN [ "cross-build-end" ]
+RUN [ "cross-build-end" ]
