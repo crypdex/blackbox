@@ -1,0 +1,12 @@
+version: '3'
+
+services:
+  my-golang-app-run:
+    container_name: my-golang-app-run
+    build: .
+    command: go run main.go
+    working_dir: /go/app
+    ports:
+      - '3001:3001'
+    environment:
+      PORT: 3001

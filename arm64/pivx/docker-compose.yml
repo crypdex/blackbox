@@ -2,8 +2,6 @@ version: '3'
 
 services:
   pivx:
-    environment:
-      - ARCH=aarch64
     image: crypdex/pivx-aarch64:latest
     build:
       context: .
