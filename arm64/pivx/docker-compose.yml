@@ -2,7 +2,9 @@ version: '3'
 
 services:
   pivx:
-    image: crypdex/pivx-aarch64:latest
+    environment:
+      - ARCH=aarch64
+    image: pivx-aarch64:testing
     build:
       context: .
       dockerfile: Dockerfile

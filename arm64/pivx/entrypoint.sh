@@ -20,7 +20,7 @@ fi
 
 if [ "$1" = "pivxd" ] || [ "$1" = "pivx-cli" ] || [ "$1" = "pivx-tx" ]; then
   echo "$@"
-  exec gosu pivx "$@"
+  exec su-exec pivx "$@"
 fi
 
 echo
