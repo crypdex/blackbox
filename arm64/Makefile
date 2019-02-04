@@ -75,7 +75,7 @@ endif
 # * Use $ swapon --show before running this command!
 # * See: https://linuxize.com/post/how-to-add-swap-space-on-ubuntu-18-04/
 install-swapfile:
-	fallocate -l 4G /swapfile && \
+	fallocate -l 2G /swapfile && \
 	chmod 600 /swapfile && \
 	mkswap /swapfile && \
 	swapon /swapfile && \
