@@ -46,6 +46,7 @@ RUN wget -O pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz \
 RUN mkdir pivx-$VERSION \
   && tar xzpvf pivx-$VERSION-$ARCH-linux-gnu.tar.gz -C pivx-$VERSION --strip-components 1\
   && cd pivx-$VERSION \
+  && chown pivx bin/* \
   && cp bin/* /usr/bin/ \
   && cd ~ \
   && rm -rf /tmp/pivx-$VERSION
@@ -57,8 +58,8 @@ VOLUME ["/home/pivx/.pivx"]
 COPY entrypoint.sh /entrypoint.sh
 RUN ["chmod", "+x", "/entrypoint.sh"]
 
-# ENTRYPOINT ["/entrypoint.sh"]
+ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 51473 51472
 
-CMD ["ls", "/home/pivx"]
+CMD ["pivxd"]
