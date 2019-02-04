@@ -4,7 +4,7 @@ services:
   pivx:
     environment:
       - ARCH=aarch64
-    image: pivx-aarch64:testing
+    image: crypdex/pivx-aarch64:latest
     build:
       context: .
       dockerfile: Dockerfile
