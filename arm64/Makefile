@@ -20,6 +20,9 @@ BLOCKNETDX_URL?=https://github.com/BlocknetDX/BlockDX/releases/download/$(BLOCKN
 BLOCKNETDX_BIN?=blocknetdx-$(BLOCKNETDX_VERSION)/bin
 # [END PIVX]
 
+chains = pivx web
+compose-files := $(foreach chain,$(chains),-f $(chain)/docker-compose.yml)
+
 pivx: prepare-install
 	cd downloads && wget $(PIVX_URL) && \
 	tar -xvf $(PIVX_FILE) && \
@@ -34,9 +37,11 @@ blocknetdx: prepare-install
 	mkdir -p $(CHAIN_DIR) && \
 	cp $(DEFAULT_CONFIG_FILE) $(CHAIN_DIR)
 
-start: check-datadir check-chain
-	mkdir -p $(DATA_DIR) && \
-	$(CHAIN)d -conf=$(CHAIN_CONF) -datadir=$(DATA_DIR)
+start:
+	DATA_DIR=$(DATA_DIR) CONF_DIR=$(CONF_DIR) docker-compose -p chains $(compose-files) -f docker-compose.yml up --build
+# start: check-datadir check-chain
+# 	mkdir -p $(DATA_DIR) && \
+# 	$(CHAIN)d -conf=$(CHAIN_CONF) -datadir=$(DATA_DIR)
 
 stop: check-chain
 	$(CHAIN)-cli -conf=$(CHAIN_CONF) stop
