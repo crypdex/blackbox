@@ -57,7 +57,7 @@ VOLUME ["/home/pivx/.pivx"]
 COPY entrypoint.sh /entrypoint.sh
 RUN ["chmod", "+x", "/entrypoint.sh"]
 
-ENTRYPOINT ["/entrypoint.sh"]
+# ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 51473 51472
 
