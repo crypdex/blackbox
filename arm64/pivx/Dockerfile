@@ -61,4 +61,4 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 EXPOSE 51473 51472
 
-CMD ["pivxd"]
+CMD ["ls", "/home/pivx"]
