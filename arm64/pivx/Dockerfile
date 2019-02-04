@@ -1,20 +1,21 @@
-FROM multiarch/alpine:aarch64-latest-stable
+FROM ubuntu:bionic as builder
 
+# switch to root, let the entrypoint drop back to configured user
+USER root
 ENV VERSION=3.1.1
 ENV ARCH=aarch64
 ENV DATA_DIR=/home/pivx/.pivx
 ARG USER=pivx
-ARG GROUP=pivx
 # ARG GOSU_VERSION=1.11
 
-RUN apk add --update --no-cache curl unzip wget su-exec \
-  && addgroup $GROUP && adduser -G $GROUP -S $USER
 
-# RUN useradd -r $USER \
-#   && apt-get update -y \
-#   && apt-get install -y curl gnupg unzip wget \
-#   && apt-get clean \
-#   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+RUN useradd -r $USER \
+  && apt-get update -y \
+  && apt-get install -y git build-essential gnupg unzip wget \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+WORKDIR /tmp
 
 # Get the PGP keys: For verifying the gosu signature
 # Some of these keyservers seem not to work
@@ -35,7 +36,7 @@ RUN apk add --update --no-cache curl unzip wget su-exec \
 #   && chmod +x /usr/local/bin/gosu
 
 # download source
-RUN wget -O pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz \
+RUN wget -O /tmp/pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz \
   "https://github.com/PIVX-Project/PIVX/releases/download/v"${VERSION}"/pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz" \
   && wget -O /tmp/SHA256SUMS.asc "https://github.com/PIVX-Project/PIVX/releases/download/v"${VERSION}"/SHA256SUMS.asc"
 
@@ -43,18 +44,32 @@ RUN wget -O pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz \
 # RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 3BDCDA2D87A881D9
 # RUN gpg --keyserver-options auto-key-retrieve --verify SHA256SUMS.asc
 
+#install su-exec
+RUN git clone https://github.com/ncopa/su-exec.git \
+  && cd su-exec && make && cp su-exec /usr/local/bin/ \
+  && cd .. && rm -rf su-exec
+
+
 # extract binaries
 RUN mkdir pivx-$VERSION \
   && tar xzpvf pivx-$VERSION-$ARCH-linux-gnu.tar.gz -C pivx-$VERSION --strip-components 1\
   && cd pivx-$VERSION \
-  && cp bin/* /usr/bin/ \
-  && chown pivx:pivx bin/pivxd \
+  && cp bin/* /usr/local/bin/ \
   && cd ~ \
   && rm -rf /tmp/pivx-$VERSION
 
+FROM ubuntu:bionic as final
+
+ENV USER pivx
+RUN apt-get update && apt-get upgrade -y
+
+COPY --from=builder /usr/local/bin/* /usr/local/bin/
+
 VOLUME ["/home/pivx/.pivx"]
 
-# RUN [ "cross-build-end" ]
+
+# add user to the system
+RUN useradd -d /home/"${USER}" -s /bin/sh -G users "${USER}"
 
 COPY entrypoint.sh /entrypoint.sh
 RUN ["chmod", "+x", "/entrypoint.sh"]
