@@ -46,7 +46,7 @@ RUN wget -O pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz \
 RUN mkdir pivx-$VERSION \
   && tar xzpvf pivx-$VERSION-$ARCH-linux-gnu.tar.gz -C pivx-$VERSION --strip-components 1\
   && cd pivx-$VERSION \
-  && cp bin/* /usr/local/bin/ \
+  && cp bin/* /usr/bin/ \
   && cd ~ \
   && rm -rf /tmp/pivx-$VERSION
 
