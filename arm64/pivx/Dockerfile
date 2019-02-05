@@ -1,9 +1,13 @@
-FROM ubuntu:bionic as builder
+FROM multiarch/ubuntu-core:arm64-bionic
 
-# switch to root, let the entrypoint drop back to configured user
-USER root
+# Enable cross-build for aarch64
+# COPY ./vendor/qemu-bin /usr/bin/
+# RUN [ "cross-build-start" ]
+# FROM ubuntu:bionic
+
 ENV VERSION=3.1.1
-ENV ARCH=aarch64
+ENV DATA_DIR=/home/pivx/.pivx
+# x86_64 || aarch64
 ARG USER=pivx
 
 RUN useradd -r $USER \
@@ -15,8 +19,8 @@ RUN useradd -r $USER \
 WORKDIR /tmp
 
 # download source
-RUN wget -O /tmp/pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz \
-  "https://github.com/PIVX-Project/PIVX/releases/download/v"${VERSION}"/pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz" \
+RUN wget -O /tmp/pivx-"${VERSION}"-aarch64-linux-gnu.tar.gz \
+  "https://github.com/PIVX-Project/PIVX/releases/download/v"${VERSION}"/pivx-"${VERSION}"-aarch64-linux-gnu.tar.gz" \
   && wget -O /tmp/SHA256SUMS.asc "https://github.com/PIVX-Project/PIVX/releases/download/v"${VERSION}"/SHA256SUMS.asc"
 
 # verify gpg signature
@@ -25,7 +29,7 @@ RUN wget -O /tmp/pivx-"${VERSION}"-"${ARCH}"-linux-gnu.tar.gz \
 
 # extract binaries
 RUN mkdir pivx-$VERSION \
-  && tar xzpvf pivx-$VERSION-$ARCH-linux-gnu.tar.gz -C pivx-$VERSION --strip-components 1\
+  && tar xzpvf pivx-$VERSION-aarch64-linux-gnu.tar.gz -C pivx-$VERSION --strip-components 1\
   && cd pivx-$VERSION \
   && cp bin/* /usr/local/bin/ \
   && cd ~ \
@@ -36,24 +40,11 @@ RUN git clone https://github.com/ncopa/su-exec.git \
   && cd su-exec && make && cp su-exec /usr/local/bin/ \
   && cd .. && rm -rf su-exec
 
-# --------
-# PART 2
-# --------
+# RUN [ "cross-build-end" ]
 
-
-FROM ubuntu:bionic as final
-
-ENV DATA_DIR=/home/pivx/.pivx
-ENV USER pivx
-
-RUN apt-get update && apt-get upgrade -y
-
-COPY --from=builder /usr/local/bin/* /usr/local/bin/
 COPY entrypoint.sh /entrypoint.sh
-RUN ["chmod", "+x", "/entrypoint.sh"]
 
-# add user to the system
-RUN useradd -d /home/"${USER}" -s /bin/sh -G users "${USER}"
+RUN ["chmod", "+x", "/entrypoint.sh"]
 
 VOLUME ["/home/pivx/.pivx"]
 

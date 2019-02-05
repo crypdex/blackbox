@@ -9,7 +9,7 @@ services:
     # HOST:CONTAINER
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
-      - ${CONF_DIR:?CONF_DIR required}:/home/pivx/config
+      - ${CONFIG_DIR:?CONFIG_DIR required}:/home/pivx/config
     # The default command points the conf file mounted in volumes
     # and exposes the RPC to the Docker host
     command: -conf=/home/pivx/config/pivx.conf -rpcallowip=172.0.0.0/8

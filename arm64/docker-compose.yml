@@ -2,8 +2,8 @@ version: '3'
 
 services:
   pivx:
-    build:
-      context: ../pivx
+  # build:
+  #   context: ../pivx
   web:
     build:
       context: ../web
