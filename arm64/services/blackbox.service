@@ -6,7 +6,6 @@ Requires=network-online.target
 [Service]
 Environment=DATA_DIR=/root/chaindata
 Environment=CONFIG_DIR=/root/config
-Environment=ARCH=aarch64
 WorkingDirectory=/root/blackbox/arm64
 ExecStart=/usr/bin/make start
 ExecStop=/usr/bin/make stop

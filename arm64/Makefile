@@ -9,8 +9,8 @@ compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
 start:
 	git pull origin master && \
-	ARCH=${ARCH} DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) \
-	docker-compose -p chains $(compose-files) -f docker-compose.yml up --build
+	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) \
+	docker-compose -p chains $(compose-files) -f docker-compose.yml up
 
 stop:
 	docker-compose down --remove-orphans

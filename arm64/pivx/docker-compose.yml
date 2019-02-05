@@ -2,10 +2,10 @@ version: '3'
 
 services:
   pivx:
-    image: crypdex/pivx-aarch64:latest
-    build:
-      context: .
-      dockerfile: Dockerfile
+    image: crypdex/pivx-arm64:latest
+    # build:
+    #   context: .
+    #   dockerfile: Dockerfile
     # HOST:CONTAINER
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
