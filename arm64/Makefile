@@ -1,19 +1,16 @@
 DATA_DIR?=/root/chaindata
 CONFIG_DIR?=/root/config
-# required and defaults to aarch64
-ARCH?=aarch64
 
 SERVICES = pivx web
 compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
-
 start:
 	git pull origin master && \
 	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) \
-	docker-compose -p chains $(compose-files) -f docker-compose.yml up
+	docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
 
 stop:
-	docker-compose down --remove-orphans
+	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml down --remove-orphans
 
 # Installs the systemd service, enables it and starts it
 systemd-install:
