@@ -1,7 +1,7 @@
 DATA_DIR?=/root/chaindata
 CONFIG_DIR?=/root/config
 
-SERVICES = pivx web
+SERVICES = pivx
 compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
 start:

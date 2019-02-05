@@ -1,9 +1,9 @@
 version: '3'
 
 services:
-  pivx:
-  # build:
-  #   context: ../pivx
-  web:
-    build:
-      context: ../web
+  api:
+    image: crypdex/blackbox-api-arm64:latest
+    environment:
+      - PORT=4000
+    ports:
+      - '80:4000'
