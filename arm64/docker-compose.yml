@@ -6,13 +6,11 @@ services:
     image: arm64v8/postgres
     # Only bind to local/internal ports
     ports:
-      - 5432:5432
+      - '5432:5432'
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/postgres:/var/lib/postgresql/data
     environment:
       - POSTGRES_DB=blackbox
-    #   - POSTGRES_USER=blackbox
-    #   - POSTGRES_PASSWORD=blackbox
   api:
     image: crypdex/blackbox-api-arm64:latest
     container_name: api
