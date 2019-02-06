@@ -6,6 +6,7 @@ compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
 start:
 	git pull origin master && \
+	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml pull &&\
 	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) \
 	docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
 
