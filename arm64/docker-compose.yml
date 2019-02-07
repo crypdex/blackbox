@@ -19,9 +19,6 @@ services:
       - DATABASE_URL=postgres://postgres@postgres:5432/postgres?sslmode=disable
     ports:
       - '80:4000'
-    deploy:
-      restart_policy:
-        condition: on-failure
-        delay: 5s
+    restart_policy: on-failure
     depends_on:
       - postgres
