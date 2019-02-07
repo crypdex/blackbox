@@ -22,3 +22,4 @@ services:
     restart: on-failure
     depends_on:
       - postgres
+    command: ['/root/wait-for-it/wait-for-it.sh', 'postgres:5432', '--', './app']
