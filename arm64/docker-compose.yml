@@ -17,7 +17,6 @@ services:
     environment:
       - PORT=4000
       - DATABASE_URL=postgres://postgres@postgres:5432/postgres?sslmode=disable
-      - WAIT_HOSTS=postgres:5432
     ports:
       - '80:4000'
     restart: on-failure
