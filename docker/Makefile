@@ -1,5 +1,5 @@
 
-DATA_DIR?=/home/crypdex/data/chaindata
+DATA_DIR?=/home/root/chaindata
 # Default configs ... good in lockdown case
 CONF_DIR?=$(realpath config)
 
