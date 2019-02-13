@@ -7,9 +7,9 @@ Requires=docker.service network-online.target
 # Docker currently runs as root
 # User=crypdex
 # Group=crypdex
-Environment=DATA_DIR=/home/root/chaindata
+Environment=DATA_DIR=/root/chaindata
 # Environment=CONF_DIR=/home/crypdex/config
-WorkingDirectory=/home/root/blackbox/docker
+WorkingDirectory=/root/blackbox/docker
 
 ExecStart=/usr/bin/make start
 ExecStop=/usr/bin/make stop
