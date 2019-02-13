@@ -50,7 +50,16 @@ $ cd; git clone git@blackbox.github.com:crypdex/blackbox.git
 
 # Little Black Box
 
-arm64
+## Preparations
+
+- Install Docker
+- Install [`docker-compose`](https://github.com/ubiquiti/docker-compose-aarch64)
+- Install the SSH identity file (see above)
+
+## References
+
+- ARM64 docker cross-builds
+  - https://www.balena.io/blog/building-arm-containers-on-any-x86-machine-even-dockerhub/
 
 # Big Black Box (x86)
 

@@ -1,4 +1,5 @@
-FROM multiarch/ubuntu-core:arm64-bionic
+# FROM multiarch/ubuntu-core:arm64-bionic
+FROM arm64v8/ubuntu:bionic
 
 # Enable cross-build for aarch64
 # COPY ./vendor/qemu-bin /usr/bin/

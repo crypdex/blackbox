@@ -1,7 +1,7 @@
 version: '3'
 
 services:
-  blocknet:
+  blocknetdx:
     image: crypdex/blocknetdx:latest
     build:
       context: .

@@ -1,10 +1,10 @@
 
-DATA_DIR?=/root/chaindata
+DATA_DIR?=/home/crypdex/data/chaindata
 # Default configs ... good in lockdown case
 CONF_DIR?=$(realpath config)
 
 
-chains = pivx blocknetdx zcoin dash litecoin ethereum
+chains = pivx zcoin dash blocknetdx
 compose-files := $(foreach chain,$(chains),-f $(chain)/docker-compose.yml)
 
 start:

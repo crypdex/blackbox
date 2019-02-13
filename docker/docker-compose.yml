@@ -4,7 +4,7 @@ services:
   pivx:
     build:
       context: ../pivx
-  blocknet:
+  blocknetdx:
     build:
       context: ../blocknetdx
   zcoin:
@@ -13,6 +13,3 @@ services:
   dash:
     build:
       context: ../dash
-  litecoin:
-    build:
-      context: ../litecoin
