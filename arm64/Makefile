@@ -1,5 +1,4 @@
 DATA_DIR?=/root/data
-CONFIG_DIR?=/root/config
 
 SERVICES = pivx
 compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
@@ -11,11 +10,11 @@ devdown:
 
 start:
 	git pull origin master && \
-	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml pull &&\
-	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml pull &&\
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
 
 stop:
-	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml down --remove-orphans
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml down --remove-orphans
 
 # Installs the systemd service, enables it and starts it
 systemd-install:
