@@ -1,14 +1,18 @@
-DATA_DIR?=/root/chaindata
+DATA_DIR?=/root/data
 CONFIG_DIR?=/root/config
 
 SERVICES = pivx
 compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
+devup:
+	DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
+devdown:
+	DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
+
 start:
 	git pull origin master && \
 	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml pull &&\
-	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) \
-	docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
+	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
 
 stop:
 	DATA_DIR=$(DATA_DIR) CONFIG_DIR=$(CONFIG_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml down --remove-orphans

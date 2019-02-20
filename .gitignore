@@ -17,5 +17,4 @@ arm64/downloads
 .idea
 .vccode
 
-id_rsa*
-keys/id_rsa_blackbox
+id_rsa_blackbox

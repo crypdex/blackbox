@@ -1,25 +1,34 @@
 version: '3.4'
 
 services:
+  mail:
+    container_name: mail
+    image: simenduev/postfix-relay
+    ports:
+      - 127.0.0.1:1587:25
+    environment:
+      - SMTP_HOST=smtp.sendgrid.com
+      - SMTP_PORT=587
+      - SMTP_LOGIN=apikey
+      - SMTP_PASSWORD=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
   postgres:
     container_name: postgres
     image: arm64v8/postgres
-    # Only bind to local/internal ports
     ports:
-      - '5432:5432'
+      - '127.0.0.1:5432:5432'
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/postgres:/var/lib/postgresql/data
-  api:
-    image: crypdex/blackbox-api-arm64:latest
-    container_name: api
-    volumes:
-      - ${DATA_DIR:?DATA_DIR required}/blackbox-api:/root/resources
-    environment:
-      - PORT=4000
-      - DATABASE_URL=postgres://postgres@postgres:5432/postgres?sslmode=disable
-    ports:
-      - '80:4000'
-    restart: on-failure
-    depends_on:
-      - postgres
-    command: ['/root/wait-for-it/wait-for-it.sh', 'postgres:5432', '--', './app']
+  # api:
+  #   image: crypdex/blackbox-api-arm64:latest
+  #   container_name: api
+  #   volumes:
+  #     - ${DATA_DIR:?DATA_DIR required}/blackbox-api:/root/resources
+  #   environment:
+  #     - PORT=4000
+  #     - DATABASE_URL=postgres://postgres@postgres:5432/postgres?sslmode=disable
+  #   ports:
+  #     - '80:4000'
+  #   restart: on-failure
+  #   depends_on:
+  #     - postgres
+  #   command: ['/root/wait-for-it/wait-for-it.sh', 'postgres:5432', '--', './app']

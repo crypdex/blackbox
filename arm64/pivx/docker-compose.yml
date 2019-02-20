@@ -1,5 +1,7 @@
 version: '3.4'
 
+# While the RPC allow is set open, the ports only bind to localhost.
+
 services:
   pivx:
     container_name: pivx
@@ -7,14 +9,13 @@ services:
     # build:
     #   context: .
     #   dockerfile: Dockerfile
-    # HOST:CONTAINER
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
-      - ${CONFIG_DIR:?CONFIG_DIR required}:/home/pivx/config
-    # The default command points the conf file mounted in volumes
-    # and exposes the RPC to the Docker host
-    command: -conf=/home/pivx/config/pivx.conf -rpcallowip=172.0.0.0/8
+      # - ${CONFIG_DIR:?CONFIG_DIR required}:/home/pivx/config
+    # command: -conf=/home/pivx/config/pivx.conf -rpcallowip=172.0.0.0/8
+    # command: -rpcallowip=172.0.0.0/8
+    command: -rpcallowip=0.0.0.0/0
     # HOST:CONTAINER
     ports:
-      - '51472:51472' # masternode connections
-      - '51473:51473'
+      - '127.0.0.1:51472:51472' # masternode connections
+      - '127.0.0.1:51473:51473'
