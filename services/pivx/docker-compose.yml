@@ -5,6 +5,7 @@ version: "3.7"
 services:
   pivx:
     image: crypdex/pivx:latest
+    container_name: pivx
     # build:
     #   context: .
     #   dockerfile: Dockerfile
