@@ -1,17 +1,26 @@
-version: "3.7"
+version: '3.7'
 
 services:
   # postgres is a multiarch image
   postgres:
     image: postgres
     ports:
-      - "127.0.0.1:5432:5432"
+      - mode: host
+        target: 5432
+        published: 5432
+    #    ports:
+    #      - '5432:5432'
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/postgres:/var/lib/postgresql/data
   mail:
     image: crypdex/postfix-relay:latest
     ports:
-      - "127.0.0.1:1587:25"
+      - target: 25
+        published: 1587
+        protocol: tcp
+        mode: host
+    #    ports:
+    #      - '1587:25'
     environment:
       - SMTP_HOST=smtp.sendgrid.com
       - SMTP_PORT=587

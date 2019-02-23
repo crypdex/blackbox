@@ -16,5 +16,9 @@ services:
     command: -rpcallowip=0.0.0.0/0
     # HOST:CONTAINER
     ports:
-      - "127.0.0.1:51472:51472"
-      - "127.0.0.1:51473:51473"
+      - mode: host
+        target: 51472
+        published: 51472
+      - mode: host
+        target: 51473
+        published: 51473
