@@ -7,18 +7,16 @@ compose-files := $(foreach service,$(SERVICES),-c $(service)/docker-compose.yml)
 build:
 	./docker-build.sh
 
+# DOCKER STACK EXPERIMENTAL
+# devup:
+# 	DATA_DIR=$(DATA_DIR) docker stack deploy $(compose-files) -c docker-compose.yml blackbox
+# devdown:
+# 	docker stack rm blackbox
 
 devup:
-	DATA_DIR=$(DATA_DIR) docker stack deploy $(compose-files) -c docker-compose.yml blackbox
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
 devdown:
-	docker stack rm blackbox
-
-	# DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
-
-#devup:
-#	DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
-#devdown:
-#	DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
 
 start:
 	git pull origin master && \
