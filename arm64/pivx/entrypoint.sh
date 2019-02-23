@@ -20,6 +20,9 @@ fi
 
 if [ "$1" = "pivxd" ] || [ "$1" = "pivx-cli" ] || [ "$1" = "pivx-tx" ]; then
   echo "$@"
+
+  echo "its new"
+
   exec su-exec pivx "$@"
 fi
 

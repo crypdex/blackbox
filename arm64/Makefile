@@ -1,12 +1,23 @@
 DATA_DIR?=/root/data
 
 SERVICES = pivx
-compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
+compose-files := $(foreach service,$(SERVICES),-c $(service)/docker-compose.yml)
+#compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
+
+build:
+
+
 
 devup:
-	DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
+	DATA_DIR=~/data docker stack deploy -c docker-compose.yml blackbox
 devdown:
-	DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
+	docker stack rm blackbox
+	# DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
+
+#devup:
+#	DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
+#devdown:
+#	DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
 
 start:
 	git pull origin master && \
