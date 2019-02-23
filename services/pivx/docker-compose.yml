@@ -1,4 +1,4 @@
-version: '3.7'
+version: "3.7"
 
 # While the RPC allow is set open, the ports only bind to localhost.
 
@@ -19,7 +19,6 @@ services:
       - mode: host
         target: 51472
         published: 51472
-     - mode: host
+      - mode: host
         target: 51473
         published: 51473
-
