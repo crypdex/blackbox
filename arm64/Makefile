@@ -9,9 +9,10 @@ build:
 
 
 devup:
-	DATA_DIR=~/data docker stack deploy -c docker-compose.yml blackbox
+	DATA_DIR=~/data docker stack deploy $(compose-files) -c docker-compose.yml blackbox
 devdown:
-	docker stack rm blackbox
+	DATA_DIR=~/data docker stack rm blackbox
+
 	# DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
 
 #devup:
