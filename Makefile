@@ -1,6 +1,6 @@
 DATA_DIR?=~/data
 
-SERVICES =
+SERVICES = pivx
 compose-files := $(foreach service,$(SERVICES),-c $(service)/docker-compose.yml)
 #compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
