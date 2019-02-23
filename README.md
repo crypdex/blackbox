@@ -52,7 +52,7 @@ SSH into the device as root and prepare it
 ## Make directories and update the system
 
 ```
-mkdir -p /root/.ssh /root/data
+mkdir -p /root/.ssh /root/data/postgres
 ```
 
 ```bash

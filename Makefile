@@ -1,17 +1,17 @@
-DATA_DIR?=/root/data
+DATA_DIR?=~/data
 
-SERVICES = pivx
+SERVICES =
 compose-files := $(foreach service,$(SERVICES),-c $(service)/docker-compose.yml)
 #compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
 build:
-
+	./docker-build.sh
 
 
 devup:
-	DATA_DIR=~/data docker stack deploy $(compose-files) -c docker-compose.yml blackbox
+	DATA_DIR=$(DATA_DIR) docker stack deploy $(compose-files) -c docker-compose.yml blackbox
 devdown:
-	DATA_DIR=~/data docker stack rm blackbox
+	docker stack rm blackbox
 
 	# DATA_DIR=~/data docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
 
