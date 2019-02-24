@@ -2,7 +2,8 @@
 Description=Run Updater on a schedule
 
 [Timer]
-OnCalendar=*:0,15,30,45
+#OnCalendar=*:0,15,30,45
+OnCalendar=*:0,5,10,15,20,25,30,35,40,45,50,55
 Persistent=true
 
 [Install]
