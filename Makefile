@@ -22,6 +22,9 @@ pull:
 start: pull
 	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml up -t 120
 
+update: pull
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml up -d -t 120
+
 stop:
 	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml down -t 120 --remove-orphans
 
