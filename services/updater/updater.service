@@ -1,0 +1,12 @@
+[Unit]
+Description=BlackBox Updater
+After=network-online.target
+Requires=network-online.target
+
+[Service]
+WorkingDirectory=/root/blackbox/services/updater
+ExecStart=./updater.sh
+ExecStop=/usr/bin/make stop
+
+[Install]
+WantedBy=multi-user.target

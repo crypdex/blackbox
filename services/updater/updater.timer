@@ -1,0 +1,9 @@
+[Unit]
+Description=Run Updater on a schedule
+
+[Timer]
+OnCalendar=*:0,15,30,45
+Persistent=true
+
+[Install]
+WantedBy=timers.target

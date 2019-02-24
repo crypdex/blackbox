@@ -4,8 +4,11 @@ SERVICES = pivx
 compose-files := $(foreach service,$(SERVICES),-f services/$(service)/docker-compose.yml)
 #compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
+check-update:
+	./check-update.sh
+
 build:
-	./docker-build.sh
+	./build-docker.sh
 
 # DOCKER STACK EXPERIMENTAL
 # devup:
