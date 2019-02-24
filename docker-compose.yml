@@ -4,16 +4,10 @@ services:
   pivx:
     image: crypdex/pivx:latest
     container_name: pivx
-
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
-      # - ${CONFIG_DIR:?CONFIG_DIR required}:/home/pivx/config
-
     command: -rpcallowip=0.0.0.0/0
-    # command: -conf=/home/pivx/config/pivx.conf -rpcallowip=172.0.0.0/8
     # command: -rpcallowip=172.0.0.0/8
-
-    # HOST:CONTAINER
     ports:
       - "127.0.0.1:51472:51472"
       - "127.0.0.1:51473:51473"
@@ -34,6 +28,8 @@ services:
     container_name: mail
     ports:
       - "127.0.0.1:1587:25"
+    env_file:
+      - ./.env
     environment:
       - SMTP_HOST=smtp.sendgrid.com
       - SMTP_PORT=587
