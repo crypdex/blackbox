@@ -4,9 +4,9 @@ After=network-online.target
 Requires=network-online.target
 
 [Service]
-WorkingDirectory=/root/blackbox/services/updater
-ExecStart=./updater.sh
-ExecStop=/usr/bin/make stop
+Environment=DATA_DIR=/root/data
+WorkingDirectory=/root/blackbox
+ExecStart=./services/updater/updater.sh
 
 [Install]
 WantedBy=multi-user.target

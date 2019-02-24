@@ -15,11 +15,14 @@ build:
 # 	DATA_DIR=$(DATA_DIR) docker stack deploy $(compose-files) -c docker-compose.yml blackbox
 # devdown:
 # 	docker stack rm blackbox
+pull:
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml pull
 
-start:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml up
+start: pull
+	DATA_DIR=$(DATA_DIR) docker-compose -d -t 180 -p blackbox -f docker-compose.yml up
+
 stop:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml down --remove-orphans
+	DATA_DIR=$(DATA_DIR) docker-compose -d -t 180 -p blackbox -f docker-compose.yml down --remove-orphans
 
 install-services: install-blackbox-service install-updater-service
 uninstall-services: uninstall-blackbox-service uninstall-updater-service
@@ -31,9 +34,13 @@ install-blackbox-service:
 	systemctl start blackbox.service
 
 install-updater-service:
-	cp services/updater/blackbox.service /etc/systemd/system/
+	cp services/updater/updater.service /etc/systemd/system/
+	cp services/updater/updater.timer /etc/systemd/system/
 	systemctl enable /etc/systemd/system/updater.service
-	systemctl start updater.service
+	systemctl enable /etc/systemd/system/updater.timer
+#	systemctl start updater.service
+	systemctl start updater.timer
+
 
 # Uninstalls the service
 uninstall-blackbox-service:
@@ -43,8 +50,11 @@ uninstall-blackbox-service:
 
 uninstall-updater-service:
 	systemctl stop updater.service
+	systemctl stop updater.timer
 	systemctl disable updater.service
+	systemctl disable updater.timer
 	rm /etc/systemd/system/updater.service
+	rm /etc/systemd/system/updater.timer
 
 # PIVX (and maybe other CHAINs) require a swap file to function properly.
 # * This must be run as root and is NOT idempotent

@@ -16,6 +16,7 @@ if [[ "$CURRENT" != "$REMOTE" ]]; then
 
   git pull origin master
 
+  echo "Restarting the blackbox.service"
   systemctl restart blackbox.service
   # We exit here because the `make start` command does a docker pull.
   # .. also, lets not put too much stress on the restart process which can take 15 mins
@@ -31,6 +32,11 @@ echo "No core updates available"
 echo "Checking for container updates"
 
 # https://stackoverflow.com/questions/26423515/how-to-automatically-update-your-docker-containers-if-base-images-are-updated
+
+make start
+
+
+exit 0
 
 set -e
 
@@ -49,7 +55,7 @@ do
     echo "Running:" $RUNNING
     if [ "$RUNNING" != "$LATEST" ];then
       echo "Upgrading $NAME"
-
+      docker-compose up -d -t 180 ${NAME}# 3 minute timeout
 #      stop docker-$NAME
 #      docker rm -f $NAME
 #      start docker-$NAME
