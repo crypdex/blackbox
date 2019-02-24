@@ -45,8 +45,8 @@ do
     LATEST=`docker inspect --format "{{.Id}}" $IMAGE`
     RUNNING=`docker inspect --format "{{.Image}}" $im`
     NAME=`docker inspect --format '{{.Name}}' $im | sed "s/\///g"`
-    echo "latest:" $LATEST
-    echo "running:" $RUNNING
+    echo "Latest:" $LATEST
+    echo "Running:" $RUNNING
     if [ "$RUNNING" != "$LATEST" ];then
       echo "upgrading $NAME"
       stop docker-$NAME
