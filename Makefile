@@ -1,7 +1,7 @@
 DATA_DIR?=~/data
 
-SERVICES = pivx
-compose-files := $(foreach service,$(SERVICES),-f services/$(service)/docker-compose.yml)
+# SERVICES = pivx
+# compose-files := $(foreach service,$(SERVICES),-f services/$(service)/docker-compose.yml)
 #compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
 
 check-update:
@@ -16,30 +16,35 @@ build:
 # devdown:
 # 	docker stack rm blackbox
 
-devup:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
-devdown:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml down
-
 start:
-	git pull origin master && \
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml pull &&\
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml up
-
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml up
 stop:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(compose-files) -f docker-compose.yml down --remove-orphans
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml down --remove-orphans
+
+install-services: install-blackbox-service install-updater-service
+uninstall-services: uninstall-blackbox-service uninstall-updater-service
 
 # Installs the systemd service, enables it and starts it
-install-service:
+install-blackbox-service:
 	cp services/blackbox.service /etc/systemd/system/
 	systemctl enable /etc/systemd/system/blackbox.service
 	systemctl start blackbox.service
 
+install-updater-service:
+	cp services/updater/blackbox.service /etc/systemd/system/
+	systemctl enable /etc/systemd/system/updater.service
+	systemctl start updater.service
+
 # Uninstalls the service
-uninstall-service:
+uninstall-blackbox-service:
 	systemctl stop blackbox.service
 	systemctl disable blackbox.service
 	rm /etc/systemd/system/blackbox.service
+
+uninstall-updater-service:
+	systemctl stop updater.service
+	systemctl disable updater.service
+	rm /etc/systemd/system/updater.service
 
 # PIVX (and maybe other CHAINs) require a swap file to function properly.
 # * This must be run as root and is NOT idempotent
