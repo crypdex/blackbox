@@ -33,7 +33,7 @@ echo "Checking for container updates"
 
 # https://stackoverflow.com/questions/26423515/how-to-automatically-update-your-docker-containers-if-base-images-are-updated
 
-make start
+make update
 
 
 exit 0
