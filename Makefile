@@ -22,7 +22,7 @@ start: pull
 	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox up -d -t 180 -f docker-compose.yml
 
 stop:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml down --remove-orphans
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml down -t 180 --remove-orphans
 
 install-services: install-blackbox-service install-updater-service
 	systemctl daemon-reload
