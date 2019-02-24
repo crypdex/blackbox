@@ -15,6 +15,7 @@ build:
 # 	DATA_DIR=$(DATA_DIR) docker stack deploy $(compose-files) -c docker-compose.yml blackbox
 # devdown:
 # 	docker stack rm blackbox
+
 pull:
 	docker-compose -p blackbox -f docker-compose.yml pull
 
@@ -26,6 +27,7 @@ stop:
 
 install-services: install-blackbox-service install-updater-service
 	systemctl daemon-reload
+
 uninstall-services: uninstall-blackbox-service uninstall-updater-service
 	systemctl daemon-reload
 
