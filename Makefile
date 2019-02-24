@@ -16,22 +16,25 @@ build:
 # devdown:
 # 	docker stack rm blackbox
 pull:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml pull
+	docker-compose -p blackbox -f docker-compose.yml pull
 
 start: pull
 	DATA_DIR=$(DATA_DIR) docker-compose -d -t 180 -p blackbox -f docker-compose.yml up
 
 stop:
-	DATA_DIR=$(DATA_DIR) docker-compose -d -t 180 -p blackbox -f docker-compose.yml down --remove-orphans
+	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml down --remove-orphans
 
 install-services: install-blackbox-service install-updater-service
+	systemctl daemon-reload
 uninstall-services: uninstall-blackbox-service uninstall-updater-service
+	systemctl daemon-reload
 
 # Installs the systemd service, enables it and starts it
 install-blackbox-service:
 	cp services/blackbox.service /etc/systemd/system/
 	systemctl enable /etc/systemd/system/blackbox.service
 	systemctl start blackbox.service
+
 
 install-updater-service:
 	cp services/updater/updater.service /etc/systemd/system/
@@ -40,6 +43,7 @@ install-updater-service:
 	systemctl enable /etc/systemd/system/updater.timer
 #	systemctl start updater.service
 	systemctl start updater.timer
+
 
 
 # Uninstalls the service
