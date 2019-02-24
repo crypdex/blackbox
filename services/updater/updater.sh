@@ -11,7 +11,7 @@ CURRENT="$(git rev-parse HEAD)"
 REMOTE="$(git ls-remote origin HEAD  | awk '{ print $1}')"
 
 
-if [[ ${CURRENT} -ne ${REMOTE} ]]; then
+if [[ "$CURRENT" != "$REMOTE" ]]; then
   echo "core update available"
 
   git pull origin master
