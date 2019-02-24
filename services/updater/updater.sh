@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-echo "checking for core updates"
+echo "Checking for core updates"
 
 # ----------------------------------------
 # Update the core system (this repository)
@@ -12,7 +12,7 @@ REMOTE="$(git ls-remote origin HEAD  | awk '{ print $1}')"
 
 
 if [[ "$CURRENT" != "$REMOTE" ]]; then
-  echo "core update available"
+  echo "Core update available"
 
   git pull origin master
 
@@ -22,13 +22,13 @@ if [[ "$CURRENT" != "$REMOTE" ]]; then
   exit 0
 fi
 
-echo "no core updates available"
+echo "No core updates available"
 
 # ----------------------------------------
 # Update containers
 # ----------------------------------------
 
-echo "checking for container updates"
+echo "Checking for container updates"
 
 # https://stackoverflow.com/questions/26423515/how-to-automatically-update-your-docker-containers-if-base-images-are-updated
 
@@ -48,7 +48,7 @@ do
     echo "Latest:" $LATEST
     echo "Running:" $RUNNING
     if [ "$RUNNING" != "$LATEST" ];then
-      echo "upgrading $NAME"
+      echo "Upgrading $NAME"
 #      stop docker-$NAME
 #      docker rm -f $NAME
 #      start docker-$NAME
