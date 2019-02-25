@@ -1,0 +1,18 @@
+version: "3.7"
+
+services:
+  ouroboros:
+    container_name: ouroboros
+    hostname: ouroboros
+    image: pyouroboros/ouroboros
+    environment:
+      - CLEANUP=true
+      - INTERVAL=30
+      - LOG_LEVEL=info
+      - SELF_UPDATE=true
+      - IGNORE=postgres
+      - TZ=America/New_York
+      # - NOTIFIERS="mailto://contact@crypdex.io:1587?smtp=mail?to=david.michael@gmail.com"
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

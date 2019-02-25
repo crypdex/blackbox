@@ -1,37 +1,31 @@
 DATA_DIR?=~/data
-
-# SERVICES = pivx
-# compose-files := $(foreach service,$(SERVICES),-f services/$(service)/docker-compose.yml)
-#compose-files := $(foreach service,$(SERVICES),-f $(service)/docker-compose.yml)
-
-check-update:
-	./check-update.sh
+SERVICES?=ouroboros smtp-relay # pivx
+compose-files := $(foreach service,$(SERVICES),-f ./services/$(service)/docker-compose.yml)
 
 build:
 	./build-docker.sh
 
-# DOCKER STACK EXPERIMENTAL
-# devup:
-# 	DATA_DIR=$(DATA_DIR) docker stack deploy $(compose-files) -c docker-compose.yml blackbox
-# devdown:
-# 	docker stack rm blackbox
+docker-compose = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose.yml $(compose-files)
+
+configuration:
+	$(docker-compose) config
 
 pull:
-	docker-compose -p blackbox -f docker-compose.yml pull
+	$(docker-compose) pull
 
 start: pull
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml up -t 120
+	$(docker-compose) up -t 60
 
 update: pull
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml up -d -t 120
+	$(docker-compose) up -d -t 60
 
 stop:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f docker-compose.yml down -t 120 --remove-orphans
+	$(docker-compose) down --remove-orphans
 
-install-services: install-blackbox-service install-updater-service
+install-services: install-blackbox-service
 	systemctl daemon-reload
 
-uninstall-services: uninstall-blackbox-service uninstall-updater-service
+uninstall-services: uninstall-blackbox-service
 	systemctl daemon-reload
 
 # Installs the systemd service, enables it and starts it
@@ -40,30 +34,11 @@ install-blackbox-service:
 	systemctl enable /etc/systemd/system/blackbox.service
 	systemctl start blackbox.service
 
-
-install-updater-service:
-	cp services/updater/updater.service /etc/systemd/system/
-	cp services/updater/updater.timer /etc/systemd/system/
-	systemctl enable /etc/systemd/system/updater.service
-	systemctl enable /etc/systemd/system/updater.timer
-#	systemctl start updater.service
-	systemctl start updater.timer
-
-
-
 # Uninstalls the service
 uninstall-blackbox-service:
 	systemctl stop blackbox.service
 	systemctl disable blackbox.service
 	rm /etc/systemd/system/blackbox.service
-
-uninstall-updater-service:
-	systemctl stop updater.service
-	systemctl stop updater.timer
-	systemctl disable updater.service
-	systemctl disable updater.timer
-	rm /etc/systemd/system/updater.service
-	rm /etc/systemd/system/updater.timer
 
 # PIVX (and maybe other CHAINs) require a swap file to function properly.
 # * This must be run as root and is NOT idempotent
@@ -76,6 +51,14 @@ install-swapfile:
 	swapon /swapfile && \
 	echo "/swapfile swap swap defaults 0 0" >> /etc/fstab && \
 	swapon --show
+
+install-docker:
+	apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common && \
+	curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
+	apt-key fingerprint 0EBFCD88 && \
+	add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
+	apt-get update && \
+	apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # DATA_DIR=/path/to/pivxdata
 check-datadir:

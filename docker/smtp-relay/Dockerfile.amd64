@@ -5,6 +5,7 @@ ENTRYPOINT ["/entrypoint.sh"]
 
 # 1: install required packages
 # 2: prepare configuration files
+
 RUN apk --no-cache add ca-certificates gettext libintl postfix rsyslog supervisor \
   && cp /usr/bin/envsubst /usr/local/bin/ \
   && apk --no-cache del gettext \

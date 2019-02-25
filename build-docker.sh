@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 
-for service in pivx postfix-relay; do
+for service in pivx smtp-relay; do
     for arch in amd64 arm64v8; do
-        docker build -f services/${service}/Dockerfile.${arch} -t crypdex/${service}:${arch}-latest services/${service}/.
+        docker build -f docker/${service}/Dockerfile.${arch} -t crypdex/${service}:${arch}-latest docker/${service}/.
         docker push crypdex/${service}:${arch}-latest
     done
 
