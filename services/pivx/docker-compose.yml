@@ -19,3 +19,4 @@ services:
     ports:
       - "127.0.0.1:51472:51472"
       - "127.0.0.1:51473:51473"
+    restart: "unless-stopped"
