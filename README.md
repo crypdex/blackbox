@@ -4,7 +4,6 @@ This repository contains code and instructions for the deployment of Crypdex loc
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
-
 - [Summary](#summary)
 - [<a name="prepare"></a>Prepare the Device](#a-nameprepareaprepare-the-device)
   - [Make directories and update the system](#make-directories-and-update-the-system)
@@ -45,11 +44,12 @@ The update strategy is a simple `git pull`, but to do so on a private repository
 
 SSH into the device as root and prepare it
 
-* Make directories
-* Install [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
-* Install [`docker-compose`](https://github.com/ubiquiti/docker-compose-aarch64)
+- Make directories
+- Install [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
+- Install [`docker-compose`](https://github.com/ubiquiti/docker-compose-aarch64)
 
 ## 1. Make directories and update the system
+
 Login to the device and run the following
 
 ```
@@ -57,9 +57,8 @@ mkdir -p /root/.ssh /root/data/postgres
 ```
 
 ```bash
-apt-get update && apt-get upgrade -y && apt-get install git htop bmon -y && reboot
+apt-get update && apt-get install git htop bmon -y && apt-get upgrade -y && reboot
 ```
-
 
 ## 2. <a name="configure-ssh"></a>Copy default files
 
@@ -68,10 +67,9 @@ From the HOST MACHINE
 ### Copy the `id_rsa_blackbox` and default ssh config files to the device:
 
 ```shell
-$ cd config/ssh
 $ scp config/ssh/config config/ssh/id_rsa_blackbox config/ssh/id_rsa_blackbox.pub root@$odroid:~/.ssh/
 # Pre-compiled Docker Compose
-$ scp arm64/tools/docker-compose-aarch64/docker-compose-Linux-aarch64 root@$odroid:/usr/local/bin/docker-compose
+$ scp tools/docker-compose-aarch64/docker-compose-Linux-aarch64 root@$odroid:/usr/local/bin/docker-compose
 ```
 
 ### A note about Docker Compose
@@ -88,18 +86,15 @@ docker build . -t docker-compose-aarch64-builder && \
 docker run --rm -v "$(pwd)":/dist docker-compose-aarch64-builder
 ```
 
-
 ## 3. Copy the blockchain
 
 ```shell
 $ ssh crypdex@chains1.local
-$ sudo su 
+$ sudo su
 $ cd && scp -r chaindata/pivx root@$odroid:~/data/
 ```
 
-
 ## 4. Login to the Device
-
 
 ### Set the correct file permissions for the keys
 
@@ -112,8 +107,6 @@ $ chmod 600 ~/.ssh/id_rsa_blackbox ~/.ssh/id_rsa_blackbox.pub
 ```shell
 $ cd; git clone git@blackbox.github.com:crypdex/blackbox.git
 ```
-
-
 
 # Bootstrap the App
 
@@ -142,7 +135,6 @@ $ cp config/pivx.conf ~/data/pivx/pivx.conf
 
 This is a really important step. Before installing the systemd service, it is worthwhile to boot the services. This will pull the docker images, and let the blockchain load up and get comfortable.
 
-
 ```bash
 $ make start
 ```
@@ -157,7 +149,6 @@ $ make start
 ```
 $ make systemd-install
 ```
-
 
 # References
 
