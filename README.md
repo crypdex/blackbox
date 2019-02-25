@@ -116,7 +116,7 @@ The following part of the setup is run from the root of the app
 
 ```bash
 # DEVICE
-$ cd ~/blackbox/arm64 && make install-docker
+$ cd ~/blackbox && make install-docker
 ```
 
 ## Install a swapfile
@@ -129,6 +129,12 @@ $ make install-swapfile
 
 ```
 $ cp config/pivx.conf ~/data/pivx/pivx.conf
+```
+
+## Configure the environment
+
+```
+$ nano .env
 ```
 
 ## Boot the system manually to test
