@@ -69,7 +69,7 @@ From the HOST MACHINE
 ```shell
 $ scp config/ssh/config config/ssh/id_rsa_blackbox config/ssh/id_rsa_blackbox.pub root@$odroid:~/.ssh/
 # Pre-compiled Docker Compose
-$ scp tools/docker-compose-aarch64/docker-compose-Linux-aarch64 root@$odroid:/usr/local/bin/docker-compose
+$ scp tools/docker-compose-Linux-aarch64 root@$odroid:/usr/local/bin/docker-compose
 ```
 
 ### A note about Docker Compose
@@ -79,7 +79,7 @@ The easiest technique I have found thus far to installing `docker-compose` is to
 ### (OPTONAL) Build docker-compose for arm4 from your Mac
 
 ```shell
-$ cd arm64/tools
+$ cd tools
 $ git clone https://github.com/ubiquiti/docker-compose-aarch64.git && \
 cd docker-compose-aarch64 && \
 docker build . -t docker-compose-aarch64-builder && \
