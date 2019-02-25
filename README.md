@@ -53,7 +53,7 @@ SSH into the device as root and prepare it
 Login to the device and run the following
 
 ```
-mkdir -p /root/.ssh /root/data
+mkdir -p /root/.ssh /root/data/postgres
 ```
 
 ```bash

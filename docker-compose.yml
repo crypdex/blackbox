@@ -1,0 +1,54 @@
+version: "3.7"
+
+services:
+  pivx:
+    image: crypdex/pivx:latest
+    container_name: pivx
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
+    command: -rpcallowip=0.0.0.0/0
+    # command: -rpcallowip=172.0.0.0/8
+    ports:
+      - "127.0.0.1:51472:51472"
+      - "127.0.0.1:51473:51473"
+    restart: "unless-stopped"
+
+  # postgres is a multiarch image
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/postgres:/var/lib/postgresql/data
+    restart: "unless-stopped"
+
+  mail:
+    image: crypdex/postfix-relay:latest
+    container_name: mail
+    ports:
+      - "127.0.0.1:1587:25"
+    env_file:
+      - ./.env
+    environment:
+      - SMTP_HOST=smtp.sendgrid.com
+      - SMTP_PORT=587
+      - SMTP_LOGIN=apikey
+      # moved to the .env file
+      # - SMTP_PASSWORD=
+    restart: "unless-stopped"
+
+  # api:
+  #   image: crypdex/blackbox-api-arm64:latest
+  #   container_name: api
+  #   volumes:
+  #     - ${DATA_DIR:?DATA_DIR required}/blackbox-api:/root/resources
+  #   environment:
+  #     - PORT=4000
+  #     - DATABASE_URL=postgres://postgres@postgres:5432/postgres?sslmode=disable
+  #   ports:
+  #     - '80:4000'
+  #   restart: on-failure
+  #   depends_on:
+  #     - postgres
+  #   command: ['/root/wait-for-it/wait-for-it.sh', 'postgres:5432', '--', './app']

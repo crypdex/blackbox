@@ -5,7 +5,7 @@ Requires=network-online.target
 
 [Service]
 Environment=DATA_DIR=/root/data
-WorkingDirectory=/root/blackbox/arm64
+WorkingDirectory=/root/blackbox
 ExecStart=/usr/bin/make start
 ExecStop=/usr/bin/make stop
 

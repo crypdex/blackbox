@@ -18,3 +18,4 @@ arm64/downloads
 .vccode
 
 id_rsa_blackbox
+.env
