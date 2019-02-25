@@ -49,39 +49,36 @@ SSH into the device as root and prepare it
 * Install [Docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
 * Install [`docker-compose`](https://github.com/ubiquiti/docker-compose-aarch64)
 
-## Make directories and update the system
+## 1. Make directories and update the system
+Login to the device and run the following
 
 ```
 mkdir -p /root/.ssh /root/data
 ```
 
 ```bash
-apt-get update && apt-get upgrade -y && reboot
+apt-get update && apt-get upgrade -y && apt-get install git htop bmon -y && reboot
 ```
 
-## Install Docker
 
-```bash
-# Install Docker
+## 2. <a name="configure-ssh"></a>Copy default files
 
-apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common && \
-curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add - && \
-apt-key fingerprint 0EBFCD88 && \
-add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
-apt-get update && \
-apt-get install -y docker-ce docker-ce-cli containerd.io
+From the HOST MACHINE
+
+### Copy the `id_rsa_blackbox` and default ssh config files to the device:
+
+```shell
+$ cd config/ssh
+$ scp config/ssh/config config/ssh/id_rsa_blackbox config/ssh/id_rsa_blackbox.pub root@$odroid:~/.ssh/
+# Pre-compiled Docker Compose
+$ scp arm64/tools/docker-compose-aarch64/docker-compose-Linux-aarch64 root@$odroid:/usr/local/bin/docker-compose
 ```
 
-## Install Docker Compose
+### A note about Docker Compose
 
-The easiest technique I have found thus far to installing `docker-compose` is to cross compile it and `scp` it over to the unit
+The easiest technique I have found thus far to installing `docker-compose` is to cross compile it and `scp` it over to the unit. There is a compiled bin already checked into the repo.
 
-There is a compiled bin already checked into the repo.
-```bash
-scp arm/tools/docker-compose-Linux-aarch64 root@$ODROID:/usr/local/bin/docker-compose
-```
-
-### Build docker-compose for arm4 (from your Mac)
+### (OPTONAL) Build docker-compose for arm4 from your Mac
 
 ```shell
 $ cd arm64/tools
@@ -92,59 +89,68 @@ docker run --rm -v "$(pwd)":/dist docker-compose-aarch64-builder
 ```
 
 
-
-
-## <a name="configure-ssh"></a>Configure SSH Identity
-
-### 1. Copy the `id_rsa_blackbox` and default ssh config files to the device:
+## 3. Copy the blockchain
 
 ```shell
-$ cd config/ssh
-$ scp id_rsa_blackbox config id_rsa_blackbox.pub root@$ODROID:~/.ssh/
+$ ssh crypdex@chains1.local
+$ sudo su 
+$ cd && scp -r chaindata/pivx root@$odroid:~/data/
 ```
 
-Now login to the device
 
-```shell
-$ ssh root@odroid.local
-```
+## 4. Login to the Device
 
-### 2. Set the correct file permissions for the keys
+
+### Set the correct file permissions for the keys
 
 ```bash
 $ chmod 600 ~/.ssh/id_rsa_blackbox ~/.ssh/id_rsa_blackbox.pub
 ```
 
-## Copy the blockchain
-
-```shell
-$ ssh crypdex@chains1.local
-$ sudo su 
-$ cd && scp -r chaindata/pivx root@$ODROID:~/data/
-```
-
-## Clone this Repo
+### Clone this Repo
 
 ```shell
 $ cd; git clone git@blackbox.github.com:crypdex/blackbox.git
 ```
 
+
+
 # Bootstrap the App
 
 The following part of the setup is run from the root of the app
 
-## 1. Install a swapfile
+## Install Docker
+
+```bash
+# DEVICE
+$ cd ~/blackbox/arm64 && make install-docker
+```
+
+## Install a swapfile
 
 ```
 $ make install-swapfile
 ```
 
-## 2. Configure the blockchain
+## Configure the blockchain
 
 ```
 $ cp config/pivx.conf ~/data/pivx/pivx.conf
 ```
 
+## Boot the system manually to test
+
+This is a really important step. Before installing the systemd service, it is worthwhile to boot the services. This will pull the docker images, and let the blockchain load up and get comfortable.
+
+
+```bash
+$ make start
+```
+
+# Finalizing for Customer Delivery
+
+- Change the root password
+- Install the systemd service
 
 ## Install the `systemd` service
 
