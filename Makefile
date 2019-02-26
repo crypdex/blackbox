@@ -26,6 +26,10 @@ update: pull
 stop:
 	$(docker-compose) down --remove-orphans
 
+# Generates an ecryption key to be used in the API
+encryption-key:
+	openssl rand -hex -out ./encryption-key.txt 32
+
 install-services: install-blackbox-service
 	systemctl daemon-reload
 

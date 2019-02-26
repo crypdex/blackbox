@@ -1,5 +1,9 @@
 version: "3.7"
 
+secrets:
+  encryption-key:
+    file: ./encryption-key.txt
+
 services:
   api:
     image: crypdex/blackbox-api:latest
@@ -14,6 +18,8 @@ services:
     restart: "unless-stopped"
     depends_on:
       - postgres
+    secrets:
+      - encryption-key
     command:
       ["/root/wait-for-it/wait-for-it.sh", "postgres:5432", "--", "./app"]
   # API DEPENDENCIES
