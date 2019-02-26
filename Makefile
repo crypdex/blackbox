@@ -1,16 +1,20 @@
 DATA_DIR?=~/data
-SERVICES?=ouroboros smtp-relay pivx
+
+CHAINS?=
+chains-compose-files := $(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
+
+SERVICES?=ouroboros smtp-relay
 compose-files := $(foreach service,$(SERVICES),-f ./services/$(service)/docker-compose.yml)
 
 build:
 	./build-docker.sh
 
-docker-compose = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose.yml $(compose-files)
+docker-compose = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose.yml $(compose-files) $(chains-compose-files)
 
-configuration:
+configuration: check-chains
 	$(docker-compose) config
 
-pull:
+pull: check-chains
 	$(docker-compose) pull
 
 start: pull
@@ -64,7 +68,7 @@ install-docker:
 	apt-get install -y docker-ce docker-ce-cli containerd.io
 
 # DATA_DIR=/path/to/pivxdata
-check-datadir:
-ifndef DATA_DIR
-	$(error 'DATA_DIR' is undefined)
+check-chains:
+ifndef CHAINS
+	$(error 'CHAINS' is undefined)
 endif

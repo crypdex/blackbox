@@ -20,7 +20,7 @@ fi
 
 if [ "$1" = "dashd" ] || [ "$1" = "dash-cli" ] || [ "$1" = "dash-tx" ]; then
   echo "$@"
-  exec gosu dash "$@"
+  exec su-exec dash "$@"
 fi
 
 echo

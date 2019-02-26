@@ -1,0 +1,46 @@
+FROM ubuntu:bionic
+
+ARG DASH_VERSION=0.13.1.0
+ARG USER=dash
+ENV DATA_DIR=/home/dash/.dash
+ARG GOSU_VERSION=1.11
+
+RUN useradd -r $USER \
+  && apt-get update -y \
+  && apt-get install -y git build-essential gnupg unzip wget \
+  && apt-get clean \
+  && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
+
+
+# download source
+RUN wget "https://github.com/dashpay/dash/releases/download/v"${DASH_VERSION}"/dashcore-"${DASH_VERSION}"-x86_64-linux-gnu.tar.gz"
+
+# verify gpg signature
+# RUN gpg --keyserver hkp://keys.gnupg.net --recv-keys 3BDCDA2D87A881D9
+# RUN gpg --keyserver-options auto-key-retrieve --verify SHA256SUMS.asc
+
+# extract binaries
+RUN mkdir dash-$DASH_VERSION \
+  && tar xzpvf dash-$DASH_VERSION-x86_64-linux-gnu.tar.gz -C dash-$DASH_VERSION --strip-components 1\
+  && cd dash-$DASH_VERSION \
+  && cp bin/* /usr/local/bin/ \
+  && cd ~ \
+  && rm -rf /tmp/dash-$DASH_VERSION
+
+#install su-exec
+RUN git clone https://github.com/ncopa/su-exec.git \
+  && cd su-exec && make && cp su-exec /usr/local/bin/ \
+  && cd .. && rm -rf su-exec
+
+
+VOLUME ["/home/dash/.dash"]
+
+
+COPY entrypoint.sh /entrypoint.sh
+RUN ["chmod", "+x", "/entrypoint.sh"]
+
+ENTRYPOINT ["/entrypoint.sh"]
+
+EXPOSE 9998 9999 18332 19998 19999
+
+CMD ["dashd"]

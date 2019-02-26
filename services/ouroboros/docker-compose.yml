@@ -9,7 +9,7 @@ services:
       - CLEANUP=true
       - INTERVAL=30
       - LOG_LEVEL=info
-      - SELF_UPDATE=true
+      - SELF_UPDATE=false
       - IGNORE=postgres
       - TZ=America/New_York
       # - NOTIFIERS="mailto://contact@crypdex.io:1587?smtp=mail?to=david.michael@gmail.com"
