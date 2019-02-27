@@ -1,33 +1,22 @@
 version: "3.7"
 
-secrets:
-  encryption-key:
-    file: ./encryption-key.txt
-
 services:
   api:
     image: crypdex/blackbox-api:latest
     container_name: api
     env_file:
-      - ./.env
+      - ./.blackbox.env
+      - ./.encryption-key.env
     environment:
       - PORT=4000
       - DATABASE_URL=postgres://postgres@postgres:5432/postgres?sslmode=disable
+      - DATA_DIR=${DATA_DIR}
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}:/root/data
     ports:
       - "80:4000"
     restart: "unless-stopped"
     depends_on:
       - postgres
-    secrets:
-      - encryption-key
     command:
       ["/root/wait-for-it/wait-for-it.sh", "postgres:5432", "--", "./app"]
-  # API DEPENDENCIES
-  postgres:
-    image: postgres
-    container_name: postgres
-    ports:
-      - "127.0.0.1:5432:5432"
-    volumes:
-      - ${DATA_DIR:?DATA_DIR required}/postgres:/var/lib/postgresql/data
-    restart: "unless-stopped"

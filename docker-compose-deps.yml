@@ -1,0 +1,40 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres
+    container_name: postgres
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/postgres:/var/lib/postgresql/data
+    restart: "unless-stopped"
+  smtp-relay:
+    image: crypdex/smtp-relay:latest
+    container_name: smtp-relay
+    ports:
+      - "127.0.0.1:1587:25"
+    environment:
+      - SMTP_HOST=smtp.sendgrid.com
+      - SMTP_PORT=587
+      - SMTP_LOGIN=apikey
+      - SMTP_PASSWORD=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
+    restart: "unless-stopped"
+  ouroboros:
+    container_name: ouroboros
+    hostname: ouroboros
+    image: pyouroboros/ouroboros
+    depends_on:
+      - postgres
+      - smtp-relay
+    environment:
+      - CLEANUP=true
+      - INTERVAL=30
+      - LOG_LEVEL=info
+      - SELF_UPDATE=false
+      - IGNORE=postgres
+      - TZ=America/New_York
+      # - NOTIFIERS="mailto://contact@crypdex.io:1587?smtp=mail?to=david.michael@gmail.com"
+    restart: unless-stopped
+    volumes:
+      - /var/run/docker.sock:/var/run/docker.sock

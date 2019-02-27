@@ -1,20 +1,29 @@
+include ./.blackbox.env
+export
+
 DATA_DIR?=~/data
 
 CHAINS?=
 chains-compose-files := $(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
 
-SERVICES?=ouroboros smtp-relay
-compose-files := $(foreach service,$(SERVICES),-f ./services/$(service)/docker-compose.yml)
+docker-compose = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose.yml -f ./docker-compose-deps.yml $(chains-compose-files)
+# Load only the supporting containers
+# not the API container
+docker-compose-dev = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose-deps.yml $(chains-compose-files)
 
 build:
-	./build-docker.sh
+	./scripts/build-docker.sh
 
-docker-compose = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose.yml $(compose-files) $(chains-compose-files)
-
-configuration: check-chains
+configuration: setup
 	$(docker-compose) config
 
-pull: check-chains
+devup:
+	$(docker-compose-dev) up -t 60
+devdown:
+	$(docker-compose-dev) down --remove-orphans
+
+
+pull: setup
 	$(docker-compose) pull
 
 start: pull
@@ -26,9 +35,6 @@ update: pull
 stop:
 	$(docker-compose) down --remove-orphans
 
-# Generates an ecryption key to be used in the API
-encryption-key:
-	openssl rand -hex -out ./encryption-key.txt 32
 
 install-services: install-blackbox-service
 	systemctl daemon-reload
@@ -71,8 +77,16 @@ install-docker:
 	apt-get update && \
 	apt-get install -y docker-ce docker-ce-cli containerd.io
 
+setup: check-chains encryption-key
+
+# Generates an ecryption key to be used in the API
+encryption-key:
+	@./scripts/generate-enc-key.sh
+
 # DATA_DIR=/path/to/pivxdata
 check-chains:
 ifndef CHAINS
 	$(error 'CHAINS' is undefined)
+else
+	@echo "configured for ${CHAINS}"
 endif
