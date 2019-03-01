@@ -139,7 +139,7 @@ $ make install-swapfile
 ## Configure the blockchain
 
 ```
-$ cp config/pivx.conf ~/data/pivx/pivx.conf
+$ cp services/pivx/pivx.conf ~/data/pivx/pivx.conf
 ```
 
 ## Configure the environment
