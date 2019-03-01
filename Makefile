@@ -18,6 +18,7 @@ configuration: setup
 	$(docker-compose) config
 
 devup:
+	$(docker-compose-dev) pull && \
 	$(docker-compose-dev) up -t 60
 devdown:
 	$(docker-compose-dev) down --remove-orphans

@@ -20,4 +20,4 @@ arm64/downloads
 id_rsa_blackbox
 .env
 .blackbox.env
-.encryption-key.env
+.encryption_key.env
