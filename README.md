@@ -91,6 +91,7 @@ docker run --rm -v "$(pwd)":/dist docker-compose-aarch64-builder
 ```shell
 $ ssh crypdex@chains1.local
 $ sudo su
+$ systemctl stop chains.service
 $ cd && scp -r chaindata/pivx root@$odroid:~/data/
 ```
 
