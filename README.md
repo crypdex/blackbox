@@ -97,6 +97,10 @@ $ cd && scp -r chaindata/pivx root@$odroid:~/data/
 
 ## 4. Login to the Device
 
+```shell
+$ ssh root@$odroid
+```
+
 ### Set the correct file permissions for the keys
 
 ```bash
@@ -113,11 +117,17 @@ $ cd; git clone git@blackbox.github.com:crypdex/blackbox.git
 
 The following part of the setup is run from the root of the app
 
+## Add configuration
+
+```
+$ cd ~/blackbox && echo CHAINS=pivx > /.blackbox.env
+```
+
 ## Install Docker
 
 ```bash
 # DEVICE
-$ cd ~/blackbox && make install-docker
+$ make install-docker
 ```
 
 ## Install a swapfile
