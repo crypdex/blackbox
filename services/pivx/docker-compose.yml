@@ -7,7 +7,7 @@ services:
     image: crypdex/pivx:latest
     container_name: pivx
     volumes:
-      - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx:cached
+      - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
     # command: -rpcallowip=172.0.0.0/8
     # Command-line options override values set in the configuration file.
     command: -rpcallowip=0.0.0.0/0
@@ -16,7 +16,7 @@ services:
       -rpcuser=crypdex
       -rpcpassword=blackbox
       -maxconnections=4
-      -checkblocks=10
+      -checkblocks=30
     ports:
       - "127.0.0.1:51472:51472"
       - "127.0.0.1:51473:51473"
