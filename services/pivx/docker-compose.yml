@@ -15,7 +15,6 @@ services:
       -enablezeromint=0
       -rpcuser=crypdex
       -rpcpassword=blackbox
-      -maxconnections=4
       -checkblocks=30
     ports:
       - "127.0.0.1:51472:51472"
