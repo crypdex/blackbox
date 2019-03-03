@@ -57,7 +57,7 @@ mkdir -p /root/.ssh /root/data/postgres
 ```
 
 ```bash
-apt-get update && apt-get install git htop bmon -y && apt-get upgrade -y && reboot
+apt-get update && apt-get install git htop bmon avahi-daemon avahi-discover avahi-utils libnss-mdns mdns-scan -y && apt-get upgrade -y && reboot
 ```
 
 ## 2. <a name="configure-ssh"></a>Copy default files
