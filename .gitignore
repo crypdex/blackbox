@@ -21,3 +21,4 @@ id_rsa_blackbox
 .env
 .blackbox.env
 .encryption_key.env
+blackbox.conf

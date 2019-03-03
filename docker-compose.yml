@@ -5,7 +5,7 @@ services:
     image: crypdex/blackbox-api:latest
     container_name: api
     env_file:
-      - ./.blackbox.env
+      - ./blackbox.conf
       - ./.encryption-key.env
     environment:
       - PORT=4000
