@@ -136,17 +136,17 @@ $ make install-docker
 $ make install-swapfile
 ```
 
-## Configure the blockchain
+## Copy necessary files
+These are currently
+
+1. The blockchain configuration file
+1. `walletnotify.sh`
 
 ```
 $ cp services/pivx/pivx.conf ~/data/pivx/pivx.conf
+$ cp services/pivx/walletnotify.sh ~/data/pivx/walletnotify.sh
 ```
 
-## Configure the environment
-
-```
-$ nano .env
-```
 
 ## Boot the system manually to test
 
@@ -158,13 +158,14 @@ $ make start
 
 # Finalizing for Customer Delivery
 
-- Change the root password
-- Install the systemd service
+Now that you have verified that the device is functional, there is some cleanup to be done
 
-## Install the `systemd` service
+- Change the root password, and log it someplace or you will never get back in.
+- `rm .encryption-key.env`: Make sure that each device has its own.
+- Install the systemd service:
 
 ```
-$ make systemd-install
+$ make install-services
 ```
 
 # References

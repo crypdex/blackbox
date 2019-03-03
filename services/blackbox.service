@@ -1,13 +1,15 @@
 [Unit]
 Description=Crypdex Black Box
-After=network-online.target
-Requires=network-online.target
+After=docker.service
+Requires=docker.service
 
 [Service]
 Environment=DATA_DIR=/root/data
 WorkingDirectory=/root/blackbox
 ExecStart=/usr/bin/make start
 ExecStop=/usr/bin/make stop
+Restart=on-failure
+RestartSec=5s
 
 [Install]
 WantedBy=multi-user.target
