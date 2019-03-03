@@ -4,18 +4,16 @@ services:
   api:
     image: crypdex/blackbox-api:latest
     container_name: api
+    restart: "unless-stopped"
     env_file:
-      - ./blackbox.conf
+      - ./.blackbox.env
       - ./.encryption-key.env
     environment:
-      - PORT=4000
-      - DATABASE_URL=postgres://postgres@postgres:5432/postgres?sslmode=disable
       - DATA_DIR=${DATA_DIR}
     volumes:
       - ${DATA_DIR:?DATA_DIR required}:/root/data
     ports:
       - "80:4000"
-    restart: "unless-stopped"
     depends_on:
       - postgres
     command:

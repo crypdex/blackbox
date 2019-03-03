@@ -7,8 +7,8 @@ CHAINS?=
 chains-compose-files := $(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
 
 docker-compose = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose.yml -f ./docker-compose-deps.yml $(chains-compose-files)
-# Load only the supporting containers
-# not the API container
+
+# For development: Load only the supporting containers, not the API container
 docker-compose-dev = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose-deps.yml $(chains-compose-files)
 
 build:

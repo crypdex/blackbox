@@ -6,17 +6,20 @@ services:
   pivx:
     image: crypdex/pivx:latest
     container_name: pivx
+    restart: "unless-stopped"
+    # Ports are currently locked to internal connections only
+    ports:
+      - "127.0.0.1:51472:51472"
+      - "127.0.0.1:51473:51473"
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
     # command: -rpcallowip=172.0.0.0/8
     # Command-line options override values set in the configuration file.
     command: -rpcallowip=0.0.0.0/0
-      -walletnotify=/home/pivx/.pivx/walletnotify.sh
+      -walletnotify=/home/pivx/.pivx/walletnotify.sh %s
       -enablezeromint=0
-      -rpcuser=crypdex
-      -rpcpassword=blackbox
-      -checkblocks=30
-    ports:
-      - "127.0.0.1:51472:51472"
-      - "127.0.0.1:51473:51473"
-    restart: "unless-stopped"
+      -checkblocks=25
+      -maxconnections=10
+      -staking=0
+
+
