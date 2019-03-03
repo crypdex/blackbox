@@ -18,7 +18,7 @@ arm64/downloads
 .vccode
 
 id_rsa_blackbox
-.env
+*.env
 .blackbox.env
-.encryption_key.env
+.encryption-key.env
 blackbox.conf

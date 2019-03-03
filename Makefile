@@ -1,4 +1,4 @@
-include ./blackbox.conf
+include ./.blackbox.env
 export
 
 DATA_DIR?=~/data
