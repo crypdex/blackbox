@@ -3,8 +3,8 @@ export
 
 DATA_DIR?=~/data
 
-chains?=
-chains-compose-files := $(foreach service,$(chains),-f ./services/$(service)/docker-compose.yml)
+CHAINS?=
+chains-compose-files := $(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
 
 docker-compose = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose.yml -f ./docker-compose-deps.yml $(chains-compose-files)
 # Load only the supporting containers
@@ -82,8 +82,8 @@ encryption-key:
 
 # DATA_DIR=/path/to/pivxdata
 check-chains:
-ifndef chains
-	$(error 'chains' is undefined)
+ifndef CHAINS
+	$(error 'CHAINS' is undefined)
 else
-	@echo "configured for ${chains}"
+	@echo "configured for ${CHAINS}"
 endif
