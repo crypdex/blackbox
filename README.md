@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/logo.png" width=300>
+<img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/logo.png?token=AAApwfyzFtNiStgrv12MXRoXWI0ayTtcks5ciTVawA%3D%3D" width=300>
 
 This repository contains code and instructions for the deployment of Crypdex local systems. It may likely also be used for hosted deployments as well.
 
