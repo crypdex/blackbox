@@ -1,3 +1,5 @@
+<img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/logo.png" width=300>
+
 This repository contains code and instructions for the deployment of Crypdex local systems. It may likely also be used for hosted deployments as well.
 
 <hr />
@@ -137,6 +139,7 @@ $ make install-swapfile
 ```
 
 ## Copy necessary files
+
 These are currently
 
 1. The blockchain configuration file
@@ -146,7 +149,6 @@ These are currently
 $ cp services/pivx/pivx.conf ~/data/pivx/pivx.conf
 $ cp services/pivx/walletnotify.sh ~/data/pivx/walletnotify.sh
 ```
-
 
 ## Boot the system manually to test
 
