@@ -1,0 +1,20 @@
+version: "3.7"
+
+# While the RPC allow is set open, the ports only bind to localhost.
+
+services:
+  litecoin:
+    image: uphold/litecoin-core
+    container_name: litecoin
+    restart: "unless-stopped"
+    # Ports are currently locked to internal connections only
+    ports:
+      - "127.0.0.1:9332:9332" # RPC
+      - "127.0.0.1:9333:9333" # P2P
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/litecoin:/home/litecoin/.litecoin
+    # Command-line options override values set in the configuration file.
+    command: -rpcallowip=0.0.0.0/0 -txindex=1
+
+
+
