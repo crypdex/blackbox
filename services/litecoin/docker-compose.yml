@@ -10,7 +10,7 @@ services:
     # Ports are currently locked to internal connections only
     ports:
       - "127.0.0.1:9332:9332" # RPC
-      - "127.0.0.1:9333:9333" # P2P
+      - "9333:9333" # P2P
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/litecoin:/home/litecoin/.litecoin
     # Command-line options override values set in the configuration file.

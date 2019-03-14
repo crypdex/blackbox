@@ -6,7 +6,7 @@ services:
     container_name: dash
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/dash:/home/dash/.dash
-    command: -rpcallowip=172.0.0.0/8
+    command: -rpcallowip=172.0.0.0/8 -txindex=1
     ports: # HOST:CONTAINER
       # - '127.0.0.1:8168:8168' # internal only - good default
       # - '8888:8888' # open to the network - the exposes you!
