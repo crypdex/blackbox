@@ -77,11 +77,7 @@ install-docker:
 	add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 	apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
 
-setup: check-chains encryption-key
-
-# Generates an ecryption key to be used in the API
-encryption-key:
-	@./scripts/generate-enc-key.sh
+setup: check-chains
 
 # DATA_DIR=/path/to/pivxdata
 check-chains:

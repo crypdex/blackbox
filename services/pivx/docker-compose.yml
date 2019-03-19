@@ -19,6 +19,5 @@ services:
       -enablezeromint=0
       -checkblocks=25
       -maxconnections=10
-      -staking=0
 
 
