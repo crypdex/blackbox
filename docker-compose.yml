@@ -1,5 +1,7 @@
 version: "3.7"
 
+# WARNING: DO NOT CHANGE THE CONTAINER NAME
+# It is used by walletnotify.sh to target this service
 services:
   api:
     image: crypdex/blackbox-api:latest
@@ -7,7 +9,6 @@ services:
     restart: "unless-stopped"
     env_file:
       - ./.blackbox.env
-      - ./.encryption-key.env
     environment:
       - DATA_DIR=${DATA_DIR}
     volumes:

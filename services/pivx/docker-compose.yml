@@ -7,10 +7,10 @@ services:
     image: crypdex/pivx:latest
     container_name: pivx
     restart: "unless-stopped"
-    # Ports are currently locked to internal connections only
+    # Ports are exposed so that users can validate correctness of the chain.
     ports:
-      - "127.0.0.1:51472:51472"
-      - "127.0.0.1:51473:51473"
+      - "51472:51472"
+      - "51473:51473"
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
     # command: -rpcallowip=172.0.0.0/8
@@ -19,5 +19,3 @@ services:
       -enablezeromint=0
       -checkblocks=25
       -maxconnections=10
-
-

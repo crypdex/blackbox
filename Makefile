@@ -1,6 +1,18 @@
+
+# This .env will overwrite values from the environment
+include ./.env
+# LEGACY ENV
 include ./.blackbox.env
 export
 
+# This is called if .env does not exist
+.env:
+	echo ".env file does not exist"
+.blackbox.env:
+	echo ".blackbox.env file does not exist"
+
+# If DATA_DIR is already in the environment, keep it
+# otherwise, default to ~/data
 DATA_DIR?=~/data
 
 CHAINS?=
@@ -20,9 +32,9 @@ configuration: setup
 devup:
 	$(docker-compose-dev) pull && \
 	$(docker-compose-dev) up -t 60
+
 devdown:
 	$(docker-compose-dev) down --remove-orphans
-
 
 pull: setup
 	$(docker-compose) pull
@@ -38,7 +50,6 @@ chains:
 
 stop:
 	$(docker-compose) down --remove-orphans
-
 
 install-services: install-blackbox-service
 	systemctl daemon-reload
@@ -77,7 +88,16 @@ install-docker:
 	add-apt-repository "deb [arch=arm64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
 	apt-get update && apt-get install -y docker-ce docker-ce-cli containerd.io
 
-setup: check-chains
+# THIS ONLY WORKS ON x86 CHIPSETS
+install-docker-compose:
+	curl -L "https://github.com/docker/compose/releases/download/1.23.2/docker-compose-$(uname -s)-$(uname -m)" -o /usr/local/bin/docker-compose
+	chmod +x /usr/local/bin/docker-compose
+	docker-compose --version
+
+setup: chain-config
+
+chain-config:
+	sh ./scripts/generate-chain-conf.sh
 
 # DATA_DIR=/path/to/pivxdata
 check-chains:
