@@ -7,9 +7,6 @@ services:
     image: crypdex/blackbox-api:v0.0.6
     container_name: api
     restart: "unless-stopped"
-    env_file:
-      - ./.env
-      - ./.blackbox.env # legacy file
     environment:
       - DATA_DIR=${DATA_DIR}
       - BLACKBOX_DIR=${BLACKBOX_DIR:-.}
