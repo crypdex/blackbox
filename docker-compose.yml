@@ -11,9 +11,10 @@ services:
       - ./.blackbox.env
     environment:
       - DATA_DIR=${DATA_DIR}
+      - BLACKBOX_DIR=${BLACKBOX_DIR:-.}
     volumes:
       - ${DATA_DIR:?DATA_DIR required}:/root/data
-      - .:/root/blackbox
+      - ${BLACKBOX_DIR:-.}:/root/blackbox
     ports:
       - "80:4000"
     depends_on:

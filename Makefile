@@ -7,9 +7,9 @@ export
 
 # This is called if .env does not exist
 .env:
-	echo ".env file does not exist"
+	@echo ".env file does not exist"
 .blackbox.env:
-	echo ".blackbox.env file does not exist"
+	@echo ".blackbox.env file does not exist"
 
 # If DATA_DIR is already in the environment, keep it
 # otherwise, default to ~/data
