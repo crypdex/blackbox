@@ -6,26 +6,60 @@ This repository contains code and instructions for the deployment of Crypdex loc
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
 
+
+- [Migrating](#migrating)
+    - [Pre-release to 0.0.x](#pre-release-to-00x)
 - [Summary](#summary)
 - [<a name="prepare"></a>Prepare the Device](#a-nameprepareaprepare-the-device)
-  - [Make directories and update the system](#make-directories-and-update-the-system)
-  - [Install Docker](#install-docker)
-  - [Install Docker Compose](#install-docker-compose)
-    - [Build docker-compose for arm4 (from your Mac)](#build-docker-compose-for-arm4-from-your-mac)
-  - [<a name="configure-ssh"></a>Configure SSH Identity](#a-nameconfigure-sshaconfigure-ssh-identity)
-    - [1. Copy the `id_rsa_blackbox` and default ssh config files to the device:](#1-copy-the-id_rsa_blackbox-and-default-ssh-config-files-to-the-device)
-    - [2. Set the correct file permissions for the keys](#2-set-the-correct-file-permissions-for-the-keys)
-  - [Copy the blockchain](#copy-the-blockchain)
-  - [Clone this Repo](#clone-this-repo)
+  - [1. Make directories and update the system](#1-make-directories-and-update-the-system)
+  - [2. <a name="configure-ssh"></a>Copy default files](#2-a-nameconfigure-sshacopy-default-files)
+    - [A note about Docker Compose](#a-note-about-docker-compose)
+    - [(OPTONAL) Build docker-compose for arm4 from your Mac](#optonal-build-docker-compose-for-arm4-from-your-mac)
+  - [3. Copy the blockchain](#3-copy-the-blockchain)
+  - [4. Login to the Device](#4-login-to-the-device)
+    - [Clone this Repo](#clone-this-repo)
 - [Bootstrap the App](#bootstrap-the-app)
+  - [Add configuration](#add-configuration)
+  - [Install Docker](#install-docker)
   - [Install a swapfile](#install-a-swapfile)
-  - [Install the `systemd` service](#install-the-systemd-service)
-  - [Configure the blockchain](#configure-the-blockchain)
+  - [Copy necessary files](#copy-necessary-files)
+  - [Boot the system manually to test](#boot-the-system-manually-to-test)
+- [Finalizing for Customer Delivery](#finalizing-for-customer-delivery)
 - [References](#references)
 
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 
 <hr />
+
+# Migrating
+
+### Pre-release => 0.0.x
+
+The `0.0.x` releases have the following changes.
+- Use of a `.env` file at the root instead of `.blackbox.env` for default configurations.
+- Update mechanism that uses tagged git commits allowing for user-controlled updates.
+- This repo is now public and does not require a deploy key  
+- The file `.encryption_key` is no longer used. Owner's password encrypts everything.
+- Removed manual file copies
+    - `.conf` files for chains are generated on first run.
+    - `walletnotify.sh` is generated at first run for defined chains.
+
+NOTE: There is only one device in pre-release state besides those in the studio. It is probable that you do not need to migrate anything.
+
+```bash
+export TAG=v0.0.x
+
+# Remove the existing system
+rm -rf blackbox
+git clone https://github.com/crypdex/blackbox.git && cd blackbox
+
+# Set the needed env vars and checkout the latest tag
+echo "CHAINS=pivx" >> .env 
+git checkout $TAG
+
+make update
+```
+
 
 # Summary
 
@@ -113,8 +147,10 @@ The following part of the setup is run from the root of the app
 
 ## Add configuration
 
+These variables are the only non-configurable aspect right now. This can be changed in the future.
+
 ```
-$ cd ~/blackbox && echo CHAINS=pivx > /.blackbox.env
+$ cd ~/blackbox && echo CHAINS=pivx > /.env
 ```
 
 ## Install Docker
@@ -130,18 +166,6 @@ $ make install-docker
 $ make install-swapfile
 ```
 
-## Copy necessary files
-
-These are currently
-
-1. The blockchain configuration file
-1. `walletnotify.sh`
-
-```
-$ cp services/pivx/pivx.conf ~/data/pivx/pivx.conf
-$ cp services/pivx/walletnotify.sh ~/data/pivx/walletnotify.sh
-```
-
 ## Boot the system manually to test
 
 This is a really important step. Before installing the systemd service, it is worthwhile to boot the services. This will pull the docker images, and let the blockchain load up and get comfortable.
@@ -155,7 +179,7 @@ $ make start
 Now that you have verified that the device is functional, there is some cleanup to be done
 
 - Change the root password, and log it someplace or you will never get back in.
-- `rm .encryption-key.env`: Make sure that each device has its own.
+- `rm /root/data/pivx/pivx.conf`: Make sure that each device has its own.
 - Install the systemd service:
 
 ```
