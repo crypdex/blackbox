@@ -31,7 +31,7 @@ This repository contains code and instructions for the deployment of Crypdex loc
 
 1. Flash the SD card with the [manufacturer provided Ubuntu minimal image](https://wiki.odroid.com/odroid-c2/os_images/ubuntu/v3.0) for Odroid C2. This can be done with Etcher. Images are maintained on Google Drive: `Technology > Black Box Images`
 1. [Prepare the device](#prepare)
-1. [Configure the SSH identity](#configure-ssh)
+1. [Configure](#configure-ssh)
 1. Clone the [blackbox repository](https://github.com/crypdex/blackbox).
 
 You will
@@ -66,10 +66,7 @@ apt-get update && apt-get install git htop bmon avahi-daemon avahi-discover avah
 
 From the HOST MACHINE
 
-### Copy the `id_rsa_blackbox` and default ssh config files to the device:
-
 ```shell
-$ scp config/ssh/config config/ssh/id_rsa_blackbox config/ssh/id_rsa_blackbox.pub root@$odroid:~/.ssh/
 # Pre-compiled Docker Compose
 $ scp tools/docker-compose-Linux-aarch64 root@$odroid:/usr/local/bin/docker-compose
 ```
@@ -103,11 +100,6 @@ $ cd && scp -r chaindata/pivx root@$odroid:~/data/
 $ ssh root@$odroid
 ```
 
-### Set the correct file permissions for the keys
-
-```bash
-$ chmod 600 ~/.ssh/id_rsa_blackbox ~/.ssh/id_rsa_blackbox.pub
-```
 
 ### Clone this Repo
 
