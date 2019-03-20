@@ -110,7 +110,7 @@ install-docker-compose:
 setup: chain-config
 
 chain-config:
-	sh ./scripts/generate-chain-conf.sh
+	bash ./scripts/generate-chain-conf.sh
 
 # DATA_DIR=/path/to/pivxdata
 check-chains:
