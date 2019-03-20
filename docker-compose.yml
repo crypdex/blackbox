@@ -8,6 +8,7 @@ services:
     container_name: api
     restart: "unless-stopped"
     environment:
+      - CHAINS=${CHAINS:?CHAINS required}
       - DATA_DIR=/root/data
       - BLACKBOX_DIR=/root/blackbox
     volumes:
