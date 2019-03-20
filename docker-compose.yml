@@ -9,10 +9,10 @@ services:
     restart: "unless-stopped"
     environment:
       - DATA_DIR=${DATA_DIR}
-      - BLACKBOX_DIR=${BLACKBOX_DIR:-.}
+      - BLACKBOX_DIR=${BLACKBOX_DIR:-/root/blackbox}
     volumes:
       - ${DATA_DIR:?DATA_DIR required}:/root/data
-      - ${BLACKBOX_DIR:-.}:/root/blackbox
+      - ${BLACKBOX_DIR:-/root/blackbox}:/root/blackbox
     ports:
       - "80:4000"
     depends_on:
