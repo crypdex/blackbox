@@ -4,7 +4,7 @@ version: "3.7"
 # It is used by walletnotify.sh to target this service
 services:
   api:
-    image: crypdex/blackbox-api:v0.0.6
+    image: crypdex/blackbox-api:v0.0.7
     container_name: api
     restart: "unless-stopped"
     environment:

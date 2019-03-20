@@ -43,7 +43,7 @@ start: pull
 	$(docker-compose) up -t 60
 
 update: pull
-	$(docker-compose) up -d --no-deps -t 60
+	$(docker-compose) up -d --remove-orphans --no-deps -t 60
 
 chains:
 	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(chains-compose-files) up -t 60
