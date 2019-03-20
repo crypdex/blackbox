@@ -8,8 +8,8 @@ services:
     container_name: api
     restart: "unless-stopped"
     environment:
-      - DATA_DIR=${DATA_DIR}
-      - BLACKBOX_DIR=${BLACKBOX_DIR:-/root/blackbox}
+      - DATA_DIR=/root/data
+      - BLACKBOX_DIR=/root/blackbox
     volumes:
       - ${DATA_DIR:?DATA_DIR required}:/root/data
       - ${BLACKBOX_DIR:-/root/blackbox}:/root/blackbox
