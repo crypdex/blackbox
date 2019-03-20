@@ -9,6 +9,7 @@ services:
     restart: "unless-stopped"
     env_file:
       - ./.env
+      - ./.blackbox.env # legacy file
     environment:
       - DATA_DIR=${DATA_DIR}
       - BLACKBOX_DIR=${BLACKBOX_DIR:-.}
