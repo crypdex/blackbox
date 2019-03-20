@@ -1,6 +1,0 @@
-# ~/.ssh/config
-
-Host blackbox.github.com
-HostName github.com
-PreferredAuthentications publickey
-IdentityFile ~/.ssh/id_rsa_blackbox
