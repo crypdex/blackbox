@@ -1,15 +1,36 @@
 #!/usr/bin/env bash
 
-latest=$(git ls-remote -q --tags --sort=-v:refname | awk -F/ '{ print $3 }' | head -n 1)
-
-current=$(git describe --tags)
-
-echo "Latest: ${latest}"
-echo "Current: ${current}"
-
-if [[ "${latest}" = "${current}" ]]; then
-    echo "You are on the latest"
-else
-    echo "You are not on the latest"
+if [[ -f ./restart ]]; then
+    echo "restart file found!"
+    echo "Refreshing containers"
+    rm ./restart
+    make update
 fi
 
+# ----------------------------------------
+# Update the core system (this repository)
+# ----------------------------------------
+
+#CURRENT="$(git rev-parse HEAD)"
+#
+#REMOTE="$(git ls-remote origin HEAD  | awk '{ print $1}')"
+#
+#
+#if [[ "$CURRENT" != "$REMOTE" ]]; then
+#  echo "Core update available"
+#
+#  git pull origin master
+#
+#  echo "Restarting the blackbox.service"
+#  systemctl restart blackbox.service
+#  # We exit here because the `make start` command does a docker pull.
+#  # .. also, lets not put too much stress on the restart process which can take 15 mins
+#  exit 0
+#fi
+#
+#echo "No core updates available"
+
+
+
+
+exit 0

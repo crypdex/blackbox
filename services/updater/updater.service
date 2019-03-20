@@ -6,7 +6,7 @@ Requires=network-online.target
 [Service]
 Environment=DATA_DIR=/root/data
 WorkingDirectory=/root/blackbox
-ExecStart=/root/blackbox/services/updater/updater.sh
+ExecStart=/root/blackbox/scripts/update.sh
 
-[Install]
-WantedBy=multi-user.target
+#[Install]
+#WantedBy=multi-user.target

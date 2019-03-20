@@ -43,7 +43,7 @@ start: pull
 	$(docker-compose) up -t 60
 
 update: pull
-	$(docker-compose) up -d -t 60
+	$(docker-compose) up -d --no-deps -t 60
 
 chains:
 	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(chains-compose-files) up -t 60
@@ -51,10 +51,10 @@ chains:
 stop:
 	$(docker-compose) down --remove-orphans
 
-install-services: install-blackbox-service
+install-services: install-blackbox-service install-updater
 	systemctl daemon-reload
 
-uninstall-services: uninstall-blackbox-service
+uninstall-services: uninstall-blackbox-service uninstall-updater
 	systemctl daemon-reload
 
 # Installs the systemd service, enables it and starts it
@@ -68,6 +68,19 @@ uninstall-blackbox-service:
 	systemctl stop blackbox.service
 	systemctl disable blackbox.service
 	rm /etc/systemd/system/blackbox.service
+
+# Installs the systemd service, enables it and starts it
+install-updater:
+	cp services/updater/updater.service /etc/systemd/system/
+	cp services/updater/updater.timer /etc/systemd/system/
+	systemctl enable /etc/systemd/system/updater.timer
+	systemctl start updater.timer
+
+uninstall-updater:
+	systemctl stop updater.timer
+	systemctl disable updater.timer
+	rm /etc/systemd/system/updater.timer
+	rm /etc/systemd/system/updater.service
 
 # PIVX (and maybe other CHAINs) require a swap file to function properly.
 # * This must be run as root and is NOT idempotent
