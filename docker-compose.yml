@@ -4,7 +4,7 @@ version: "3.7"
 # It is used by walletnotify.sh to target this service
 services:
   api:
-    image: crypdex/blackbox-api:latest
+    image: crypdex/blackbox-api:edge
     container_name: api
     restart: "unless-stopped"
     env_file:
@@ -13,6 +13,7 @@ services:
       - DATA_DIR=${DATA_DIR}
     volumes:
       - ${DATA_DIR:?DATA_DIR required}:/root/data
+      - .:/root/blackbox
     ports:
       - "80:4000"
     depends_on:
