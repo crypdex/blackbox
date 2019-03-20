@@ -13,7 +13,7 @@ export
 
 # If DATA_DIR is already in the environment, keep it
 # otherwise, default to ~/data
-DATA_DIR?=~/data
+DATA_DIR?=/root/data
 
 CHAINS?=
 chains-compose-files := $(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
