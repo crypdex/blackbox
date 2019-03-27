@@ -7,13 +7,11 @@ This app runs outside of the Docker stack in order to have closer access to the 
 - `git` is used to update the deployment by pulling the latest tag
 - `docker` and `docker-compose` are used to restart the stack
 
-
-
 ## Building
 
 See the `Makefile` in the parent directory.
 
-## History 
+## Past 
 
 The first pass at keeping the core system updated worked by mounting this directory in the API container. There were a couple of drawbacks with this approach.
 
@@ -24,3 +22,5 @@ Second, as a workaround for invoking host functions, a `systemd` timer was used 
 ## Future
 
 These functions could also be achieved from inside a container, but that is a 🐇 🕳 for another day (and breaks Docker's isolation imperative). See above.
+
+Instead of accessing these endpoints from a separate port, the API app could call out to the service from its container.
