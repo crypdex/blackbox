@@ -2,6 +2,7 @@ package config
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"reflect"
 	"sort"
@@ -70,12 +71,12 @@ func (c *Config) Save() error {
 		return err
 	}
 
-	f, err := os.OpenFile(c.file, os.O_RDWR|os.O_CREATE, 0644)
+	_, err = os.OpenFile(c.file, os.O_CREATE|os.O_RDWR, 0644)
 	if err != nil {
 		return err
 	}
 
-	_, err = f.Write([]byte(output))
+	err = ioutil.WriteFile(c.file, []byte(output), 0644)
 	if err != nil {
 		return err
 	}
