@@ -1,12 +1,12 @@
 [Unit]
-Description=Crypdex Black Box
+Description=BlackboxOS
 After=docker.service
 Requires=docker.service
 
 [Service]
 Environment=DATA_DIR=/root/data
 WorkingDirectory=/root/blackbox
-ExecStart=/usr/bin/make start
+ExecStart=/usr/bin/make -j start
 ExecStop=/usr/bin/make stop
 Restart=on-failure
 RestartSec=5s

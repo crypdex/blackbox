@@ -1,0 +1,65 @@
+version: "3.7"
+
+# WARNING: DO NOT CHANGE THE CONTAINER NAME
+# It is used by walletnotify.sh to target this service
+services:
+  api:
+    image: crypdex/blackbox-api:v0.0.14
+    container_name: api # DO NOT CHANGE THIS (please)
+    restart: "unless-stopped"
+    environment:
+      - CHAINS=${CHAINS} # CHAINS can be empty for now
+      - DATA_DIR=/root/data # This references the mounted point (may not be necessary anymore)
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}:/root/data
+    ports:
+      - "80:4000"
+    depends_on:
+      - postgres
+    command:
+      ["/root/wait-for-it/wait-for-it.sh", "postgres:5432", "--", "./app"]
+  # ----------
+  # POSTGRES
+  # ----------
+  postgres:
+    image: postgres
+    container_name: postgres
+    restart: "unless-stopped"
+    ports:
+      - "127.0.0.1:5432:5432"
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/postgres:/var/lib/postgresql/data
+  # ----------
+  # SMTP RELAY
+  # ----------
+  #  smtp-relay:
+  #    image: crypdex/smtp-relay:latest
+  #    container_name: smtp-relay
+  #    restart: "unless-stopped"
+  #    ports:
+  #      - "127.0.0.1:1587:25"
+  #    # The SMTP_PASSWORD should not be in here, but how can I rotate it?
+  #    environment:
+  #      - SMTP_HOST=smtp.sendgrid.com
+  #      - SMTP_PORT=587
+  #      - SMTP_LOGIN=apikey
+  # ----------
+  # OUROBOROS
+  # ----------
+#  ouroboros:
+#    container_name: ouroboros
+#    hostname: ouroboros
+#    image: pyouroboros/ouroboros
+#    restart: unless-stopped
+#    volumes:
+#      - /var/run/docker.sock:/var/run/docker.sock
+#    depends_on:
+#      - postgres
+#      - smtp-relay
+#    environment:
+#      - CLEANUP=true
+#      - INTERVAL=60
+#      - LOG_LEVEL=info
+#      - SELF_UPDATE=false
+#      - IGNORE=postgres
+#      - TZ=America/New_York

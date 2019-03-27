@@ -1,5 +1,18 @@
+# Make is used as a utility for coordinating various parts of the Blackbox
+#
+# Environment variables are used to parameterize the application.
+# Values are imported from a .env file formatted as "VAR=value".
+#
+# NB: !! This .env will overwrite values from the environment   !!
+# NB: !! If .env contains CHAINS= then no chains will be loaded !!
+#
+# CHAINS
+# DATA_DIR
 
-# This .env will overwrite values from the environment
+##############
+# ENVIRONMENT
+##############
+
 include ./.env
 # LEGACY ENV
 include ./.blackbox.env
@@ -12,35 +25,54 @@ export
 	@echo ".blackbox.env file does not exist"
 
 # If DATA_DIR is already in the environment, keep it
-# otherwise, default to ~/data
 DATA_DIR?=/root/data
 
+# CHAINS can be empty to allow for configuration
 CHAINS?=
-chains-compose-files := $(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
 
-docker-compose = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose.yml -f ./docker-compose-deps.yml $(chains-compose-files)
+################
+# ENTRY TARGETS
+################
 
-# For development: Load only the supporting containers, not the API container
-docker-compose-dev = DATA_DIR=$(DATA_DIR) docker-compose -p blackbox -f ./docker-compose-deps.yml $(chains-compose-files)
+# make -j start
+start: start-admin start-docker
+
+# make stop
+stop: stop-docker
+
+############
+# ADMIN APP
+############
+
+build-admin:
+	@cd admin && bash ./scripts/build.sh
+
+start-admin:
+	@cd admin && bash ./scripts/start.sh
+
+#################
+# DOCKER COMPOSE
+#################
+
+docker-compose = DATA_DIR=$(DATA_DIR) docker-compose \
+	-p blackbox \
+	-f ./services/api/docker-compose.yml \
+	$(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
 
 build:
 	./scripts/build-docker.sh
 
-configuration: setup
+configuration:
 	$(docker-compose) config
-
-devup:
-	$(docker-compose-dev) pull && \
-	$(docker-compose-dev) up -t 60
-
-devdown:
-	$(docker-compose-dev) down --remove-orphans
 
 pull: setup
 	$(docker-compose) pull
 
-start: pull
+start-docker: pull
 	$(docker-compose) up -t 60
+
+stop-docker:
+	$(docker-compose) down --remove-orphans
 
 update: pull
 	$(docker-compose) up -d --remove-orphans --no-deps -t 60
@@ -48,42 +80,23 @@ update: pull
 log:
 	$(docker-compose) log
 
-chains:
-	DATA_DIR=$(DATA_DIR) docker-compose -p blackbox $(chains-compose-files) up -t 60
 
-stop:
-	$(docker-compose) down --remove-orphans
-
-install-services: install-blackbox-service install-updater
-	systemctl daemon-reload
-
-uninstall-services: uninstall-blackbox-service uninstall-updater
-	systemctl daemon-reload
+##################
+# SYSTEM SERVICES
+##################
 
 # Installs the systemd service, enables it and starts it
-install-blackbox-service:
+install-service:
 	cp services/blackbox.service /etc/systemd/system/
 	systemctl enable /etc/systemd/system/blackbox.service
 	systemctl start blackbox.service
 
 # Uninstalls the service
-uninstall-blackbox-service:
+uninstall-service:
 	systemctl stop blackbox.service
 	systemctl disable blackbox.service
 	rm /etc/systemd/system/blackbox.service
 
-# Installs the systemd service, enables it and starts it
-install-updater:
-	cp services/updater/updater.service /etc/systemd/system/
-	cp services/updater/updater.timer /etc/systemd/system/
-	systemctl enable /etc/systemd/system/updater.timer
-	systemctl start updater.timer
-
-uninstall-updater:
-	systemctl stop updater.timer
-	systemctl disable updater.timer
-	rm /etc/systemd/system/updater.timer
-	rm /etc/systemd/system/updater.service
 
 # PIVX (and maybe other CHAINs) require a swap file to function properly.
 # * This must be run as root and is NOT idempotent
@@ -110,9 +123,7 @@ install-docker-compose:
 	chmod +x /usr/local/bin/docker-compose
 	docker-compose --version
 
-setup: chain-config
-
-chain-config:
+setup:
 	bash ./scripts/generate-chain-conf.sh
 
 # DATA_DIR=/path/to/pivxdata

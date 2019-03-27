@@ -1,0 +1,40 @@
+# This config should be placed in following path:
+#   ~/.local/share/io.parity.ethereum/config.toml
+
+[parity]
+chain = "kovan"
+mode = "active"
+
+[account]
+unlock = [
+
+]
+password = [
+
+]
+
+[network]
+min_peers = 250
+port = 30305
+
+[ipc]
+disable = true
+
+[rpc]
+port = 8645
+interface = "0.0.0.0"
+
+[websockets]
+port = 8646
+
+[footprint]
+pruning = "fast"
+
+[mining]
+# Prepare a block to seal even when there are no miners connected.
+# force_sealing = true
+# Pending block will be created with maximal possible gas limit and will execute all transactions in the queue. Note that such block is invalid and should never be attempted to be mined.
+# infinite_pending_block = true
+
+[misc]
+log_file = "/var/log/parity-kovan.log"
