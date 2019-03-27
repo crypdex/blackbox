@@ -2,13 +2,13 @@ package config
 
 import (
 	"fmt"
-	"io/ioutil"
+	"os"
+	"reflect"
 	"sort"
 	"strings"
 
-	"github.com/logrusorgru/aurora"
 	"github.com/spf13/viper"
-	funk "github.com/thoas/go-funk"
+	"github.com/thoas/go-funk"
 )
 
 var defaultPort = "8888"
@@ -25,61 +25,40 @@ type Config struct {
 }
 
 func Load(file string) (*Config, error) {
-	config := Config{Viper: viper.New(), file: file}
-	config.SetConfigType("properties")
-	config.SetConfigFile(file)
-	err := config.ReadInConfig()
-	return &config, err
-}
+	cfg := Config{Viper: viper.New(), file: file}
 
-func (c *Config) Port() string {
-	port := c.GetString("port")
-	if port == "" {
-		return defaultPort
+	if _, err := os.Stat(file); os.IsNotExist(err) {
+		fmt.Println(file, "does not exist")
+		return &cfg, nil
 	}
-	return port
+
+	tmp := viper.New()
+	tmp.SetConfigType("properties")
+	tmp.SetConfigFile(file)
+
+	err := tmp.ReadInConfig()
+
+	cfg.Set("chains", strings.Split(tmp.GetString("chains"), " "))
+
+	fmt.Println("successfully loaded config =>", cfg.AllSettings())
+	return &cfg, err
 }
 
-func (c *Config) Chains() []string {
+func (c *Config) SetChains(chains ...string) error {
 	output := make([]string, 0)
-	fmt.Println(len(c.GetStringSlice("chains")))
 
-	if c.GetString("chains") == "" {
-		fmt.Println(aurora.Brown("[WARNING] no chains are configured\n'chains' is a space separated list"))
-		return output
-	}
-
-	for _, chain := range strings.Split(c.GetString("chains"), " ") {
+	for _, chain := range chains {
 		if !isSupportedChain(chain) {
-			fmt.Println(aurora.Brown("[WARNING] unsupported chain:"), chain)
-			continue
-		} else {
+			return fmt.Errorf("unsupported chain %s", chain)
+		}
+
+		if !funk.ContainsString(output, chain) {
+			fmt.Println("adding chain", chain)
 			output = append(output, chain)
 		}
 	}
-	return output
-}
 
-func (c *Config) AddChain(chain string) error {
-	if !isSupportedChain(chain) {
-		return fmt.Errorf("unsupported chain %s", chain)
-	}
-
-	configured := c.GetStringSlice("chains")
-
-	if funk.ContainsString(configured, chain) {
-		fmt.Println("already configured", chain)
-	} else {
-		configured = append(configured, chain)
-	}
-
-	fmt.Println("adding chain", chain)
-	c.Set("chains", strings.Join(configured, " "))
-
-	output := make(map[string]string)
-	for _, key := range c.AllKeys() {
-		output[key] = c.GetString(key)
-	}
+	c.Set("chains", output)
 
 	return c.Save()
 
@@ -90,12 +69,26 @@ func (c *Config) Save() error {
 	if err != nil {
 		return err
 	}
-	return ioutil.WriteFile(c.file, []byte(output), 0644)
+
+	f, err := os.OpenFile(c.file, os.O_RDWR|os.O_CREATE, 0644)
+	if err != nil {
+		return err
+	}
+
+	_, err = f.Write([]byte(output))
+	if err != nil {
+		return err
+	}
+
+	return nil
 }
 
 func (c *Config) Marshal() (string, error) {
 	lines := make([]string, 0, len(c.AllSettings()))
 	for k, v := range c.AllSettings() {
+		if reflect.TypeOf(v).String() == "[]string" {
+			v = strings.Join(c.GetStringSlice(k), " ")
+		}
 		lines = append(lines, fmt.Sprintf(`%s=%s`, strings.ToUpper(k), v))
 	}
 	sort.Strings(lines)

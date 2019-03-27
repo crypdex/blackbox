@@ -3,7 +3,6 @@ package server
 import (
 	"admin/validator"
 
-	"github.com/joho/godotenv"
 	"github.com/labstack/echo"
 	"github.com/labstack/echo/middleware"
 )
@@ -24,19 +23,16 @@ func New() *echo.Echo {
 		StackSize:         1,
 	}))
 
-	e.Static("/images", "images")
+	env := NewEnv()
+
+	// The default index page
 	e.File("/", "index.html")
+	e.Static("/images", "images")
 
-	e.GET("/status", StatusHandler)
-	e.GET("/config", func(c echo.Context) error {
-		var env map[string]string
-		env, err := godotenv.Read()
+	e.GET("/config", env.GetConfigHandler)
+	e.POST("/config", env.SetConfigHandler)
 
-		if err != nil {
-			return err
-		}
-		return c.JSON(200, env)
-	})
+	e.GET("/status", env.StatusHandler)
 
 	return e
 }

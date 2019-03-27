@@ -1,23 +1,14 @@
 package main
 
 import (
-	"fmt"
-
-	"admin/config"
 	"admin/server"
 )
+
+var port = "8888"
 
 func main() {
 	e := server.New()
 
-	// Attempt to load the config
-	cfg, err := config.Load("./../.env")
-	if err != nil {
-		fmt.Println(err)
-	}
-
-	cfg.AddChain("zcoin")
-
 	// Start the service
-	e.Logger.Fatal(e.Start(":" + cfg.Port()))
+	e.Logger.Fatal(e.Start(":" + port))
 }
