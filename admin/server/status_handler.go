@@ -41,7 +41,7 @@ func checkoutTag(dir string, tag string) (string, error) {
 
 // getLatestTag returns the CURRENT git tag from the local repo
 func getCurrentTag(dir string) (string, error) {
-	cmd := "git describe --tags"
+	cmd := "git describe --tags --abbrev=0"
 
 	return execCommand(cmd, dir)
 }
