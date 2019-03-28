@@ -10,7 +10,7 @@
 # DATA_DIR
 
 ##############
-# ENVIRONMENT
+## ENVIRONMENT
 ##############
 
 include ./.env
@@ -26,37 +26,46 @@ export
 
 # If DATA_DIR is already in the environment, keep it
 DATA_DIR?=/root/data
+BLACKBOX_DIR?=/root/blackbox
 
 # CHAINS can be empty to allow for configuration
 CHAINS?=
 
 ################
-# ENTRY TARGETS
+## ENTRY TARGETS
 ################
 
-# make -j start
-start: start-admin start-docker
+start:
+	BLACKBOX_DIR=$(abspath .) bash ./scripts/start.sh
 
 # make stop
 stop: stop-docker
 
+restart: update-docker restart-admin
+
 ############
-# ADMIN APP
+## ADMIN APP
 ############
 
 build-admin:
 	@cd admin && bash ./scripts/build.sh
 
 start-admin:
-	@cd admin && bash ./scripts/start.sh
+	@bash ./admin/scripts/start.sh
+
+restart-admin:
+	systemctl restart blackbox.admin.service
 
 #################
-# DOCKER COMPOSE
+## DOCKER COMPOSE
 #################
 
-docker-compose = DATA_DIR=$(DATA_DIR) docker-compose \
-	-p blackbox \
+# API and ADMIN services are in by default
+
+docker-compose = DATA_DIR=$(DATA_DIR) BLACKBOX_DIR=$(BLACKBOX_DIR) \
+	docker-compose -p blackbox \
 	-f ./services/api/docker-compose.yml \
+	-f ./services/admin/docker-compose.yml \
 	$(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
 
 build:
@@ -69,20 +78,20 @@ pull: setup
 	$(docker-compose) pull
 
 start-docker: pull
-	$(docker-compose) up -t 60
+	$(docker-compose) up -d -t 60
+
+# update and start are the same
+update-docker: start-docker
 
 stop-docker:
 	$(docker-compose) down --remove-orphans
 
-update: pull
-	$(docker-compose) up -d --remove-orphans --no-deps -t 60
-
 log:
-	$(docker-compose) log
+	$(docker-compose) logs -f
 
 
 ##################
-# SYSTEM SERVICES
+## SYSTEM SERVICES
 ##################
 
 # Installs the systemd service, enables it and starts it

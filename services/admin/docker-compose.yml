@@ -1,0 +1,17 @@
+version: "3.7"
+
+# The admin service mounts the parent Blackbox directory
+# so that it can manage config related files
+# See: "environment" and "volumes" blocks
+
+services:
+  admin:
+    image: crypdex/blackbox-admin:latest
+    container_name: admin
+    restart: "unless-stopped"
+    environment:
+      - BLACKBOX_DIR=/root/blackbox
+    volumes:
+      - ${BLACKBOX_DIR:?BLACKBOX_DIR required}:/root/blackbox
+    ports:
+      - "8888:8888"
