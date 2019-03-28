@@ -36,7 +36,7 @@ CHAINS?=
 ################
 
 start:
-	BLACKBOX_DIR=$(abspath .) bash ./scripts/start.sh
+	@bash ./scripts/start.sh
 
 # make stop
 stop: stop-docker
@@ -78,7 +78,7 @@ pull: setup
 	$(docker-compose) pull
 
 start-docker: pull
-	$(docker-compose) up -d -t 60
+	$(docker-compose) up -t 60
 
 # update and start are the same
 update-docker: start-docker

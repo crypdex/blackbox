@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This script simply calls a pre-compiled version of "modd"
+# Linux and macOS are supported in x86 and arm64 variants
+
 ARCH=$(uname -m)
 OS=$(uname -s)
 # Get the location of this script
