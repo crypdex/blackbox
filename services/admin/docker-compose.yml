@@ -4,6 +4,7 @@ version: "3.7"
 # so that it can manage config related files
 # See: "environment" and "volumes" blocks
 
+
 services:
   admin:
     image: crypdex/blackbox-admin:v0.0.10
