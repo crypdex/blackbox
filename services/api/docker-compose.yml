@@ -8,12 +8,13 @@ services:
     container_name: api # DO NOT CHANGE THIS (please)
     restart: "unless-stopped"
     environment:
+      - PORT=80
       - CHAINS=${CHAINS} # CHAINS can be empty for now
       - DATA_DIR=/root/data # This references the mounted point (may not be necessary anymore)
     volumes:
       - ${DATA_DIR:?DATA_DIR required}:/root/data
     ports:
-      - "80:4000"
+      - "80:80"
     depends_on:
       - postgres
     command:

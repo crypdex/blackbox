@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-for service in dash; do
+for service in pivx; do
     for arch in amd64 arm64v8; do
         docker build -f docker/${service}/Dockerfile.${arch} -t crypdex/${service}:${arch}-latest docker/${service}/.
         docker push crypdex/${service}:${arch}-latest
