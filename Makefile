@@ -151,8 +151,8 @@ endif
 TAG?=
 
 # The Dockerfile uses the vendor dir to work around context issues.
-tag: require-tag
-	git tag -a ${TAG} -m "${TAG} release"
+release: require-tag
+	git tag ${TAG}
 	git push origin ${TAG}
 
 require-tag:
