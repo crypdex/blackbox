@@ -142,3 +142,23 @@ ifndef CHAINS
 else
 	@echo "configured for ${CHAINS}"
 endif
+
+
+##################
+## DEVELOPMENT
+##################
+
+TAG?=
+
+# The Dockerfile uses the vendor dir to work around context issues.
+tag: require-tag
+	git tag -a ${TAG} -m "${TAG} release"
+	git push origin ${TAG}
+
+require-tag:
+ifndef TAG
+	$(error 'TAG' is undefined)
+else
+	@echo "configured for ${TAG}"
+endif
+
