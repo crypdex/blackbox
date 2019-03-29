@@ -6,7 +6,7 @@ version: "3.7"
 
 services:
   admin:
-    image: crypdex/blackbox-admin:latest
+    image: crypdex/blackbox-admin:v0.0.9
     container_name: admin
     restart: "unless-stopped"
     environment:
