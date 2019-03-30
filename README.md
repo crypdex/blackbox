@@ -6,6 +6,8 @@ The BlackboxOS is a pluggable platform for deploying multi-chain applications. I
 
 Documentation is currently accruing on the [Wiki](https://github.com/crypdex/blackbox/wiki).
 
+The CLI is available [here](https://github.com/crypdex/blackbox-cli).
+
 ## Features
 
 <img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/screenshot.png" width=330 align="left">
@@ -16,6 +18,7 @@ Documentation is currently accruing on the [Wiki](https://github.com/crypdex/bla
 - Optimized for multiple full nodes
 - Unified multi-chain deterministic wallet
 - Expandable with new chains
+- Accessible via CLI, HTTP API, native RPCs, and GUI (under development)
 
 ## About
 
