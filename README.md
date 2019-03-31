@@ -20,6 +20,12 @@ The CLI is available [here](https://github.com/crypdex/blackbox-cli).
 - Expandable with new chains
 - Accessible via CLI, HTTP API, native RPCs, and GUI (under development)
 
+
+## System Requirements
+
+- Docker
+- Docker Compose
+
 ## About
 
 The BlackboxOS is being developed to support devices running blockchain systems. Many of the design decisions are based on the needs of running applications that require maintaining multiple blockchains and their supporting services, primarily in a cloudless environment.

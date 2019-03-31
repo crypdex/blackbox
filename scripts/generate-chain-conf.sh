@@ -40,7 +40,7 @@ do
         cat >${file} <<EOF
 rpcuser=${rpcuser}
 rpcpassword=${rpcpassword}
-walletnotify=${DATA_DIR}/${chain}/walletnotify.sh %s
+walletnotify=/bin/bash ${DATA_DIR}/${chain}/walletnotify.sh %s
 EOF
     fi
 

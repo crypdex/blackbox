@@ -150,10 +150,13 @@ endif
 
 TAG?=
 
+release:
+	goreleaser --snapshot --skip-publish --rm-dist --debug
+
 # The Dockerfile uses the vendor dir to work around context issues.
-release: require-tag
-	git tag ${TAG}
-	git push origin ${TAG}
+#release: require-tag
+#	git tag ${TAG}
+#	git push origin ${TAG}
 
 require-tag:
 ifndef TAG
