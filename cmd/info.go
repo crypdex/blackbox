@@ -3,6 +3,8 @@ package cmd
 import (
 	"fmt"
 
+	"github.com/crypdex/blackbox/docker"
+
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	yaml "gopkg.in/yaml.v2"
@@ -14,9 +16,8 @@ var infoCmd = &cobra.Command{
 	Short: "Displays the current configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		displayBlackboxInfo()
-
-		config := dockerComposeConfig()
-		fmt.Println(config)
+		client := docker.NewClient(viper.GetViper())
+		client.ComposeConfig()
 	},
 }
 

@@ -13,6 +13,10 @@ import (
 	"github.com/spf13/viper"
 )
 
+func dockerSwarmInit() {
+
+}
+
 // docker-compose config
 func dockerComposeConfig() string {
 	return dockerComposeExec("config")
