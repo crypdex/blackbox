@@ -1,6 +1,6 @@
 FROM ubuntu:bionic
 
-ARG PIVX_VERSION=3.1.1
+ARG PIVX_VERSION=3.2.0
 ARG USER=pivx
 ENV DATA_DIR=/home/pivx/.pivx
 

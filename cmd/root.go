@@ -70,7 +70,7 @@ func initConfig() {
 
 		configPath := home + "/.crypdex"
 		viper.AddConfigPath(configPath)
-		viper.Set("config_path", configPath)
+		viper.Set("config_dir", configPath)
 
 		viper.SetConfigName("blackbox")
 
@@ -91,7 +91,7 @@ func initConfig() {
 
 func setServicesDir(pwd string) {
 	// default services dir
-	servicesDir := viper.GetString("config_path") + "/services"
+	servicesDir := viper.GetString("config_dir") + "/services"
 
 	// Does a services directory exist in the `pwd`?
 	localDir := pwd + "/services"

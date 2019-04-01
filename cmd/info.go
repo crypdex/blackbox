@@ -3,12 +3,9 @@ package cmd
 import (
 	"fmt"
 
-	yaml "gopkg.in/yaml.v2"
-
-	"github.com/spf13/viper"
-
-	shell "github.com/go-cmd/cmd"
 	"github.com/spf13/cobra"
+	"github.com/spf13/viper"
+	yaml "gopkg.in/yaml.v2"
 )
 
 // versionCmd represents the version command
@@ -18,17 +15,8 @@ var infoCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		displayBlackboxInfo()
 
-		// Start a long-running process, capture stdout and stderr
-		c := shell.NewCmd("docker-compose", "config")
-
-		s := <-c.Start()
-		for _, out := range s.Stdout {
-			fmt.Println(out)
-		}
-
-		for _, out := range s.Stderr {
-			fmt.Println(out)
-		}
+		config := dockerComposeConfig()
+		fmt.Println(config)
 	},
 }
 
