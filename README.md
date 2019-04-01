@@ -35,6 +35,27 @@ There should be some example configs in the `/examples` directory.
 
 # Getting Started
 
+A CLI mediates all interaction with the BlackboxOS.
+
+### Get started in 3 easy steps
+
+0. Download a [release](https://github.com/crypdex/blackbox/releases) for your platform. There is an `apt` repo available soon for Debian variants.
+1. Initialize your system with specific services `-s`
+
+```shell
+$ blackbox init -s pivx -s crypdex-wallet
+```
+
+2. Start er up
+
+```shell
+$ blackbox start
+```
+
+3. Profit! 🎉
+
+Configuration is kept in a `yaml` config file, but you shouldn't need to edit it directly.
+
 ## System Requirements
 
 - Docker
@@ -70,15 +91,15 @@ This strategy is what Crypdex uses. We run a SeedBox that keeps fresh copies of 
 
 While you are free to add your own services to the BlackboxOS, the following are maintained and supported by Crypdex. Because this project is under active development, the following table can give you some idea if whats up.
 
-|           | service | wallet | features            |
-| --------- | ------- | ------ | ------------------- |
-| PIVX      | ✓       | ✓      | Masternode, staking |
-| Dash      | ✓       | ✓      | Masternode          |
-| ZCoin     | ✓       | ✓      | Masternode          |
-| Blocknet  | ✓       | ✓      | Masternode, staking |
-| Bitcoin   |         |        |                     |
-| Litecoin  | ✓       |        |                     |
-| Sparkswap |         |        |                     |
+|                                            | service | wallet | features            |
+| ------------------------------------------ | ------- | ------ | ------------------- |
+| PIVX                                       | ✓       | ✓      | Masternode, staking |
+| Dash                                       | ✓       | ✓      | Masternode          |
+| ZCoin                                      | ✓       | ✓      | Masternode          |
+| Blocknet                                   | ✓       | ✓      | Masternode, staking |
+| Bitcoin                                    |         |        |                     |
+| Litecoin                                   | ✓       |        |                     |
+| [Sparkswap Broker](https://sparkswap.com/) |         |        | Under development   |
 
 ## Alternatives
 
