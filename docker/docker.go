@@ -69,16 +69,16 @@ func execCommand(command string, args []string, env []string) {
 		for {
 			select {
 			case line := <-envCmd.Stdout:
-				fmt.Println(aurora.Green(line))
+				info(line)
 			case line := <-envCmd.Stderr:
-				fmt.Fprintln(os.Stderr, aurora.Red(line))
+				fmt.Fprintln(os.Stderr, aurora.BgBlack("[blackbox]"), aurora.Red(line))
 			}
 		}
 	}()
 
 	// DEBUG
-	debugCmd := fmt.Sprintf("%s %s %s", strings.Join(env, " "), command, strings.Join(args, " "))
-	fmt.Println(aurora.Cyan(debugCmd))
+	debugCmd := fmt.Sprintf("Running => %s %s %s", strings.Join(env, " "), command, strings.Join(args, " "))
+	info(debugCmd)
 
 	// Run and wait for Cmd to return, discard Status
 	<-envCmd.Start()
@@ -105,9 +105,13 @@ func (client *Client) formatServices(flagName string) []string {
 
 	// Add up all the services files
 	for service, opts := range services {
-		fmt.Println(service, "=>", opts)
+		info(fmt.Sprintf("%s %#v", service, opts))
 		args = append(args, flagName, fmt.Sprintf("%s/%s/docker-compose.yml", servicesDir, service))
 	}
 
 	return args
+}
+
+func info(message string) {
+	fmt.Println(aurora.BgBlack("[blackbox]"), message)
 }

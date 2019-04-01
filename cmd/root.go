@@ -120,5 +120,5 @@ func availableServices() (out []string, err error) {
 }
 
 func info(message string) {
-	fmt.Println(aurora.Green(message))
+	fmt.Println(aurora.BgBlack("[blackbox]"), message)
 }

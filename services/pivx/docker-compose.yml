@@ -1,16 +1,15 @@
-version: "3.7"
+version: '3.7'
 
 # While the RPC allow is set open, the ports only bind to localhost.
 
 services:
   pivx:
-    image: crypdex/pivx:latest
-#    container_name: pivx
-    restart: "unless-stopped"
+    image: crypdex/pivx:3.2
+    restart: unless-stopped
     # Ports are exposed so that users can validate correctness of the chain.
     ports:
-      - "51472:51472"
-      - "51473:51473"
+      - '51472:51472'
+      - '51473:51473'
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
     # command: -rpcallowip=172.0.0.0/8

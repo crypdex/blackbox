@@ -13,6 +13,7 @@ var startCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		// When we start up, let's assure that we are in swarm mode
 		client := docker.NewClient(viper.GetViper())
+		info("Ensuring that the Docker daemon is in swarm mode ...")
 		client.SwarmInit()
 		client.StackDeploy("blackbox")
 	},
