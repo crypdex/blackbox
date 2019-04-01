@@ -23,7 +23,7 @@ There should be some example configs in the `/examples` directory.
 
 ## Features
 
-<img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/screenshot.png" width=330 align="left">
+<img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/screenshot.png" width=330 align="right">
 
 - Update framework
 - Portable, Docker-based services
