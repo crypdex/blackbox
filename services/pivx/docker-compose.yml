@@ -4,14 +4,14 @@ version: '3.7'
 
 services:
   pivx:
-    image: crypdex/pivx:3.2
+    image: crypdex/pivx:3.1
     restart: unless-stopped
     # Ports are exposed so that users can validate correctness of the chain.
     ports:
       - '51472:51472'
       - '51473:51473'
     volumes:
-      - ${DATA_DIR:?DATA_DIR required}/pivx:/home/pivx/.pivx
+      - ${PIVX_DATA_DIR:?PIVX_DATA_DIR required}:/home/pivx/.pivx
     # command: -rpcallowip=172.0.0.0/8
     # Command-line options override values set in the configuration file.
     command: -rpcallowip=0.0.0.0/0
