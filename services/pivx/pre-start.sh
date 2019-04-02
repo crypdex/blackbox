@@ -16,6 +16,12 @@ then
   exit 1
 fi
 
+if [[ -z "${PIVX_WALLETNOTIFY_CMD}" ]]
+then
+  echo "PIVX_WALLETNOTIFY_CMD is empty, setting default"
+  PIVX_WALLETNOTIFY_CMD="echo \"PIVX tx received: \$1\""
+fi
+
 # 1. Ensure that the data directory exists!
 if [[ -d "${PIVX_DATA_DIR}" ]]; then
 echo "[pivx pre-start] ✓ Data directory ${PIVX_DATA_DIR} exists."
@@ -24,6 +30,17 @@ else
     mkdir -p ${PIVX_DATA_DIR}
 fi
 
+if [[ -z "${PIVX_RPCUSER}" ]]
+then
+  echo "PIVX_RPCUSER is empty, generating one"
+  PIVX_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
+fi
+
+if [[ -z "${PIVX_RPCPASSWORD}" ]]
+then
+  echo "PIVX_RPCPASSWORD is empty, generating one"
+  PIVX_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
+fi
 
 # -----------
 # CONFIG FILE
@@ -33,16 +50,16 @@ fi
 file="${PIVX_DATA_DIR}/pivx.conf"
 
 if [[ -f "${file}" ]]; then
-    echo "[pivx pre-start] ✓ Config file ${file} exists."
-else
-    echo "[pivx pre-start] Writing default config for PIVX to ${file}"
+    echo "[pivx pre-start] WARN: Config file ${file} exists. Overwriting."
+fi
 
-    cat >${file} <<EOF
-rpcuser=${rpcuser}
-rpcpassword=${rpcpassword}
+echo "[pivx pre-start] Writing default config for PIVX to ${file}"
+
+cat >${file} <<EOF
+rpcuser=${PIVX_RPCUSER}
+rpcpassword=${PIVX_RPCPASSWORD}
 walletnotify=/bin/bash ${PIVX_DATA_DIR}/walletnotify.sh %s
 EOF
-fi
 
 
 # --------------------
@@ -52,12 +69,12 @@ fi
 # This assumes the service runs in docker and is addressable as "api"
 walletnotify="${PIVX_DATA_DIR}/walletnotify.sh"
 if [[ -f "${file}" ]]; then
-    echo "[pivx pre-start] ✓ The file ${walletnotify} exists"
-else
-    echo "[pivx pre-start] Writing walletnotify for PIVX to ${walletnotify}"
-    cat >${walletnotify} <<EOF
+    echo "[pivx pre-start] WARN: The file ${walletnotify} exists, overwriting."
+fi
+
+echo "[pivx pre-start] Writing walletnotify for PIVX to ${walletnotify}"
+cat >${walletnotify} <<EOF
 #!/usr/bin/env bash
 
-curl -X POST http://api/pivx/walletnotify/\$1
+${PIVX_WALLETNOTIFY_CMD}
 EOF
-fi

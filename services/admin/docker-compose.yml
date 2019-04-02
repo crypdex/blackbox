@@ -9,7 +9,6 @@ services:
   admin:
     image: crypdex/blackbox-admin:v0.0.11
     container_name: admin
-    restart: "unless-stopped"
     environment:
       - BLACKBOX_DIR=/root/blackbox
     volumes:

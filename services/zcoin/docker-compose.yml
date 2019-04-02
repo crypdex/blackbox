@@ -6,7 +6,6 @@ services:
   zcoin:
     image: crypdex/zcoin
     container_name: zcoin
-    restart: "unless-stopped"
     ports:
       - "8888:8888" # RPC
       - "8168:8168" # P2P

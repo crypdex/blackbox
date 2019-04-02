@@ -5,7 +5,7 @@ import (
 	"io/ioutil"
 	"os"
 
-	"github.com/logrusorgru/aurora"
+	"github.com/crypdex/blackbox/system"
 
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
@@ -13,6 +13,8 @@ import (
 )
 
 var cfgFile string
+var env *system.Env
+var debug bool
 
 var (
 	version = "dev"
@@ -43,6 +45,8 @@ func init() {
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
 	rootCmd.PersistentFlags().StringVar(&cfgFile, "config", "", "config file (default is $HOME/.crypdex/blackbox.yaml)")
+
+	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "debug is off by default")
 
 	// Cobra also supports local flags, which will only run
 	// when this action is called directly.
@@ -87,6 +91,9 @@ func initConfig() {
 	} else {
 		fatal(err)
 	}
+
+	// Set the global env
+	env = system.NewEnv(viper.GetViper(), debug)
 }
 
 func setServicesDir(pwd string) {
@@ -117,8 +124,4 @@ func availableServices() (out []string, err error) {
 
 	}
 	return services, nil
-}
-
-func info(message string) {
-	fmt.Println(aurora.BgBlack(" blackbox "), message)
 }

@@ -16,7 +16,8 @@ var infoCmd = &cobra.Command{
 	Short: "Displays the current configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 		displayBlackboxInfo()
-		client := docker.NewClient(viper.GetViper())
+
+		client := docker.NewClient(env)
 		client.ComposeConfig()
 	},
 }

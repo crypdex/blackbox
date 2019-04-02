@@ -5,7 +5,6 @@ version: "3.7"
 services:
   litecoin:
     image: uphold/litecoin-core:latest
-    restart: "unless-stopped"
     ports:
       - "9332:9332" # RPC
       - "9333:9333" # P2P
