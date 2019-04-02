@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  postgres:
+    image: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - ${POSTGRES_DATA_DIR:?POSTGRES_DATA_DIR required}:/var/lib/postgresql/data

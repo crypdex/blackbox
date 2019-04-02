@@ -5,7 +5,6 @@ import (
 
 	"github.com/crypdex/blackbox/system"
 
-	"github.com/logrusorgru/aurora"
 	"github.com/spf13/viper"
 )
 
@@ -37,6 +36,7 @@ func (client *Client) StackRemove(name string) {
 	args = append(args, name)
 
 	system.ExecCommand("docker", args, client.env.GetEnv(), client.env.Debug)
+
 }
 
 // ComposeConfig calls `docker-compose config` with all the right parameters
@@ -66,8 +66,4 @@ func (client *Client) formatServices(flagName string) []string {
 	}
 
 	return args
-}
-
-func info(message string) {
-	fmt.Println(aurora.BgBlack(" blackbox "), message)
 }

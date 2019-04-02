@@ -8,9 +8,13 @@ import (
 )
 
 func PrintInfo(message ...string) {
-	fmt.Println(aurora.BgBlack(" blackbox "), strings.Join(message, " "))
+	fmt.Println(aurora.BgBlack("   "), strings.Join(message, " "))
 }
 
 func PrintError(err error) {
-	fmt.Println(aurora.BgBlack(" blackbox "), aurora.Red(err.Error()))
+	PrintErrorString(err.Error())
+}
+
+func PrintErrorString(err string) {
+	fmt.Println(aurora.BgBlack("   "), aurora.Red(err))
 }

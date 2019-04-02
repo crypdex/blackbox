@@ -1,12 +1,11 @@
 version: "3.7"
 
-# While the RPC allow is set open, the ports only bind to localhost.
 
 services:
   portainer:
     image: portainer/portainer
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
-      - ${DATA_DIR:?DATA_DIR required}/portainer:/data
+      - ${PORTAINER_DATA_DIR:?PORTAINER_DATA_DIR required}:/data
     ports:
       - 9000:9000

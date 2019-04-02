@@ -3,12 +3,17 @@
 # Get the location of this script
 DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
+
+function print() {
+    echo "[pivx pre-start] ${1}"
+}
+
 # The PIVX pre-start needs to do the following
 # - Ensure that the data directory exists!
 # - Create the pivx.conf file
 # - Create the walletnotify.sh file
 
-echo "[pivx pre-start] Configuring PIVX"
+print "Configuring PIVX"
 
 if [[ -z "${PIVX_DATA_DIR}" ]]
 then
@@ -18,27 +23,27 @@ fi
 
 if [[ -z "${PIVX_WALLETNOTIFY_CMD}" ]]
 then
-  echo "PIVX_WALLETNOTIFY_CMD is empty, setting default"
+  print "PIVX_WALLETNOTIFY_CMD is empty, setting default"
   PIVX_WALLETNOTIFY_CMD="echo \"PIVX tx received: \$1\""
 fi
 
 # 1. Ensure that the data directory exists!
 if [[ -d "${PIVX_DATA_DIR}" ]]; then
-echo "[pivx pre-start] ✓ Data directory ${PIVX_DATA_DIR} exists."
+print "✓ Data directory ${PIVX_DATA_DIR} exists."
 else
-    echo "[pivx pre-start] Creating directory for data at ${PIVX_DATA_DIR}"
+    print "Creating directory for data at ${PIVX_DATA_DIR}"
     mkdir -p ${PIVX_DATA_DIR}
 fi
 
 if [[ -z "${PIVX_RPCUSER}" ]]
 then
-  echo "PIVX_RPCUSER is empty, generating one"
+  print "PIVX_RPCUSER is empty, generating one"
   PIVX_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
 fi
 
 if [[ -z "${PIVX_RPCPASSWORD}" ]]
 then
-  echo "PIVX_RPCPASSWORD is empty, generating one"
+  print "PIVX_RPCPASSWORD is empty, generating one"
   PIVX_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
 fi
 
@@ -50,10 +55,10 @@ fi
 file="${PIVX_DATA_DIR}/pivx.conf"
 
 if [[ -f "${file}" ]]; then
-    echo "[pivx pre-start] WARN: Config file ${file} exists. Overwriting."
+    print "WARN: Config file ${file} exists. Overwriting."
 fi
 
-echo "[pivx pre-start] Writing default config for PIVX to ${file}"
+print "Writing default config for PIVX to ${file}"
 
 cat >${file} <<EOF
 rpcuser=${PIVX_RPCUSER}
@@ -78,3 +83,4 @@ cat >${walletnotify} <<EOF
 
 ${PIVX_WALLETNOTIFY_CMD}
 EOF
+

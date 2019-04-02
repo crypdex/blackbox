@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"fmt"
+	"github.com/crypdex/blackbox/system"
 
 	"github.com/crypdex/blackbox/docker"
 
@@ -23,13 +23,13 @@ var infoCmd = &cobra.Command{
 }
 
 func displayBlackboxInfo() {
-	fmt.Println("version:", version)
-	fmt.Println("commit:", commit)
-	fmt.Println("date:", date)
+	system.PrintInfo("version:", version)
+	system.PrintInfo("commit:", commit)
+	system.PrintInfo("date:", date)
 
 	settings, _ := yaml.Marshal(viper.AllSettings())
-	fmt.Println("config_file:", viper.ConfigFileUsed())
-	fmt.Println(string(settings))
+	system.PrintInfo("config_file:", viper.ConfigFileUsed())
+	system.PrintInfo("config:\n", string(settings))
 }
 
 func init() {

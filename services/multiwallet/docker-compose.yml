@@ -1,0 +1,18 @@
+version: "3.7"
+
+# WARNING: If you change the container name, ensure that the walletnotify_cmd is pointing correctly
+services:
+  multiwallet:
+    image: crypdex/blackbox-api:v0.0.19
+    environment:
+      - PORT=80
+      - CHAINS=${MULTIWALLET_CHAINS} # CHAINS can be empty for now
+      - DATA_DIR=/root/data # This references the mounted point (may not be necessary anymore)
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}:/root/data
+    ports:
+      - "80:80"
+    depends_on:
+      - postgres
+    command:
+      ["/root/wait-for-it/wait-for-it.sh", "postgres:5432", "--", "./app"]

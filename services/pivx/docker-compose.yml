@@ -1,11 +1,8 @@
 version: '3.7'
 
-# While the RPC allow is set open, the ports only bind to localhost.
-
 services:
   pivx:
-    image: crypdex/pivx:3.1
-    # Ports are exposed so that users can validate correctness of the chain.
+    image: crypdex/pivx:v3.2
     ports:
       - '51472:51472'
       - '51473:51473'

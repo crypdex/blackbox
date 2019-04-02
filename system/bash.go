@@ -2,7 +2,6 @@ package system
 
 import (
 	"fmt"
-	"os"
 	"strconv"
 	"strings"
 	"time"
@@ -28,7 +27,8 @@ func ExecCommand(command string, args []string, env map[string]string, debug boo
 			case line := <-envCmd.Stdout:
 				PrintInfo(line)
 			case line := <-envCmd.Stderr:
-				fmt.Fprintln(os.Stderr, aurora.BgBlack(" blackbox "), aurora.Red(line))
+				PrintErrorString(line)
+				// fmt.Fprintln(os.Stderr, aurora.BgBlack("   "), aurora.Red(line))
 			}
 		}
 	}()
