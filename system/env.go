@@ -41,7 +41,10 @@ func (env *Env) inherited(service string) map[string]string {
 }
 
 func (env *Env) Environment() map[string]string {
-	output := make(map[string]string)
+	// output := make(map[string]string)
+	output := map[string]string{
+		"DATA_DIR": env.DataDir(),
+	}
 
 	environment := env.config.Sub("environment")
 	if environment != nil {
