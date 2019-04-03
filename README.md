@@ -12,7 +12,7 @@ The BlackboxOS builds on Docker container and orchestration tooling to address t
 <br/>
 One of the best reasons to use BlackboxOS is that the service definitions are maintained and kept up-to-date. This maintenance is critical to ensure that your services are running the right forks as projects evolve.
 
-## What sort of stuff can I do?
+## What sort of stuff can you do?
 
 Here are a few examples of what you can do with the BlackboxOS.
 
