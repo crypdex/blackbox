@@ -89,7 +89,7 @@ nfpm:
   files:
     'services/**/*': '/var/lib/blackbox/services'
     'recipes/**/*': '/var/lib/blackbox/recipes'
-    'scripts/blackbox.service': '/var/lib/blackbox/'
+    'scripts/blackbox.service': '/var/lib/blackbox/blackbox.service'
     # "path/**/glob": "/var/foo/glob"
 
   # Config files to add to your package. They are about the same as
@@ -105,7 +105,6 @@ nfpm:
   # Keys are the possible targets during the installation process
   # Values are the paths to the scripts which will be executed
   scripts:
-  #  preinstall: "scripts/preinstall.sh"
+#    preinstall: "scripts/preinstall.sh"
     postinstall: "scripts/postinstall.sh"
-  #  preremove: "scripts/preremove.sh"
-    postremove: "scripts/postremove.sh"
+#    postremove: "scripts/postremove.sh"
