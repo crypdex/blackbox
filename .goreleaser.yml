@@ -108,4 +108,4 @@ nfpm:
   #  preinstall: "scripts/preinstall.sh"
     postinstall: "scripts/postinstall.sh"
   #  preremove: "scripts/preremove.sh"
-  #  postremove: "scripts/postremove.sh"
+    postremove: "scripts/postremove.sh"
