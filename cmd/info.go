@@ -2,12 +2,12 @@ package cmd
 
 import (
 	"github.com/crypdex/blackbox/system"
+	yaml "gopkg.in/yaml.v2"
 
 	"github.com/crypdex/blackbox/docker"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	yaml "gopkg.in/yaml.v2"
 )
 
 // versionCmd represents the version command
@@ -15,8 +15,13 @@ var infoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Displays the current configuration",
 	Run: func(cmd *cobra.Command, args []string) {
+		system.PrintInfo("")
 		displayBlackboxInfo()
-
+		system.PrintInfo("")
+		for k, v := range env.Environment() {
+			system.PrintInfo(k, "=", v)
+		}
+		system.PrintInfo("")
 		client := docker.NewClient(env)
 		client.ComposeConfig()
 	},

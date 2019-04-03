@@ -9,7 +9,7 @@ services:
       - CHAINS=${MULTIWALLET_CHAINS} # CHAINS can be empty for now
       - DATA_DIR=/root/data # This references the mounted point (may not be necessary anymore)
     volumes:
-      - ${DATA_DIR:?DATA_DIR required}:/root/data
+      - ${MULTIWALLET_DATA_DIR:?MULTIWALLET_DATA_DIR required}:/root/data
     ports:
       - "80:80"
     depends_on:

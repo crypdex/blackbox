@@ -4,8 +4,6 @@ import (
 	"fmt"
 
 	"github.com/crypdex/blackbox/system"
-
-	"github.com/spf13/viper"
 )
 
 type Client struct {
@@ -17,7 +15,7 @@ func NewClient(env *system.Env) *Client {
 }
 
 func (client *Client) SwarmInit() {
-	system.ExecCommand("docker", []string{"swarm", "init"}, client.env.GetEnv(), client.env.Debug)
+	system.ExecCommand("docker", []string{"swarm", "init"}, client.env.Environment(), client.env.Debug)
 }
 
 func (client *Client) StackDeploy(name string) {
@@ -26,7 +24,7 @@ func (client *Client) StackDeploy(name string) {
 	args = append(args, client.StackServices()...)
 	args = append(args, name)
 
-	system.ExecCommand("docker", args, client.env.GetEnv(), client.env.Debug)
+	system.ExecCommand("docker", args, client.env.Environment(), client.env.Debug)
 }
 
 func (client *Client) StackRemove(name string) {
@@ -35,7 +33,7 @@ func (client *Client) StackRemove(name string) {
 	// args = append(args, client.StackServices()...)
 	args = append(args, name)
 
-	system.ExecCommand("docker", args, client.env.GetEnv(), client.env.Debug)
+	system.ExecCommand("docker", args, client.env.Environment(), client.env.Debug)
 
 }
 
@@ -43,7 +41,7 @@ func (client *Client) StackRemove(name string) {
 // I dont think there is a docker stack equivalent
 func (client *Client) ComposeConfig() {
 	args := append(client.ComposeServices(), "config")
-	system.ExecCommand("docker-compose", args, client.env.GetEnv(), client.env.Debug)
+	system.ExecCommand("docker-compose", args, client.env.Environment(), client.env.Debug)
 }
 
 func (client *Client) ComposeServices() []string {
@@ -57,11 +55,11 @@ func (client *Client) StackServices() []string {
 func (client *Client) formatServices(flagName string) []string {
 	var args []string
 
-	servicesDir := viper.GetString("services_dir")
-	services := viper.GetStringMap("services")
+	servicesDir := client.env.ServicesDir()
+	services := client.env.ServiceNames()
 
 	// Add up all the services files
-	for service := range services {
+	for _, service := range services {
 		args = append(args, flagName, fmt.Sprintf("%s/%s/docker-compose.yml", servicesDir, service))
 	}
 

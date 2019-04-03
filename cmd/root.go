@@ -1,8 +1,8 @@
 package cmd
 
 import (
+	"bufio"
 	"fmt"
-	"io/ioutil"
 	"os"
 
 	"github.com/crypdex/blackbox/system"
@@ -78,7 +78,10 @@ func initConfig() {
 
 		viper.SetConfigName("blackbox")
 
+		// SERVICES_DIR
 		setServicesDir(pwd)
+		setRecipesDir(pwd)
+		// DATA_DIR
 		viper.SetDefault("data_dir", home+"/.crypdex/data")
 	}
 
@@ -92,36 +95,52 @@ func initConfig() {
 		fatal(err)
 	}
 
+	if viper.GetString("recipe") != "" {
+		f, err := os.Open(viper.GetString("recipes_dir") + "/" + viper.GetString("recipe") + ".yml")
+		if err != nil {
+			fatal(err)
+		}
+
+		err = viper.MergeConfig(bufio.NewReader(f))
+		if err != nil {
+			fatal(err)
+		}
+	}
+
 	// Set the global env
 	env = system.NewEnv(viper.GetViper(), debug)
 }
 
-func setServicesDir(pwd string) {
-	// default services dir
-	servicesDir := viper.GetString("config_dir") + "/services"
+func setDir(pwd, name string) {
+	key := name + "_dir"
+	// Is the services_dir explicityly set? If so, dont set
+	if viper.GetString(key) != "" {
+		return
+	}
+
+	// default services dir LINUX
+	dir := "/var/lib/blackbox/" + name
+
+	// Does a services directory exist in the config?
+	configDir := viper.GetString("config_dir") + "/" + name
+	if _, err := os.Stat(configDir); !os.IsNotExist(err) {
+		dir = configDir
+	}
 
 	// Does a services directory exist in the `pwd`?
-	localDir := pwd + "/services"
+	localDir := pwd + "/" + name
 	if _, err := os.Stat(localDir); !os.IsNotExist(err) {
 		// directory exists
-		servicesDir = localDir
+		dir = localDir
 	}
 
-	viper.Set("services_dir", servicesDir)
+	viper.Set(key, dir)
 }
 
-func availableServices() (out []string, err error) {
-	defer handle(&err)
+func setServicesDir(pwd string) {
+	setDir(pwd, "services")
+}
 
-	info, err := ioutil.ReadDir(viper.GetString("services_dir"))
-	check(err)
-
-	var services = make([]string, 0)
-	for _, i := range info {
-		if i.IsDir() {
-			services = append(services, i.Name())
-		}
-
-	}
-	return services, nil
+func setRecipesDir(pwd string) {
+	setDir(pwd, "recipes")
 }

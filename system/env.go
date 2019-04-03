@@ -5,42 +5,98 @@ import (
 	"os"
 	"strings"
 
+	funk "github.com/thoas/go-funk"
+
 	"github.com/spf13/viper"
 )
 
 type Env struct {
-	globals *viper.Viper
-	Debug   bool
+	config *viper.Viper
+	Debug  bool
 }
 
 func NewEnv(config *viper.Viper, debug bool) *Env {
-	return &Env{globals: config, Debug: debug}
+	return &Env{config: config, Debug: debug}
 }
 
-// -----------
-// GLOBAL VARS
-// -----------
-
-func (env *Env) DataDir() string {
-	return env.globals.GetString("data_dir")
+func (env *Env) Recipe() string {
+	return env.config.GetString("recipe")
 }
 
+// At the root
 func (env *Env) ServicesDir() string {
-	return env.globals.GetString("services_dir")
+	return env.config.GetString("services_dir")
 }
 
-func (env *Env) Services() map[string]interface{} {
-	return env.globals.GetStringMap("services")
+// At the root
+func (env *Env) DataDir() string {
+	return env.config.GetString("data_dir")
 }
 
-func (env *Env) GetServiceConfig(service string) map[string]interface{} {
-	return env.globals.GetStringMap("services." + service)
+func (env *Env) inherited(service string) map[string]string {
+	prefix := strings.ToUpper(service) + "_"
+	return map[string]string{
+		prefix + "DATA_DIR": env.DataDir() + "/" + service,
+	}
+}
+
+func (env *Env) Environment() map[string]string {
+	output := make(map[string]string)
+
+	environment := env.config.Sub("environment")
+	if environment != nil {
+		for k, v := range environment.AllSettings() {
+			output[strings.ToUpper(k)] = v.(string)
+		}
+	}
+
+	services := env.ServiceNames()
+
+	for _, service := range services {
+		serviceEnv := env.ServiceEnvironment(service)
+
+		for key, value := range serviceEnv {
+			output[key] = value
+		}
+	}
+
+	return output
+}
+
+func (env *Env) ServiceEnvironment(service string) map[string]string {
+	// This is a map so that we can override
+	output := make(map[string]string)
+
+	services := env.config.Sub("services")
+	if services != nil {
+
+		for key, value := range env.inherited(service) {
+			output[key] = value
+		}
+
+		prefix := strings.ToUpper(service) + "_"
+
+		for key, value := range services.GetStringMapString(service) {
+			output[prefix+strings.ToUpper(key)] = value
+		}
+	}
+
+	return output
+}
+
+// ServiceNames returns a slice of all defined service names
+func (env *Env) ServiceNames() []string {
+	services := env.config.GetStringMap("services")
+	if services == nil {
+		return []string{}
+	}
+	return funk.Keys(services).([]string)
 }
 
 // Prestart runs the pre-start.sh script for all services if they exist
 func (env *Env) Prestart() {
 	// Add up all the services files
-	for service := range env.Services() {
+	for _, service := range env.ServiceNames() {
 		err := env.PrestartService(service)
 		if err != nil {
 			PrintError(err)
@@ -54,7 +110,7 @@ func (env *Env) PrestartService(service string) error {
 	if err != nil {
 		return err
 	}
-	ExecCommand("bash", []string{"-c", path}, env.GetServiceEnv(service), env.Debug)
+	ExecCommand("bash", []string{"-c", path}, env.ServiceEnvironment(service), env.Debug)
 	return nil
 }
 
@@ -66,36 +122,4 @@ func (env *Env) PrestartScript(service string) (string, error) {
 	}
 
 	return path, nil
-}
-
-func (env *Env) GetServiceEnv(service string) map[string]string {
-	prefix := strings.ToUpper(service) + "_"
-
-	// This is a map so that we can override
-	output := make(map[string]string)
-	// Default DATA_DIR namespaced for each service
-	output[prefix+"DATA_DIR"] = env.DataDir() + "/" + service
-
-	for key, value := range env.GetServiceConfig(service) {
-		output[prefix+strings.ToUpper(key)] = value.(string)
-	}
-	return output
-}
-
-// GetEnv needs to be move dout
-// There environment variables are made available by default to the docker stack command
-func (env *Env) GetEnv() map[string]string {
-	// This is a map so that we can override
-	output := map[string]string{
-		"DATA_DIR": env.DataDir(),
-	}
-
-	for service := range env.Services() {
-		serviceEnv := env.GetServiceEnv(service)
-		for k, v := range serviceEnv {
-			output[k] = v
-		}
-	}
-
-	return output
 }

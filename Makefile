@@ -166,6 +166,6 @@ else
 endif
 
 test-dist:
-	docker run -it -v $(shell pwd)/dist:/dist arm64v8/ubuntu:bionic
+	docker run -it -v $(shell pwd)/dist:/dist ubuntu:bionic
 
 	# apt install ./dist/blackbox_v0.0.24-snapshot_linux_x86_64.deb && ls /var/lib/blackbox/

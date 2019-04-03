@@ -88,7 +88,8 @@ nfpm:
   # Values are the destination locations of the files in the package.
   files:
     'services/**/*': '/var/lib/blackbox/services'
-    'services/blackbox.service': '/etc/systemd/system/blackbox.service'
+    'recipes/**/*': '/var/lib/blackbox/recipes'
+    'scripts/blackbox.service': '/etc/systemd/system/blackbox.service'
     # "path/**/glob": "/var/foo/glob"
 
   # Config files to add to your package. They are about the same as
@@ -105,6 +106,6 @@ nfpm:
   # Values are the paths to the scripts which will be executed
   scripts:
   #  preinstall: "scripts/preinstall.sh"
-  #  postinstall: "scripts/postinstall.sh"
+    postinstall: "scripts/postinstall.sh"
   #  preremove: "scripts/preremove.sh"
   #  postremove: "scripts/postremove.sh"
