@@ -2,19 +2,53 @@ package cmd
 
 import (
 	"fmt"
+	"os"
 
+	"github.com/crypdex/blackbox/system"
 	"github.com/spf13/cobra"
+	"gopkg.in/yaml.v2"
 )
+
+type Config struct {
+	Recipe   string                 `yaml:"recipe,omitempty"`
+	Services map[string]interface{} `yaml:"services,omitempty"`
+}
 
 // initCmd represents the init command
 var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initializes a device to run the BlackboxOS",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("init called")
+		config := new(Config)
+
+		recipe := cmd.Flag("recipe").Value.String()
+		if recipe != "" {
+			recipeFile := env.RecipesDir() + "/" + recipe + ".yml"
+			if _, err := os.Stat(recipeFile); os.IsNotExist(err) {
+				fatal(fmt.Errorf("%s does not exist (yet)", recipe))
+			} else {
+				config.Recipe = recipe
+			}
+		}
+
+		configfile := env.ConfigDir() + "/blackbox.yaml"
+		if _, err := os.Stat(configfile); !os.IsNotExist(err) {
+			// directory exists
+			system.PrintInfo("A config already exists at", configfile)
+			return
+		}
+
+		system.PrintInfo("Creating config at", configfile)
+
+		y, err := yaml.Marshal(config)
+		if err != nil {
+			system.PrintError(err)
+		}
+		system.PrintInfo(string(y))
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(initCmd)
+	initCmd.Flags().StringP("recipe", "r", "", "Define a pre-existing recipe")
 }
