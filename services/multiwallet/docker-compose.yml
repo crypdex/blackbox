@@ -3,7 +3,7 @@ version: "3.7"
 # WARNING: If you change the container name, ensure that the walletnotify_cmd is pointing correctly
 services:
   multiwallet:
-    image: crypdex/blackbox-api:v0.0.19
+    image: crypdex/blackbox-api:v0.0.20
     environment:
       - PORT=80
       - CHAINS=${MULTIWALLET_CHAINS} # CHAINS can be empty for now
