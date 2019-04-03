@@ -89,7 +89,7 @@ nfpm:
   files:
     'services/**/*': '/var/lib/blackbox/services'
     'recipes/**/*': '/var/lib/blackbox/recipes'
-    'scripts/blackbox.service': '/var/lib/blackbox/blackbox.service'
+    'scripts/blackbox.service': '/var/lib/blackbox/'
     # "path/**/glob": "/var/foo/glob"
 
   # Config files to add to your package. They are about the same as
