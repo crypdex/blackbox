@@ -6,8 +6,8 @@ Requires=docker.service
 [Service]
 # Environment=DATA_DIR=/root/data
 # WorkingDirectory=/root/blackbox
-ExecStart=blackbox start
-ExecStop=blackbox stop
+ExecStart=/usr/local/bin/blackbox start
+ExecStop=/usr/local/bin/blackbox stop
 Restart=on-failure
 RestartSec=5s
 
