@@ -6,10 +6,12 @@ deb-systemd-helper daemon-reload
 
 echo "[postinstall] Cleaning up Docker ..."
 blackbox cleanup
-sleep 1
-
-echo "[postinstall] Starting the systemd service ..."
-deb-systemd-invoke start blackbox.service
 
 sleep 5
+
 blackbox start
+
+# echo "[postinstall] Starting the systemd service ..."
+# deb-systemd-invoke start blackbox.service
+
+

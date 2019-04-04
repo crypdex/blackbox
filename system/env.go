@@ -42,6 +42,11 @@ func (env *Env) DataDir() string {
 	return env.config.GetString("data_dir")
 }
 
+// At the root
+func (env *Env) ForceSwarm() bool {
+	return env.config.GetBool("force_swarm")
+}
+
 func (env *Env) inherited(service string) map[string]string {
 	prefix := strings.ToUpper(service) + "_"
 	return map[string]string{

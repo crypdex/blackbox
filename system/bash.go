@@ -12,7 +12,7 @@ import (
 // ExecCommand needs to be moved outside of this package
 func ExecCommand(command string, args []string, env map[string]string, debug bool) cmd.Status {
 	envCmd := cmd.NewCmdOptions(
-		cmd.Options{Streaming: true},
+		cmd.Options{Buffered: true},
 		command,
 		args...,
 	)
@@ -20,17 +20,17 @@ func ExecCommand(command string, args []string, env map[string]string, debug boo
 	envCmd.Env = formatEnv(env)
 
 	// Print STDOUT and STDERR lines streaming from Cmd
-	go func() {
-		for {
-			select {
-			case line := <-envCmd.Stdout:
-				fmt.Println(line)
-			case line := <-envCmd.Stderr:
-				fmt.Println("error:", line)
-				// fmt.Fprintln(os.Stderr, aurora.BgBlack("   "), aurora.Red(line))
-			}
-		}
-	}()
+	// go func() {
+	// 	for {
+	// 		select {
+	// 		case line := <-envCmd.Stdout:
+	// 			fmt.Println(line)
+	// 		case line := <-envCmd.Stderr:
+	// 			fmt.Println("error:", line)
+	// 			// fmt.Fprintln(os.Stderr, aurora.BgBlack("   "), aurora.Red(line))
+	// 		}
+	// 	}
+	// }()
 
 	// DEBUG
 	if debug {
