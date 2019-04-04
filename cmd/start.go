@@ -41,6 +41,8 @@ var startCmd = &cobra.Command{
 		fmt.Println("Deploying stack ...")
 		status := client.StackDeploy("blackbox")
 		if status.Exit != 0 {
+			fmt.Println(strings.Join(status.Stdout, "\n"))
+			fmt.Println(strings.Join(status.Stderr, "\n"))
 			fatal(status.Error)
 			return
 		}
