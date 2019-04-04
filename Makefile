@@ -151,7 +151,12 @@ endif
 TAG?=
 
 release: require-tag
+	git tag ${TAG}
+	git push origin ${TAG}
 	goreleaser --rm-dist --debug
+
+release-test:
+	goreleaser --snapshot --skip-publish --rm-dist --debug
 
 # The Dockerfile uses the vendor dir to work around context issues.
 #release: require-tag
@@ -166,6 +171,6 @@ else
 endif
 
 test-dist:
-	docker run -it -v $(shell pwd)/dist:/dist arm64v8/ubuntu:bionic
+	docker run -it -v $(shell pwd)/dist:/dist ubuntu:bionic
 
-	# apt install ./dist/blackbox_v0.0.24-snapshot_linux_arm64v8.deb && ls /var/lib/blackbox/
+	# apt install ./dist/blackbox_v0.0.8-snapshot_linux_x86_64.deb && ls /var/lib/blackbox/
