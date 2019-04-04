@@ -1,8 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+
 	"github.com/crypdex/blackbox/docker"
-	"github.com/crypdex/blackbox/system"
 	"github.com/spf13/cobra"
 )
 
@@ -16,7 +17,7 @@ var startCmd = &cobra.Command{
 
 		env.Prestart()
 
-		system.PrintInfo("Ensuring that the Docker daemon is in swarm mode ...")
+		fmt.Println("Ensuring that the Docker daemon is in swarm mode ...")
 		client.SwarmInit()
 		client.StackDeploy("blackbox")
 	},

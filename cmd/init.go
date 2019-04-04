@@ -4,9 +4,8 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/crypdex/blackbox/system"
 	"github.com/spf13/cobra"
-	"gopkg.in/yaml.v2"
+	yaml "gopkg.in/yaml.v2"
 )
 
 type Config struct {
@@ -34,17 +33,17 @@ var initCmd = &cobra.Command{
 		configfile := env.ConfigDir() + "/blackbox.yaml"
 		if _, err := os.Stat(configfile); !os.IsNotExist(err) {
 			// directory exists
-			system.PrintInfo("A config already exists at", configfile)
+			fmt.Println("A config already exists at", configfile)
 			return
 		}
 
-		system.PrintInfo("Creating config at", configfile)
+		fmt.Println("Creating config at", configfile)
 
 		y, err := yaml.Marshal(config)
 		if err != nil {
-			system.PrintError(err)
+			fmt.Println(err)
 		}
-		system.PrintInfo(string(y))
+		fmt.Println(string(y))
 	},
 }
 

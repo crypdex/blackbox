@@ -111,13 +111,13 @@ func (env *Env) Prestart() {
 	for _, service := range env.ServiceNames() {
 		err := env.PrestartService(service)
 		if err != nil {
-			PrintError(err)
+			fmt.Println(err)
 		}
 	}
 }
 
 func (env *Env) PrestartService(service string) error {
-	PrintInfo(fmt.Sprintf("Running pre-start for %s", service))
+	fmt.Println(fmt.Sprintf("Running pre-start for %s", service))
 	path, err := env.PrestartScript(service)
 	if err != nil {
 		return err

@@ -25,9 +25,9 @@ func ExecCommand(command string, args []string, env map[string]string, debug boo
 		for {
 			select {
 			case line := <-envCmd.Stdout:
-				PrintInfo(line)
+				fmt.Println(line)
 			case line := <-envCmd.Stderr:
-				PrintErrorString(line)
+				fmt.Println("error:", line)
 				// fmt.Fprintln(os.Stderr, aurora.BgBlack("   "), aurora.Red(line))
 			}
 		}
@@ -36,12 +36,12 @@ func ExecCommand(command string, args []string, env map[string]string, debug boo
 	// DEBUG
 	if debug {
 		debugCmd := fmt.Sprintf("%s %s %s", strings.Join(formatEnv(env), " "), command, strings.Join(args, " "))
-		PrintInfo(aurora.Cyan(debugCmd).String())
+		fmt.Println(aurora.Cyan(debugCmd).String())
 	}
 
 	// Run and wait for Cmd to return, discard Status
 	status := <-envCmd.Start()
-	PrintInfo("exit code", strconv.Itoa(status.Exit))
+	fmt.Println("exit code", strconv.Itoa(status.Exit))
 	// Cmd has finished but wait for goroutine to print all lines
 	for len(envCmd.Stdout) > 0 || len(envCmd.Stderr) > 0 {
 		time.Sleep(10 * time.Millisecond)
