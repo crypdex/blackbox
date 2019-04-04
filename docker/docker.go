@@ -22,6 +22,10 @@ func (client *Client) Cleanup() cmd.Status {
 	return system.ExecCommand("bash", args, nil, client.env.Debug)
 }
 
+func (client *Client) SwarmLeave() {
+	system.ExecCommand("docker", []string{"swarm", "leave", "--force"}, client.env.Environment(), client.env.Debug)
+}
+
 func (client *Client) SwarmInit() {
 	system.ExecCommand("docker", []string{"swarm", "init"}, client.env.Environment(), client.env.Debug)
 }
