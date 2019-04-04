@@ -12,7 +12,6 @@ var stopCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		client := docker.NewClient(env)
-		// client.Cleanup()
 		client.StackRemove("blackbox")
 	},
 }
