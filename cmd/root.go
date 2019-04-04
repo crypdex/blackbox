@@ -6,8 +6,7 @@ import (
 	"os"
 
 	"github.com/crypdex/blackbox/system"
-
-	homedir "github.com/mitchellh/go-homedir"
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -92,7 +91,8 @@ func initConfig() {
 	if err := viper.ReadInConfig(); err == nil {
 		// info(fmt.Sprintf("config file => %s", viper.ConfigFileUsed()))
 	} else {
-		fatal(err)
+		fmt.Println("no config file found")
+		// fatal(errors.Wrap(err, "could not load a config"))
 	}
 
 	if viper.GetString("recipe") != "" {

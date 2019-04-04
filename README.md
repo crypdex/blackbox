@@ -8,29 +8,32 @@ The BlackboxOS is a pluggable platform for deploying multi-chain applications. I
 
 The BlackboxOS builds on Docker container and orchestration tooling to address the specific needs of running blockchain-centric networks including security, data management, and inter-process communication.
 
-**🎗Support and Maintenance**
-<br/>
-One of the best reasons to use BlackboxOS is that the service definitions are maintained and kept up-to-date. This maintenance is critical to ensure that your services are running the right forks as projects evolve.
+**👾Multiarch All The Things!**
 
-## What sort of stuff can I do?
+Deploy stacks on arm64 or x86 chipsets. Or both!
+
+**🎗Support and Maintenance**
+
+Service definitions, recipes, and images are maintained and kept up-to-date ensuring that your project is always running the right fork.
+
+## What sort of stuff can you do?
 
 Here are a few examples of what you can do with the BlackboxOS.
 
 - **SeedBox**: Create a device that keeps fresh copies of multiple blockchains always up to date.
-- **Staking Box**: Crypdex uses the BlackboxOS to configure, run, and maintain it's [PIVX Staking Node](https://crypdex.io/products/pivx-node).
+- **Staking Node**: Crypdex uses the BlackboxOS to configure, run, and maintain it's [PIVX Staking Node](https://crypdex.io/products/pivx-node).
 
-There should be some example configs in the `/examples` directory.
+There are some preconfigured recipes in the [`/recipes`](https://github.com/crypdex/blackbox/tree/master/recipes) directory.
 
 ## Features
 
 <img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/screenshot.png" width=330 align="right">
 
-- Update framework
 - Portable, Docker-based services
 - Multiarch support: Runs on x86_64 and arm64 devices
 - Optimized for multiple full nodes
-- Unified multi-chain deterministic wallet
-- Expandable with new chains
+- Unified multi-chain deterministic wallet available
+- Expandable with new chains. Dynamically.
 - Accessible via CLI, HTTP API, native RPCs, and GUI (under development)
 
 # Getting Started
@@ -40,10 +43,10 @@ A CLI mediates all interaction with the BlackboxOS.
 ### Get started in 3 easy steps
 
 0. Download a [release](https://github.com/crypdex/blackbox/releases) for your platform. There is an `apt` repo available soon for Debian variants.
-1. Initialize your system with specific services `-s`
+1. Initialize your system with a recipe
 
 ```shell
-$ blackbox init -s pivx -s crypdex-wallet
+$ blackbox init -r crypdex/pivx-stakebox
 ```
 
 2. Start er up
@@ -54,7 +57,7 @@ $ blackbox start
 
 3. Profit! 🎉
 
-Configuration is kept in a `yaml` config file, but you shouldn't need to edit it directly.
+Configuration is kept in a `yaml` config file that you might want to edit.
 
 ## System Requirements
 
@@ -67,12 +70,12 @@ BlackboxOS makes some assumptions about your deployment environment.
 
 ## Hardware Requirements
 
-The BlackboxOS currently supports `arm64v8` and `x86_64` architectures so assuming you have enough RAM, CPU, and disc space to accomidate all the service syou want to run, it should work on everything from a RaspberryPi 3 or Odroid C2 to an Intel NUC or cloud image.
+The BlackboxOS currently supports `arm64v8` and `x86_64` architectures so assuming you have enough RAM, CPU, and disc space to accomidate all the services you want to run, it should work on everything from a RaspberryPi 3 or Odroid C2 to an Intel NUC or cloud image.
 
 Here are some suggestions
 
-- **\>= 2GB RAM**. You can get away with 1GB RAM with swap enabled, but its gonna be a little slow.
-- **\>= 64GB volume space**. Probably less than 1TB.
+- **\>= 2GB RAM**. You can get away with 1GB RAM with swap enabled, but its gonna be a little slow. You may want to add swap anyway when running on a SBC.
+- **\>= 64GB disc space**. Probably less than 1TB. Depends on your chain(s)
 - `x86_64` or `arm64v8` chipsets.
 
 Volume space requirements are entirely dependent on which services you are running. Chains like PIVX on the smaller end consume about 18GB of space while Bitcoin needs upwards of 250GB. This of course changes gradually to the upside.

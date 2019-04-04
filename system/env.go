@@ -19,6 +19,10 @@ func NewEnv(config *viper.Viper, debug bool) *Env {
 	return &Env{config: config, Debug: debug}
 }
 
+func (env *Env) ConfigDir() string {
+	return env.config.GetString("config_dir")
+}
+
 func (env *Env) Recipe() string {
 	return env.config.GetString("recipe")
 }
@@ -26,6 +30,11 @@ func (env *Env) Recipe() string {
 // At the root
 func (env *Env) ServicesDir() string {
 	return env.config.GetString("services_dir")
+}
+
+// At the root
+func (env *Env) RecipesDir() string {
+	return env.config.GetString("recipes_dir")
 }
 
 // At the root
