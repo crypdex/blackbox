@@ -2,10 +2,6 @@ services:
   portainer:
   postgres:
   multiwallet:
-#    data_dir: &data_dir
-    chains: pivx zcoin
+    chains: pivx
   pivx:
     walletnotify_cmd: curl -X POST http://multiwallet/pivx/walletnotify/$1
-    # rpcuser: crypdex
-    # rpcpassword: blackbox
-    #  data_dir: /root/data/pivx
