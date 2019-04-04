@@ -16,6 +16,12 @@ func NewClient(env *system.Env) *Client {
 	return &Client{env: env}
 }
 
+func (client *Client) Cleanup() cmd.Status {
+	// docker ps -aq --no-trunc -f status=exited
+	args := []string{"-c", "docker ps -aq --no-trunc -f status=exited | xargs docker rm"}
+	return system.ExecCommand("bash", args, nil, client.env.Debug)
+}
+
 func (client *Client) SwarmInit() {
 	system.ExecCommand("docker", []string{"swarm", "init"}, client.env.Environment(), client.env.Debug)
 }

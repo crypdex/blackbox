@@ -2,7 +2,6 @@ package system
 
 import (
 	"fmt"
-	"strconv"
 	"strings"
 	"time"
 
@@ -41,7 +40,7 @@ func ExecCommand(command string, args []string, env map[string]string, debug boo
 
 	// Run and wait for Cmd to return, discard Status
 	status := <-envCmd.Start()
-	fmt.Println("exit code", strconv.Itoa(status.Exit))
+	// fmt.Println("exit code", strconv.Itoa(status.Exit))
 	// Cmd has finished but wait for goroutine to print all lines
 	for len(envCmd.Stdout) > 0 || len(envCmd.Stderr) > 0 {
 		time.Sleep(10 * time.Millisecond)

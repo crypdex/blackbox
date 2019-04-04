@@ -107,6 +107,7 @@ func (env *Env) ServiceNames() []string {
 
 // Prestart runs the pre-start.sh script for all services if they exist
 func (env *Env) Prestart() {
+	fmt.Println("Running prestart for", env.ServiceNames())
 	// Add up all the services files
 	for _, service := range env.ServiceNames() {
 		err := env.PrestartService(service)

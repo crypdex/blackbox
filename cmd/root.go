@@ -6,7 +6,7 @@ import (
 	"os"
 
 	"github.com/crypdex/blackbox/system"
-	"github.com/mitchellh/go-homedir"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
@@ -81,7 +81,7 @@ func initConfig() {
 		setServicesDir(pwd)
 		setRecipesDir(pwd)
 		// DATA_DIR
-		viper.SetDefault("data_dir", home+"/.crypdex/data")
+		setDataDir(home)
 	}
 
 	// ENV OVERRIDES ALL OTHER SETTINGS!
@@ -107,8 +107,21 @@ func initConfig() {
 		}
 	}
 
+	checkDataDir()
 	// Set the global env
 	env = system.NewEnv(viper.GetViper(), debug)
+}
+
+func setDataDir(home string) {
+	viper.SetDefault("data_dir", home+"/.crypdex/data")
+}
+
+func checkDataDir() {
+	dir := viper.GetString("data_dir")
+	if _, err := os.Stat(dir); os.IsNotExist(err) {
+		fmt.Println("WARN: data_dir", dir, "does not exist")
+		system.ExecCommand("mkdir", []string{"-p", dir}, nil, true)
+	}
 }
 
 func setDir(pwd, name string) {

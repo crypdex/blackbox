@@ -9,8 +9,9 @@ Requires=docker.service
 ExecStart=/usr/local/bin/blackbox start
 ExecStop=/usr/local/bin/blackbox stop
 RemainAfterExit=yes
+# These params are ignored when RemainAfterExit=yes
 Restart=on-failure
-RestartSec=15s
+RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target
