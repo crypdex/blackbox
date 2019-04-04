@@ -34,6 +34,7 @@ changelog:
 # .goreleaser.yml
 nfpm:
   # You can change the name of the package.
+  name: crypdex-blackbox
   # Default: `{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}`
   name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
 
