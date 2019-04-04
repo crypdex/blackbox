@@ -4,3 +4,5 @@ echo "enabling the systemd service"
 deb-systemd-invoke enable blackbox.service
 deb-systemd-helper daemon-reload
 deb-systemd-invoke start blackbox.service
+sleep 3
+blackbox start
