@@ -10,7 +10,7 @@ ExecStart=/usr/local/bin/blackbox start
 ExecStop=/usr/local/bin/blackbox stop
 RemainAfterExit=yes
 Restart=on-failure
-RestartSec=5s
+RestartSec=15s
 
 [Install]
 WantedBy=multi-user.target

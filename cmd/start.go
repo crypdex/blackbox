@@ -19,7 +19,10 @@ var startCmd = &cobra.Command{
 
 		fmt.Println("Ensuring that the Docker daemon is in swarm mode ...")
 		client.SwarmInit()
-		client.StackDeploy("blackbox")
+		status := client.StackDeploy("blackbox")
+		if status.Exit != 0 {
+			fatal(status.Error)
+		}
 	},
 }
 

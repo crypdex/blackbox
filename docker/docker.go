@@ -3,6 +3,8 @@ package docker
 import (
 	"fmt"
 
+	"github.com/go-cmd/cmd"
+
 	"github.com/crypdex/blackbox/system"
 )
 
@@ -18,13 +20,13 @@ func (client *Client) SwarmInit() {
 	system.ExecCommand("docker", []string{"swarm", "init"}, client.env.Environment(), client.env.Debug)
 }
 
-func (client *Client) StackDeploy(name string) {
+func (client *Client) StackDeploy(name string) cmd.Status {
 	args := []string{"stack"}
 	args = append(args, "deploy")
 	args = append(args, client.StackServices()...)
 	args = append(args, name)
 
-	system.ExecCommand("docker", args, client.env.Environment(), client.env.Debug)
+	return system.ExecCommand("docker", args, client.env.Environment(), client.env.Debug)
 }
 
 func (client *Client) StackRemove(name string) {

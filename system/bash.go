@@ -11,7 +11,7 @@ import (
 )
 
 // ExecCommand needs to be moved outside of this package
-func ExecCommand(command string, args []string, env map[string]string, debug bool) {
+func ExecCommand(command string, args []string, env map[string]string, debug bool) cmd.Status {
 	envCmd := cmd.NewCmdOptions(
 		cmd.Options{Streaming: true},
 		command,
@@ -46,6 +46,8 @@ func ExecCommand(command string, args []string, env map[string]string, debug boo
 	for len(envCmd.Stdout) > 0 || len(envCmd.Stderr) > 0 {
 		time.Sleep(10 * time.Millisecond)
 	}
+
+	return status
 }
 
 func formatEnv(env map[string]string) []string {
