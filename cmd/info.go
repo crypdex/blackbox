@@ -2,6 +2,7 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
 
 	yaml "gopkg.in/yaml.v2"
 
@@ -24,7 +25,12 @@ var infoCmd = &cobra.Command{
 		}
 		fmt.Println("")
 		client := docker.NewClient(env)
-		client.ComposeConfig()
+		status := client.ComposeConfig()
+		if status.Error != nil {
+			fatal(status.Error)
+		}
+
+		fmt.Println(strings.Join(status.Stdout, "\n"))
 	},
 }
 

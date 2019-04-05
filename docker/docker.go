@@ -77,9 +77,9 @@ func (client *Client) StackRemove(name string) {
 
 // ComposeConfig calls `docker-compose config` with all the right parameters
 // I dont think there is a docker stack equivalent
-func (client *Client) ComposeConfig() {
+func (client *Client) ComposeConfig() cmd.Status {
 	args := append(client.ComposeServices(), "config")
-	system.ExecCommand("docker-compose", args, client.env.Environment(), client.env.Debug)
+	return system.ExecCommand("docker-compose", args, client.env.Environment(), client.env.Debug)
 }
 
 func (client *Client) ComposeServices() []string {

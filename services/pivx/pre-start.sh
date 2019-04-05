@@ -55,10 +55,9 @@ fi
 file="${PIVX_DATA_DIR}/pivx.conf"
 
 if [[ -f "${file}" ]]; then
-    print "WARN: Config file ${file} exists. Overwriting."
-fi
-
-print "Writing default config for PIVX to ${file}"
+    print "WARN: Config file ${file} exists. Not overwriting."
+else
+    print "Writing default config for PIVX to ${file}"
 
 # Be aware that the location of the walletnotify script is relative to the container
 cat >${file} <<EOF
@@ -66,7 +65,7 @@ rpcuser=${PIVX_RPCUSER}
 rpcpassword=${PIVX_RPCPASSWORD}
 walletnotify=/bin/bash /home/pivx/.pivx/walletnotify.sh %s
 EOF
-
+fi
 
 # --------------------
 # WALLET NOTIFY SCRIPT
