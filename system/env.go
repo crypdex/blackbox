@@ -42,6 +42,11 @@ func (env *Env) DataDir() string {
 	return env.config.GetString("data_dir")
 }
 
+// At the root
+func (env *Env) ForceSwarm() bool {
+	return env.config.GetBool("force_swarm")
+}
+
 func (env *Env) inherited(service string) map[string]string {
 	prefix := strings.ToUpper(service) + "_"
 	return map[string]string{
@@ -107,17 +112,18 @@ func (env *Env) ServiceNames() []string {
 
 // Prestart runs the pre-start.sh script for all services if they exist
 func (env *Env) Prestart() {
+	fmt.Println("Running prestart for", env.ServiceNames())
 	// Add up all the services files
 	for _, service := range env.ServiceNames() {
 		err := env.PrestartService(service)
 		if err != nil {
-			PrintError(err)
+			fmt.Println(err)
 		}
 	}
 }
 
 func (env *Env) PrestartService(service string) error {
-	PrintInfo(fmt.Sprintf("Running pre-start for %s", service))
+	fmt.Println(fmt.Sprintf("Running pre-start for %s", service))
 	path, err := env.PrestartScript(service)
 	if err != nil {
 		return err
