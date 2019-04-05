@@ -1,6 +1,9 @@
 package cmd
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/crypdex/blackbox/docker"
 	"github.com/spf13/cobra"
 )
@@ -12,7 +15,11 @@ var stopCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		client := docker.NewClient(env)
-		client.StackRemove("blackbox")
+		status := client.StackRemove("blackbox")
+		if status.Error != nil {
+			fatal(status.Error)
+		}
+		fmt.Println(strings.Join(status.Stdout, "\n"))
 	},
 }
 
