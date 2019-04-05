@@ -60,10 +60,11 @@ fi
 
 print "Writing default config for PIVX to ${file}"
 
+# Be aware that the location of the walletnotify script is relative to the container
 cat >${file} <<EOF
 rpcuser=${PIVX_RPCUSER}
 rpcpassword=${PIVX_RPCPASSWORD}
-walletnotify=/bin/bash ${PIVX_DATA_DIR}/walletnotify.sh %s
+walletnotify=/bin/bash /home/pivx/.pivx/walletnotify.sh %s
 EOF
 
 
