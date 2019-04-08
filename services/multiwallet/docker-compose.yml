@@ -3,7 +3,7 @@ version: "3.7"
 # WARNING: If you change the container name, ensure that the walletnotify_cmd is pointing correctly
 services:
   multiwallet:
-    image: crypdex/multiwallet:v0.0.25
+    image: crypdex/multiwallet:v0.0.26
     environment:
       - PORT=80
       - CHAINS=${MULTIWALLET_CHAINS} # CHAINS can be empty for now
