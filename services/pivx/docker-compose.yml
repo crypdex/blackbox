@@ -10,8 +10,4 @@ services:
       - ${PIVX_DATA_DIR:?PIVX_DATA_DIR required}:/home/pivx/.pivx
     # command: -rpcallowip=172.0.0.0/8
     # Command-line options override values set in the configuration file.
-    command: -rpcallowip=0.0.0.0/0
-      -enablezeromint=0
-      -checkblocks=25
-      -maxconnections=10
-      -printtoconsole
+    command: ${PIVX_COMMAND}

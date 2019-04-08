@@ -1,3 +1,9 @@
 services:
+  portainer:
   pivx:
-
+    command: -rpcallowip=0.0.0.0/0
+      -enablezeromint=0
+      -checkblocks=25
+      -maxconnections=256
+      -printtoconsole
+      -masternode=1
