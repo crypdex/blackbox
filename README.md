@@ -1,6 +1,8 @@
 <img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/logo2.png" width=300>
 
 # BlackboxOS
+ 
+An ARM-first, pluggable framework for multi-chain deployments.
 
 <!-- START doctoc generated TOC please keep comment here to allow auto update -->
 <!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
