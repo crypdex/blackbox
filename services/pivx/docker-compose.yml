@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   pivx:
-    image: crypdex/pivx:v3.2
+    image: crypdex/pivx:${PIVX_VERSION:-3.2}
     ports:
       - '51472:51472'
       - '51473:51473'
