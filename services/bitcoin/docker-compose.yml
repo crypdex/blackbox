@@ -1,0 +1,20 @@
+version: "3.7"
+
+services:
+  bitcoin:
+    image: crypdex/bitcoin-core:${BITCOIN_VERSION:-0.17}
+    ports:
+      - "8332:8332" # RPC
+      - "8333:8333" # P2P
+      - "18332:18332"
+      - "18333:18333"
+      - "18443:18443"
+      - "18444:18444"
+    volumes:
+      - ${BITCOIN_DATA_DIR:?BITCOIN_DATA_DIR required}:/home/bitcoin/.bitcoin
+    # Command-line options override values set in the configuration file.
+    # -rpcallowip=0.0.0.0/0 -txindex=1 -printtoconsole
+    command: ${BITCOIN_COMMAND}
+
+
+

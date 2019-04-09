@@ -2,7 +2,7 @@ version: "3.7"
 
 services:
   litecoin:
-    image: crypdex/litecoin-core:0.16
+    image: crypdex/litecoin-core:${LITECOIN_VERSION:-0.16}
     ports:
       - "9332:9332" # RPC
       - "9333:9333" # P2P

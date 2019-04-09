@@ -1,0 +1,6 @@
+services:
+  portainer:
+  bitcoin:
+    command: -printtoconsole -txindex=1
+  litecoin:
+    command: -printtoconsole -txindex=1
