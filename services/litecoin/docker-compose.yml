@@ -1,17 +1,19 @@
 version: "3.7"
 
-# NOTE: THIS IS NOT A MULTIARCH IMAGE
-
 services:
   litecoin:
-    image: uphold/litecoin-core:latest
+    image: crypdex/litecoin-core:0.16
     ports:
       - "9332:9332" # RPC
       - "9333:9333" # P2P
+      - "19332:19332"
+      - "19333:19333"
+      - "19444:19444"
     volumes:
-      - ${DATA_DIR:?DATA_DIR required}/litecoin:/home/litecoin/.litecoin
+      - ${LITECOIN_DATA_DIR:?LITECOIN_DATA_DIR required}:/home/litecoin/.litecoin
     # Command-line options override values set in the configuration file.
-    command: -rpcallowip=0.0.0.0/0 -txindex=1 -printtoconsole
+    # -rpcallowip=0.0.0.0/0 -txindex=1 -printtoconsole
+    command: ${LITECOIN_COMMAND}
 
 
 
