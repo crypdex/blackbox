@@ -26,6 +26,13 @@ An ARM-first, pluggable framework for multi-chain deployments.
 
 The BlackboxOS is a pluggable platform for deploying multi-chain applications. It is used as the basis for all [Crypdex's](https://crypdex.io) Blackbox devices. Basic info and getting started stuff is on this page. Deeper dive documentation is currently accruing on the [Wiki](https://github.com/crypdex/blackbox/wiki).
 
+There are a few things that we think makes it particularly useful:
+
+1. It takes an ARM-first approach to its services. Service stacks should run reliably on both single board computers (like the RPi) as well as in the cloud.
+1. Built-in data management strategy. Sync your chain on super-fast machines and copy to your embedded device.
+1. Image maintenance. We make sure that blockchain images are updated to keep you on the right fork.
+1. It's just Docker. Add your own services and images to customize your deployment.
+
 ## Why?
 
 The BlackboxOS builds on Docker container and orchestration tooling to address the specific needs of running blockchain-centric networks including security, data management, and inter-process communication. The goal is to make creating blockchain stacks simple.
