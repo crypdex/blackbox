@@ -28,10 +28,10 @@ The BlackboxOS is a pluggable platform for deploying multi-chain applications. I
 
 There are a few things that we think makes it particularly useful:
 
-1. It takes an ARM-first approach to its services. Service stacks should run reliably on both single board computers (like the RPi) as well as in the cloud.
-1. Built-in data management strategy. Sync your chain on super-fast machines and copy to your embedded device.
-1. Image maintenance. We make sure that blockchain images are updated to keep you on the right fork.
-1. It's just Docker. Add your own services and images to customize your deployment.
+1. **It takes an ARM-first approach to its services.** Service stacks should run reliably on both single board computers (like the RPi) as well as in the cloud.
+1. **Built-in data management strategy.** Sync your chain on super-fast machines and copy to your embedded device.
+1. **Image maintenance.** We make sure that blockchain images are updated to keep you on the right fork.
+1. **It's just Docker.** Add your own services and images to customize your deployment.
 
 ## Why?
 
