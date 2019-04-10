@@ -4,6 +4,8 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/logrusorgru/aurora"
+
 	yaml "gopkg.in/yaml.v2"
 
 	"github.com/crypdex/blackbox/docker"
@@ -31,6 +33,7 @@ var infoCmd = &cobra.Command{
 		}
 
 		fmt.Println(strings.Join(status.Stdout, "\n"))
+		fmt.Println(aurora.Red(strings.Join(status.Stderr, "\n")))
 	},
 }
 

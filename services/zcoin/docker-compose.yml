@@ -1,18 +1,13 @@
-version: "3.7"
-
-# While the RPC allow is set open, the ports only bind to localhost.
+version: '3.7'
 
 services:
-  zcoin:
-    image: crypdex/zcoin
-    container_name: zcoin
+  pivx:
+    image: crypdex/zcoin:${ZCOIN_VERSION:-0.13.7}
     ports:
-      - "8888:8888" # RPC
-      - "8168:8168" # P2P
+      - '8168:8168'
+      - '8888:8888'
     volumes:
-      - ${DATA_DIR:?DATA_DIR required}/zcoin:/home/zcoin/.zcoin
+      - ${ZCOIN_DATA_DIR:?ZCOIN_DATA_DIR required}:/home/zcoin/.zcoin
+    # command: -rpcallowip=172.0.0.0/8
     # Command-line options override values set in the configuration file.
-    command: -rpcallowip=0.0.0.0/0 -txindex=1
-
-
-
+    command: ${ZCOIN_COMMAND}

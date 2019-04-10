@@ -9,6 +9,8 @@ services:
       -maxconnections=4
       -rpcthreads=2
       -maxorphantx=20
+    rpcuser: bitcoin
+    rpcpassword: insecure
   litecoin:
     command: -rpcallowip=0.0.0.0/0
       -txindex=1
@@ -18,3 +20,14 @@ services:
       -maxconnections=4
       -rpcthreads=2
       -maxorphantx=20
+    rpcuser: litecoin
+    rpcpassword: insecure
+  sparkswap:
+    ltc_rpc_user: litecoin
+    ltc_rpc_password: insecure
+    external_ltc_address: 0.0.0.0
+    btc_rpc_user: bitcoin
+    btc_rpc_password: insecure
+    external_btc_address: 0.0.0.0
+    rpc_user: QkREmj5ahCN23Ep3KAcXBNmo
+    rpc_password: DyUzQbCW5KrDEwhQ9M34Da9q
