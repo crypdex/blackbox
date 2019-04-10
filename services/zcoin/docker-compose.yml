@@ -10,4 +10,4 @@ services:
       - ${ZCOIN_DATA_DIR:?ZCOIN_DATA_DIR required}:/home/zcoin/.zcoin
     # command: -rpcallowip=172.0.0.0/8
     # Command-line options override values set in the configuration file.
-    command: ${ZCOIN_COMMAND}
+    command: ${ZCOIN_COMMAND:--printtoconsole}
