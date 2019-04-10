@@ -2,12 +2,10 @@ version: "3.7"
 
 services:
   dash:
-    image: crypdex/dash:latest
-    container_name: dash
+    image: crypdex/dash-core:${DASH_VERSION:-0.13}
     volumes:
-      - ${DATA_DIR:?DATA_DIR required}/dash:/home/dash/.dash
-    command: -rpcallowip=172.0.0.0/8 -txindex=1
-    ports: # HOST:CONTAINER
-      # - '127.0.0.1:8168:8168' # internal only - good default
-      # - '8888:8888' # open to the network - the exposes you!
-      - 127.0.0.1:9998:9998
+      - ${DASH_DATA_DIR:?DASH_DATA_DIR required}:/home/dash/.dash
+    command: ${DASH_COMMAND}
+    ports:
+      - 9998:9998 # RPC
+      - 9999:9996 # P2P
