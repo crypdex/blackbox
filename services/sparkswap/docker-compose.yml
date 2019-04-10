@@ -27,7 +27,7 @@ services:
       # This is populated externally w/ an engine
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
       # Persistent certs/keys for broker
-      - "${SPARKSWAP_SECURE_PATH:-~/.sparkswap/secure}:/secure"
+      - "${SPARKSWAP_SECURE_PATH:?SPARKSWAP_SECURE_PATH is required}:/secure"
     environment:
       - NODE_ENV=production
       # - DATA_DIR=${DATA_DIR:-}
