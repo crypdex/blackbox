@@ -5,7 +5,7 @@ services:
     image: crypdex/dash-core:${DASH_VERSION:-0.13}
     volumes:
       - ${DASH_DATA_DIR:?DASH_DATA_DIR required}:/home/dash/.dash
-    command: ${DASH_COMMAND}
+    command: ${DASH_COMMAND:--printtoconsole}
     ports:
       - 9998:9998 # RPC
       - 9999:9996 # P2P
