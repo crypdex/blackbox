@@ -56,6 +56,7 @@ func (client *Client) IsSwarmManager() (bool, error) {
 	return "true" == strings.Join(status.Stdout, ""), nil
 }
 
+// StackDeploy executes `docker stack deploy <name>`
 func (client *Client) StackDeploy(name string) cmd.Status {
 	args := []string{"stack"}
 	args = append(args, "deploy")

@@ -10,9 +10,15 @@ import (
 
 // startCmd represents the start command
 var startCmd = &cobra.Command{
-	Use:   "start",
+	Use:   "start [name]",
 	Short: "Start your Blackbox app",
+	Args:  cobra.MaximumNArgs(1),
 	Run: func(cmd *cobra.Command, args []string) {
+		name := "blackbox"
+		if len(args) > 0 {
+			name = args[0]
+		}
+
 		// When we start up, let's assure that we are in swarm mode
 		client := docker.NewClient(env)
 
@@ -38,8 +44,8 @@ var startCmd = &cobra.Command{
 
 		env.Prestart()
 
-		fmt.Println("Deploying stack ...")
-		status := client.StackDeploy("blackbox")
+		fmt.Printf("Deploying stack '%s' ...", name)
+		status := client.StackDeploy(name)
 		if status.Exit != 0 {
 			fmt.Println(strings.Join(status.Stdout, "\n"))
 			fmt.Println(strings.Join(status.Stderr, "\n"))

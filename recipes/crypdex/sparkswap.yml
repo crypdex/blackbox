@@ -1,6 +1,20 @@
 services:
   portainer:
   bitcoin:
-    command: -printtoconsole -txindex=1
+    command: -rpcallowip=0.0.0.0/0
+      -txindex=1
+      -printtoconsole
+      -dbcache=20
+      -maxmempool=20
+      -maxconnections=4
+      -rpcthreads=2
+      -maxorphantx=20
   litecoin:
-    command: -printtoconsole -txindex=1
+    command: -rpcallowip=0.0.0.0/0
+      -txindex=1
+      -printtoconsole
+      -dbcache=20
+      -maxmempool=20
+      -maxconnections=4
+      -rpcthreads=2
+      -maxorphantx=20
