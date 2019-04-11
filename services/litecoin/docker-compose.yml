@@ -13,7 +13,7 @@ services:
       - ${LITECOIN_DATA_DIR:?LITECOIN_DATA_DIR required}:/home/litecoin/.litecoin
     # Command-line options override values set in the configuration file.
     # -rpcallowip=0.0.0.0/0 -txindex=1 -printtoconsole
-    command: ${LITECOIN_COMMAND}
+    command: ${LITECOIN_COMMAND:--printtoconsole}
 
 
 
