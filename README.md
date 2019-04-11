@@ -24,7 +24,9 @@ An ARM-first, pluggable framework for multi-chain deployments.
 
 # Intro
 
-The BlackboxOS is a pluggable platform for deploying multi-chain applications. It is used as the basis for all [Crypdex's](https://crypdex.io) Blackbox devices. Basic info and getting started stuff is on this page. Deeper dive documentation is currently accruing on the [Wiki](https://github.com/crypdex/blackbox/wiki).
+The BlackboxOS is a pluggable platform for deploying multi-chain applications. It is used as the basis for all [Crypdex's](https://crypdex.io) Blackbox devices. Basic info and getting started stuff is on this page. 
+
+**[Read the Docs](https://crypdex.github.io/blackbox/)**.
 
 There are a few things that we think makes it particularly useful:
 
