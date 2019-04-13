@@ -1,4 +1,4 @@
-<img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/logo2.png" width=300>
+<img src="https://raw.githubusercontent.com/crypdex/blackbox/master/docs/assets/logo2.png" width=300>
 
 # BlackboxOS
  
@@ -49,8 +49,6 @@ Here are a few examples of what you can do with the BlackboxOS.
 There are some preconfigured recipes in the [`/recipes`](https://github.com/crypdex/blackbox/tree/master/recipes) directory.
 
 ## Features
-
-<img src="https://raw.githubusercontent.com/crypdex/blackbox/master/resources/images/screenshot.png" width=330 align="right">
 
 - 🐳Portable, Docker-based service stack.
 - 👾**Multiarch All The Things!** Runs on `x86` and `arm` chipsets.
