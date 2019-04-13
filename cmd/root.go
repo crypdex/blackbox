@@ -5,7 +5,7 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/crypdex/blackbox/system"
+	"github.com/crypdex/blackbox/cmd/system"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

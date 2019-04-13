@@ -6,7 +6,7 @@ import (
 
 	"github.com/go-cmd/cmd"
 
-	"github.com/crypdex/blackbox/system"
+	"github.com/crypdex/blackbox/cmd/system"
 )
 
 type Client struct {

@@ -176,4 +176,4 @@ test-dist:
 	# apt install ./dist/blackbox_v0.0.16-snapshot_linux_x86_64.deb && ls /var/lib/blackbox/
 
 
-UUID=c8490abb-50ee-4cfe-aa5f-a2af8d6bbab2       /mnt/T3 ext4    defaults,nosuid,nodev,nofail    0       1
+#UUID=21FCF2EF-A687-427E-ADBE-414864C5650E       /mnt/msata ext4    defaults,nosuid,nodev,nofail    0       1
