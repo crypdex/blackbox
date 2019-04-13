@@ -1,0 +1,14 @@
+{
+  "docs": {
+    "BlackboxOS": [
+      "blackbox-os/intro",
+      "blackbox-os/installation",
+      "blackbox-os/configuration",
+      "blackbox-os/conventions"
+    ],
+    "Blackbox Devices": ["blackbox-summary", "blackbox-pivx-staking-node"]
+  },
+  "docs-other": {
+    "First Category": ["doc4", "doc5"]
+  }
+}

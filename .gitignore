@@ -31,3 +31,5 @@ dist
 .blackbox.*.yml
 
 .vscode
+
+node_modules
