@@ -24,6 +24,7 @@ id_rsa_blackbox
 blackbox.conf
 
 dist
+build
 
 .blackbox.yaml
 .blackbox.*.yaml
