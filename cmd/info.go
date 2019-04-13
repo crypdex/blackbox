@@ -8,7 +8,7 @@ import (
 
 	yaml "gopkg.in/yaml.v2"
 
-	"github.com/crypdex/blackbox/docker"
+	"github.com/crypdex/blackbox/cmd/docker"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"

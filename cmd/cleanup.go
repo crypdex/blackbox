@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/crypdex/blackbox/docker"
+	"github.com/crypdex/blackbox/cmd/docker"
 	"github.com/spf13/cobra"
 )
 

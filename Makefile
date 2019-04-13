@@ -174,6 +174,3 @@ test-dist:
 	docker run -it -v $(shell pwd)/dist:/dist ubuntu:bionic
 
 	# apt install ./dist/blackbox_v0.0.16-snapshot_linux_x86_64.deb && ls /var/lib/blackbox/
-
-
-#UUID=21FCF2EF-A687-427E-ADBE-414864C5650E       /mnt/msata ext4    defaults,nosuid,nodev,nofail    0       1
