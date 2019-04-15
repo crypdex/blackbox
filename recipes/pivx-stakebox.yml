@@ -12,4 +12,5 @@ services:
       -rpcthreads=2
       -par=2
       -dbcache=20
+      -onlynet=ipv4
     walletnotify_cmd: curl -X POST http://multiwallet/pivx/walletnotify/$1

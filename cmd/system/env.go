@@ -44,7 +44,7 @@ func (env *Env) DataDir() string {
 
 // At the root
 func (env *Env) ForceSwarm() bool {
-	return env.config.GetBool("force_swarm")
+	return env.config.GetBool("swarm")
 }
 
 func (env *Env) inherited(service string) map[string]string {

@@ -26,10 +26,11 @@ blackbox.conf
 dist
 build
 
-.blackbox.yaml
-.blackbox.*.yaml
+blackbox.yml
+blackbox.*.yml
 .blackbox.yml
 .blackbox.*.yml
+
 
 .vscode
 

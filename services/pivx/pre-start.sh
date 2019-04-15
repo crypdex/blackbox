@@ -38,13 +38,13 @@ fi
 if [[ -z "${PIVX_RPCUSER}" ]]
 then
   print "PIVX_RPCUSER is empty, generating one"
-  PIVX_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
+  PIVX_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
 fi
 
 if [[ -z "${PIVX_RPCPASSWORD}" ]]
 then
   print "PIVX_RPCPASSWORD is empty, generating one"
-  PIVX_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
+  PIVX_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
 fi
 
 # -----------

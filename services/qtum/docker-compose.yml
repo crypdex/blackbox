@@ -1,0 +1,13 @@
+version: '3.7'
+
+services:
+  qtum:
+    image: crypdex/qtum:${QTUM_VERSION:-0.17}
+    ports:
+      - '3888:3888' # P2P
+      - '3889:3889' # RPC
+    volumes:
+      - ${QTUM_DATA_DIR:?QTUM_DATA_DIR required}:/home/qtum/.qtum
+    # command: -rpcallowip=172.0.0.0/8
+    # Command-line options override values set in the configuration file.
+    command: ${QTUM_COMMAND:--printtoconsole}

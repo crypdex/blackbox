@@ -23,7 +23,7 @@ var (
 
 // rootCmd represents the base command when called without any subcommands
 var rootCmd = &cobra.Command{
-	Use:   "blackbox",
+	Use:   "blackboxd",
 	Short: "A pluggable platform for multi-chain deployments ",
 }
 
@@ -43,7 +43,7 @@ func init() {
 	// Here you will define your flags and configuration settings.
 	// Cobra supports persistent flags, which, if defined here,
 	// will be global for your application.
-	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.crypdex/blackbox.yaml)")
+	rootCmd.PersistentFlags().StringVarP(&cfgFile, "config", "c", "", "config file (default is $HOME/.blackbox/blackbox.yml)")
 
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "debug is off by default")
 
@@ -54,35 +54,34 @@ func init() {
 
 // initConfig reads in config file and ENV variables if set.
 func initConfig() {
+	// Find home directory.
+	home, err := homedir.Dir()
+	fatal(err)
+
+	// Pwd
+	pwd, err := os.Getwd()
+	fatal(err)
+
+	configPath := home + "/.blackbox"
+	viper.Set("config_dir", configPath)
 
 	if cfgFile != "" {
 		// Use config file from the flag.
 		viper.SetConfigFile(cfgFile)
 
 	} else {
-		// Find home directory.
-		home, err := homedir.Dir()
-		fatal(err)
-
-		// Pwd
-		pwd, err := os.Getwd()
-		fatal(err)
-
 		// pwd is the first path we look in ...
 		viper.AddConfigPath(pwd)
-
-		configPath := home + "/.crypdex"
 		viper.AddConfigPath(configPath)
-		viper.Set("config_dir", configPath)
 
 		viper.SetConfigName("blackbox")
-
-		// SERVICES_DIR
-		setServicesDir(pwd)
-		setRecipesDir(pwd)
-		// DATA_DIR
-		setDataDir(home)
 	}
+
+	// SERVICES_DIR
+	setServicesDir(pwd)
+	setRecipesDir(pwd)
+	// DATA_DIR
+	setDataDir(home)
 
 	// ENV OVERRIDES ALL OTHER SETTINGS!
 	viper.AutomaticEnv() // read in environment variables that match
@@ -113,7 +112,7 @@ func initConfig() {
 }
 
 func setDataDir(home string) {
-	viper.SetDefault("data_dir", home+"/.crypdex/data")
+	viper.SetDefault("data_dir", home+"/.blackbox/data")
 }
 
 func checkDataDir() {

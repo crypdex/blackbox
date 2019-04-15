@@ -23,7 +23,7 @@ var startCmd = &cobra.Command{
 		client := docker.NewClient(env)
 
 		if env.ForceSwarm() {
-			fmt.Println("Found force_swarm setting.")
+			fmt.Println("Found swarm setting.")
 			isManager, err := client.IsSwarmManager()
 			if err != nil {
 				fatal(err)
