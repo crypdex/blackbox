@@ -27,7 +27,18 @@ Assuming you are installing via package, you have a couple of choices
 
 ### Install from the `apt` Repo
 
-Sike! There is no `apt` repo at the moment. Don't worry though, this is getting set up now.
+Add the following to `/etc/apt/sources.list` or ` /etc/apt/sources.list.d/fury.list`
+
+```
+deb [trusted=yes] https://apt.fury.io/crypdex/ /
+```
+
+and then install normally
+
+```shell
+$ apt update && apt install blackboxd
+
+```
 
 ### Manual Package Installation
 
