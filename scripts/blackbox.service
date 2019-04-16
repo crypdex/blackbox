@@ -4,14 +4,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-# Environment=DATA_DIR=/root/data
-# WorkingDirectory=/root/blackbox
 ExecStart=/usr/local/bin/blackboxd start
-ExecStop=/usr/local/bin/blackboxd stop
-RemainAfterExit=yes
-# These params are ignored when RemainAfterExit=yes
-Restart=on-failure
-RestartSec=10s
 
 [Install]
 WantedBy=multi-user.target

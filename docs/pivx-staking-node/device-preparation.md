@@ -5,6 +5,8 @@
 The following sequence is followed to prepare a device for delivery.
 
 - Install the [image](https://wiki.odroid.com/odroid-c2/os_images/ubuntu/ubuntu) from Odroid. Armbian does not work as well.
+- Add the BlackboxOS repository
+    - `deb [trusted=yes] https://apt.fury.io/crypdex/ /`
 - Install required software
     - [docker](https://docs.docker.com/install/linux/docker-ce/ubuntu/)
     - [avahi](https://gist.github.com/davisford/5984768)
@@ -35,7 +37,7 @@ The following sequence is followed to prepare a device for delivery.
 - Install Docker Compose (optional)
     
     ```
-    scp tools/docker-compose-Linux-aarch64 root@crypdex-0000.local:/usr/local/bin/docker-compose
+    scp tools/docker-compose-Linux-aarch64 root@crypdex.local:/usr/local/bin/docker-compose
     chmod +x /usr/local/bin/docker-compose
     ```
     

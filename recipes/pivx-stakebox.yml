@@ -4,13 +4,11 @@ services:
   multiwallet:
     chains: pivx
   pivx:
-    command: -rpcallowip=0.0.0.0/0
+    command:
+      -rpcallowip=0.0.0.0/0
       -enablezeromint=0
       -checkblocks=25
       -maxconnections=10
       -printtoconsole
       -rpcthreads=2
-      -par=2
-      -dbcache=20
-      -onlynet=ipv4
     walletnotify_cmd: curl -X POST http://multiwallet/pivx/walletnotify/$1
