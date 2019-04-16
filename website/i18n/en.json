@@ -13,6 +13,14 @@
         "title": "Conventions",
         "sidebar_label": "Conventions"
       },
+      "blackbox-os/device-preparation": {
+        "title": "Device Preparation",
+        "sidebar_label": "Device Preparation"
+      },
+      "blackbox-os/hardware-requirements": {
+        "title": "Hardware Requirements",
+        "sidebar_label": "Hardware"
+      },
       "blackbox-os/installation": {
         "title": "Installation",
         "sidebar_label": "Installation"
@@ -20,10 +28,6 @@
       "blackbox-os/intro": {
         "title": "Introduction",
         "sidebar_label": "Intro"
-      },
-      "blackbox-pivx-staking-node": {
-        "title": "PIVX Staking Node",
-        "sidebar_label": "PIVX Staking Node"
       },
       "blackbox-summary": {
         "title": "About",
@@ -44,13 +48,17 @@
       },
       "doc5": {
         "title": "Fifth Document"
+      },
+      "pivx-staking-node/getting-started": {
+        "title": "PIVX Staking Node",
+        "sidebar_label": "PIVX Staking Node"
+      },
+      "pivx-staking-node/troubleshooting": {
+        "title": "pivx-staking-node/troubleshooting"
       }
     },
     "links": {
-      "Docs": "Docs",
-      "API": "API",
-      "Help": "Help",
-      "Blog": "Blog"
+      "Docs": "Docs"
     },
     "categories": {
       "BlackboxOS": "BlackboxOS",
