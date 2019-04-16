@@ -19,4 +19,6 @@
 <url> <loc>https://crypdex.io/blackbox/docs/doc3</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/doc3" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/doc4</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/doc4" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/doc5</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/doc5" /> </url>
+<url> <loc>https://crypdex.io/blackbox/docs/pivx-staking-node/device-preparation</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/pivx-staking-node/device-preparation" /> </url>
+<url> <loc>https://crypdex.io/blackbox/docs/pivx-staking-node/troubleshooting</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/pivx-staking-node/troubleshooting" /> </url>
 </urlset>

@@ -65,7 +65,13 @@
 <p>The recommended way to install is by using a <code>.deb</code> package. This package manages a systemd service and places service and stack definitions in a common place. Further, it cleans up after itself and is updateable at the command line.</p>
 <p>Assuming you are installing via package, you have a couple of choices</p>
 <h3><a class="anchor" aria-hidden="true" id="install-from-the-apt-repo"></a><a href="#install-from-the-apt-repo" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install from the <code>apt</code> Repo</h3>
-<p>Sike! There is no <code>apt</code> repo at the moment. Don't worry though, this is getting set up now.</p>
+<p>Add the following to <code>/etc/apt/sources.list</code> or <code>/etc/apt/sources.list.d/fury.list</code></p>
+<pre><code class="hljs">deb [<span class="hljs-keyword">trusted</span>=yes] https://apt.fury.io/crypdex/ /
+</code></pre>
+<p>and then install normally</p>
+<pre><code class="hljs css language-shell"><span class="hljs-meta">$</span><span class="bash"> apt update &amp;&amp; apt install blackboxd</span>
+
+</code></pre>
 <h3><a class="anchor" aria-hidden="true" id="manual-package-installation"></a><a href="#manual-package-installation" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Manual Package Installation</h3>
 <p><a href="https://github.com/crypdex/blackbox/releases">Download the most current package</a> from the releases and use apt to install. If it is already installed, it will just update it.</p>
 <p>Here is a little installer script that should do all the right things.</p>
