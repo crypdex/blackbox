@@ -6,3 +6,10 @@ a {
   text-decoration: none;
   color: purple;
 }
+
+img[alt=pivx-product-shot] {
+  width: 270px;
+  float: right; margin: 0px 15px 15px 0px;
+  border: none;
+  background: none;
+}

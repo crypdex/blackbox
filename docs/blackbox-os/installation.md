@@ -3,21 +3,7 @@ title: Installation
 sidebar_label: Installation
 ---
 
-Getting BlackboxOS setup is fairly straightforward, but does require some preparation.
-
-## System Requirements
-
-- Linux or macOS
-- Docker
-- Docker Compose (optional)
-
-## System Preparation
-
-Put Docker in swarm mode. We could do this for you but want to be respectful of you system's environment. For some cloud servers you will need to give it an `--advertise-addr`
-
-```shell
-$ docker swarm init
-```
+Getting BlackboxOS setup is fairly straightforward, but does require some [preparation](device-preparation).
 
 ## Installation
 
@@ -27,7 +13,7 @@ Assuming you are installing via package, you have a couple of choices
 
 ### Install from the `apt` Repo
 
-Add the following to `/etc/apt/sources.list` or ` /etc/apt/sources.list.d/fury.list`
+Add the following to `/etc/apt/sources.list` or `/etc/apt/sources.list.d/fury.list`
 
 ```
 deb [trusted=yes] https://apt.fury.io/crypdex/ /
@@ -37,7 +23,17 @@ and then install normally
 
 ```shell
 $ apt update && apt install blackboxd
+```
 
+### Installing a Snapshot
+
+```bash
+# From project root
+scp dist/blackboxd_v0.0.39-snapshot_linux_arm64v8.deb root@crypdex-0000.local:/root
+
+# On the device
+apt install ./blackboxd_v0.0.39-snapshot_linux_arm64v8.deb
+blackboxd start
 ```
 
 ### Manual Package Installation
@@ -61,19 +57,6 @@ You can use it like so
 ```shell
 $ ARCH=x86_64 ./install-blackboxd.sh
 ```
-
-## Hardware Requirements
-
-The BlackboxOS currently supports arm64v8 and x86_64 architectures so assuming you have enough RAM, CPU, and disc space to accomidate all the services you want to run, it should work on everything from a RaspberryPi 3 to a cloud image.
-
-However, here are some suggestions that might help:
-
-- At least 1GB RAM. Some chains like PIVX require more.
-- On RAM restricted devices, you should enable swap. This is done for you on distros like [Armbian](https://www.armbian.com/).
-- At least 64GB disc space. Probably less than 1TB. Depends on your chain(s).
-- A reasonably fast data volume. MicroSD cards are painfully slow for data access at the moment. You will get better results and performance from eMMC or USB-connected drives.
-
-The CPU clock speed is almost never the bottleneck and even the cheapest lowest-end SBC's now have quad-core configurations.
 
 ## Assumptions
 
