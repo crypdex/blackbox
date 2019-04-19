@@ -66,5 +66,5 @@ func doUpgrade(context echo.Context) error {
 		return err
 	}
 
-	return context.JSON(200, map[string]string{"message": "success"})
+	return context.JSON(200, info)
 }
