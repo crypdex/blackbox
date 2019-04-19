@@ -1,9 +1,11 @@
 [Unit]
 Description=BlackboxOS Admin
+After=network.target
 
 [Service]
-ExecStart=blackbox-admin
-Restart=always
+Type=simple
+ExecStart=/usr/local/bin/blackbox-admin
+Restart=on-failure
 
 [Install]
-WantedBy=default.target
+WantedBy=multi-user.target

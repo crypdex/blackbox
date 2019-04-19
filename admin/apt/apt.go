@@ -73,10 +73,11 @@ func GetPackageInfo(name string) (*PackageInfo, error) {
 		return nil, errors.Wrap(status.Error, "bad command")
 	}
 
-	log(status)
-
+	in := strings.Join(status.Stdout[:3], "\n")
+	fmt.Println(aurora.Blue(in))
 	out := new(CachePolicy)
-	err := yaml.Unmarshal([]byte(strings.Join(status.Stdout, "\n")), out)
+
+	err := yaml.Unmarshal([]byte(in), out)
 	if err != nil {
 		return nil, err
 	}
