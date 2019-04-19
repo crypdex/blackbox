@@ -32,6 +32,7 @@ func (p *PackageInfo) IsInstalled() bool {
 	return p.Installed != "(none)"
 }
 
+// UpgradeAvailable checks to see if an upgrade is available
 func (p *PackageInfo) UpgradeAvailable() bool {
 	return p.Installed != p.Candidate
 }
