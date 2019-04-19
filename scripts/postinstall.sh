@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-echo "[postinstall] Enabling the admmin systemd service"
+echo "[postinstall] Enabling the admin systemd service"
 
 deb-systemd-invoke enable blackbox-admin.service
 deb-systemd-helper daemon-reload
@@ -11,7 +11,7 @@ blackboxd cleanup
 #
 #blackboxd start
 
-echo "[postinstall] Starting the admin systemd service"
-deb-systemd-invoke restart blackbox-admin.service
+#echo "[postinstall] Starting the admin systemd service"
+#deb-systemd-invoke restart blackbox-admin.service
 
 
