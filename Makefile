@@ -144,6 +144,8 @@ else
 endif
 
 
+
+
 ##################
 ## DEVELOPMENT
 ##################
@@ -174,3 +176,6 @@ test-dist:
 	docker run -it -v $(shell pwd)/dist:/dist ubuntu:bionic
 
 	# apt install ./dist/blackbox_v0.0.16-snapshot_linux_x86_64.deb && ls /var/lib/blackbox/
+
+publish-docs:
+	cd website && USE_SSH=true yarn publish-gh-pages

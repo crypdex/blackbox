@@ -3,6 +3,10 @@ title: PIVX Staking Node
 sidebar_label: PIVX Staking Node
 ---
 
+
+
+> **BETA TESTERS**: Please update your node before proceeding! Just SSH in and `apt update && apt install --only-upgrade blackboxd && blackboxd start`
+
 ![pivx-product-shot](assets/pivx-product-shot.jpg)
 
 ## What's this?
@@ -11,6 +15,7 @@ The PIVX Staking Node is a small hardware device that makes earning interest on 
 
 
 ## Getting Started
+
 
 ### Power Up and Get Synced
 
