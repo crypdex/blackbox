@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"os"
 	"runtime"
+	"time"
 
 	"github.com/crypdex/blackbox/admin/apt"
 	"github.com/labstack/echo"
@@ -26,6 +27,8 @@ func main() {
 	e := echo.New()
 	e.HideBanner = true
 	e.Debug = true
+	e.Server.ReadTimeout = 1 * time.Minute
+	e.Server.WriteTimeout = 1 * time.Minute
 
 	port := "8888"
 	if os.Getenv("PORT") != "" {
@@ -44,7 +47,6 @@ func main() {
 }
 
 func getInfo(context echo.Context) error {
-
 	info, err := apt.GetPackageInfo("blackboxd")
 	if err != nil {
 		return err
@@ -64,5 +66,5 @@ func doUpgrade(context echo.Context) error {
 		return err
 	}
 
-	return context.JSON(200, info)
+	return context.JSON(200, map[string]string{"message": "success"})
 }
