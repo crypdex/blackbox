@@ -15,7 +15,13 @@ builds:
       - CGO_ENABLED=0
     goos:
       - linux
-      # - darwin
+    goarch:
+      - amd64
+      - arm64
+  - binary: blackbox-admin
+    main: ./admin/main.go
+    goos:
+      - linux
     goarch:
       - amd64
       - arm64
@@ -95,6 +101,7 @@ nfpm:
   files:
     'services/**/*': '/var/lib/blackbox/services'
     'recipes/**/*': '/var/lib/blackbox/recipes'
+    'scripts/blackbox-admin.service': '/etc/systemd/system/blackbox-admin.service'
     # "path/**/glob": "/var/foo/glob"
 
   # Config files to add to your package. They are about the same as

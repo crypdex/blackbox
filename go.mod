@@ -14,7 +14,10 @@ require (
 	github.com/fatih/color v1.7.0 // indirect
 	github.com/go-cmd/cmd v1.0.4
 	github.com/go-test/deep v1.0.1 // indirect
+	github.com/golang/protobuf v1.3.1 // indirect
+	github.com/google/pprof v0.0.0-20190404155422-f8f10df84213 // indirect
 	github.com/goware/urlx v0.2.0 // indirect
+	github.com/ianlancetaylor/demangle v0.0.0-20181102032728-5e5cf60278f6 // indirect
 	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.2.8 // indirect
 	github.com/logrusorgru/aurora v0.0.0-20181002194514-a7b3b318ed4e
@@ -32,6 +35,8 @@ require (
 	github.com/thoas/go-funk v0.0.0-20190328084834-b6996520715f
 	github.com/tyler-smith/go-bip39 v1.0.0 // indirect
 	github.com/valyala/fasttemplate v1.0.1 // indirect
+	golang.org/x/arch v0.0.0-20190312162104-788fe5ffcd8c // indirect
 	golang.org/x/net v0.0.0-20190328230028-74de082e2cca // indirect
+	google.golang.org/grpc v1.20.1 // indirect
 	gopkg.in/yaml.v2 v2.2.2
 )

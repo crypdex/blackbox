@@ -1,0 +1,9 @@
+[Unit]
+Description=BlackboxOS Admin
+
+[Service]
+ExecStart=blackbox-admin
+Restart=always
+
+[Install]
+WantedBy=default.target
