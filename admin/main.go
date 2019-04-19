@@ -55,6 +55,7 @@ func getInfo(context echo.Context) error {
 	return context.JSON(200, info)
 }
 
+// doUpgrade performs the upgrade
 func doUpgrade(context echo.Context) error {
 	_, err := apt.Upgrade("blackboxd")
 	if err != nil {
