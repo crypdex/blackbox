@@ -12,6 +12,6 @@ blackboxd cleanup
 #blackboxd start
 
 echo "[postinstall] Starting the admin systemd service"
-deb-systemd-invoke start blackbox-admin.service
+deb-systemd-invoke restart blackbox-admin.service
 
 
