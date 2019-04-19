@@ -61,10 +61,10 @@ func doUpgrade(context echo.Context) error {
 		return err
 	}
 
-	info, err := apt.GetPackageInfo("blackboxd")
-	if err != nil {
-		return err
-	}
+	// info, err := apt.GetPackageInfo("blackboxd")
+	// if err != nil {
+	// 	return err
+	// }
 
-	return context.JSON(200, info)
+	return context.JSON(200, map[string]string{"message": "success"})
 }
