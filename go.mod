@@ -15,7 +15,7 @@ require (
 	github.com/go-cmd/cmd v1.0.4
 	github.com/go-test/deep v1.0.1 // indirect
 	github.com/goware/urlx v0.2.0 // indirect
-	github.com/labstack/echo v3.3.10+incompatible // indirect
+	github.com/labstack/echo v3.3.10+incompatible
 	github.com/labstack/gommon v0.2.8 // indirect
 	github.com/logrusorgru/aurora v0.0.0-20181002194514-a7b3b318ed4e
 	github.com/mattn/go-colorable v0.1.1 // indirect
