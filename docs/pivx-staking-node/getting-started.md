@@ -7,6 +7,9 @@ sidebar_label: PIVX Staking Node
 
 > **BETA TESTERS**: Please update your node before proceeding! Just SSH in and `apt update && apt install --only-upgrade blackboxd && blackboxd start`
 
+> BlackboxOS `>= 0.1.11` now supports easy updating via CLI and HTTP:<br/>`blackbox-cli upgrade`
+
+
 ![pivx-product-shot](assets/pivx-product-shot.jpg)
 
 ## What's this?

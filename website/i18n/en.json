@@ -25,17 +25,13 @@
         "title": "Installation",
         "sidebar_label": "Installation"
       },
-      "blackbox-os/intro": {
-        "title": "Introduction",
-        "sidebar_label": "Intro"
+      "blackbox-os/security": {
+        "title": "Security",
+        "sidebar_label": "Security"
       },
       "blackbox-summary": {
         "title": "About",
         "sidebar_label": "About"
-      },
-      "doc1": {
-        "title": "Latin-ish",
-        "sidebar_label": "Example Page"
       },
       "doc2": {
         "title": "document number 2"
@@ -49,6 +45,10 @@
       "doc5": {
         "title": "Fifth Document"
       },
+      "intro": {
+        "title": "Introduction",
+        "sidebar_label": "Intro"
+      },
       "pivx-staking-node/getting-started": {
         "title": "PIVX Staking Node",
         "sidebar_label": "PIVX Staking Node"
@@ -61,9 +61,9 @@
       "Docs": "Docs"
     },
     "categories": {
+      "Introduction": "Introduction",
       "BlackboxOS": "BlackboxOS",
-      "Blackbox Devices": "Blackbox Devices",
-      "First Category": "First Category"
+      "Blackbox Devices": "Blackbox Devices"
     }
   },
   "pages-strings": {

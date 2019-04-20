@@ -1,16 +1,15 @@
 {
   "docs": {
+    "Introduction": ["intro"],
     "BlackboxOS": [
-      "blackbox-os/intro",
-      "blackbox-os/hardware-requirements",
       "blackbox-os/device-preparation",
+      "blackbox-os/security",
       "blackbox-os/installation",
       "blackbox-os/configuration",
+      "blackbox-os/hardware-requirements",
       "blackbox-os/conventions"
     ],
-    "Blackbox Devices": ["blackbox-summary", "pivx-staking-node/getting-started"]
+    "Blackbox Devices": ["pivx-staking-node/getting-started"]
   },
-  "docs-other": {
-    "First Category": ["doc4", "doc5"]
-  }
+  "docs-other": {}
 }
