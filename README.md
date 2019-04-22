@@ -33,7 +33,7 @@ There are some preconfigured recipes in the [`/recipes`](https://github.com/cryp
 
 ## Documentation
 
-All documentation is now at https://crypdex.github.io/blackbox/docs/blackbox-os/intro.
+All documentation is now at https://crypdex.github.io/blackbox.
 There you will find installation instructions and well as hardware and software requirements
 
 
