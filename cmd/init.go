@@ -22,7 +22,7 @@ var initCmd = &cobra.Command{
 
 		recipe := cmd.Flag("recipe").Value.String()
 		if recipe != "" {
-			recipeFile := env.RecipesDir() + "/" + recipe + ".yml"
+			recipeFile := env.RecipesDir + "/" + recipe + ".yml"
 			if _, err := os.Stat(recipeFile); os.IsNotExist(err) {
 				fatal(fmt.Errorf("%s does not exist (yet)", recipe))
 			} else {
@@ -30,7 +30,7 @@ var initCmd = &cobra.Command{
 			}
 		}
 
-		configfile := env.ConfigDir() + "/blackbox.yaml"
+		configfile := env.ConfigDir + "/blackbox.yaml"
 		if _, err := os.Stat(configfile); !os.IsNotExist(err) {
 			// directory exists
 			fmt.Println("A config already exists at", configfile)

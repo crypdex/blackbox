@@ -4,7 +4,6 @@
 package docker
 
 import (
-	"fmt"
 	"strings"
 
 	"github.com/crypdex/blackbox/cmd/system"
@@ -12,11 +11,11 @@ import (
 )
 
 type Client struct {
-	env *system.Env
+	env *system.Config
 }
 
 // NewClient creates a new client with reference to an environment
-func NewClient(env *system.Env) *Client {
+func NewClient(env *system.Config) *Client {
 	return &Client{env: env}
 }
 
@@ -92,13 +91,13 @@ func (client *Client) StackServices() []string {
 func (client *Client) formatServices(flagName string) []string {
 	var args []string
 
-	servicesDir := client.env.ServicesDir()
-	services := client.env.ServiceNames()
-
 	// Add up all the services files
-	for _, service := range services {
-		args = append(args, flagName, fmt.Sprintf("%s/%s/docker-compose.yml", servicesDir, service))
+	for _, service := range client.env.Services() {
+		args = append(args, flagName)
+		args = append(args, service.DockerComposePaths()...)
 	}
+
+	args = append(args, flagName, client.env.ConfigFile)
 
 	return args
 }

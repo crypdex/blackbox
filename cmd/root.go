@@ -6,14 +6,14 @@ import (
 	"os"
 
 	"github.com/crypdex/blackbox/cmd/system"
-	"github.com/mitchellh/go-homedir"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 )
 
 var debug bool
 var configFile string
-var env *system.Env
+var env *system.Config
 
 // These variables are replaced by goreleaser
 var (
@@ -110,7 +110,8 @@ func initEnv() {
 
 	checkDataDir()
 	// Set the global env
-	env = system.NewEnv(viper.GetViper(), debug)
+	// env = system.NewConfig(viper.GetViper(), debug)
+	env = system.NewConfig2(debug)
 }
 
 func setDataDir(home string) {
