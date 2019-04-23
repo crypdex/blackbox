@@ -10,6 +10,7 @@ import (
 	"github.com/spf13/viper"
 )
 
+// Env contains common variables and defaults used by blackbd
 type Env struct {
 	config *viper.Viper
 	Debug  bool

@@ -1,3 +1,5 @@
+# This Dockerfile is only used for development
+
 FROM golang:stretch as build-env
 # All these steps will be cached
 RUN mkdir /hello

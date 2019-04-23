@@ -5,6 +5,10 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func init() {
+	rootCmd.AddCommand(cleanupCmd)
+}
+
 // cleanupCmd represents the cleanup command
 var cleanupCmd = &cobra.Command{
 	Use:   "cleanup",
@@ -14,9 +18,4 @@ var cleanupCmd = &cobra.Command{
 		client := docker.NewClient(env)
 		client.Cleanup()
 	},
-}
-
-func init() {
-	rootCmd.AddCommand(cleanupCmd)
-
 }

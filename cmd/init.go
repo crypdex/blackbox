@@ -8,7 +8,7 @@ import (
 	yaml "gopkg.in/yaml.v2"
 )
 
-type Config struct {
+type InitConfig struct {
 	Recipe   string                 `yaml:"recipe,omitempty"`
 	Services map[string]interface{} `yaml:"services,omitempty"`
 }
@@ -18,7 +18,7 @@ var initCmd = &cobra.Command{
 	Use:   "init",
 	Short: "Initializes a device to run the BlackboxOS",
 	Run: func(cmd *cobra.Command, args []string) {
-		config := new(Config)
+		config := new(InitConfig)
 
 		recipe := cmd.Flag("recipe").Value.String()
 		if recipe != "" {
