@@ -112,7 +112,7 @@ func trace(args ...string) {
 }
 
 // getRecipeFile returns a full path to a service definition
-func getRecipeFile(name string) string {
+func getRecipeFile(name string) (string, error) {
 	// Given a name, look for a file
 	for _, path := range configPaths() {
 		recipePath := filepath.Join(path, "recipes", name+".yml")
@@ -123,7 +123,7 @@ func getRecipeFile(name string) string {
 		}
 
 		trace(fmt.Sprintf("[init] ✓ found recipe: %s", recipePath))
-		return recipePath
+		return recipePath, nil
 	}
-	return ""
+	return "", fmt.Errorf("no recipe found named %s", name)
 }

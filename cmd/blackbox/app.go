@@ -29,7 +29,10 @@ func NewApp(debug bool) *App {
 	// LEGACY SUPPORT
 	recipe := getRecipe(v)
 	if recipe != "" {
-		file := getRecipeFile(recipe)
+		file, err := getRecipeFile(recipe)
+		if err != nil {
+			panic(err)
+		}
 		v2 := viper.New()
 		v2.SetConfigFile(file)
 		v2.ReadInConfig()
