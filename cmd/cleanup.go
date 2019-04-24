@@ -1,7 +1,7 @@
 package cmd
 
 import (
-	"github.com/crypdex/blackbox/cmd/docker"
+	"github.com/crypdex/blackbox/cmd/blackbox"
 	"github.com/spf13/cobra"
 )
 
@@ -15,7 +15,10 @@ var cleanupCmd = &cobra.Command{
 	Short: "Removes dead containers",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		client := docker.NewClient(env)
-		client.Cleanup()
+		client := blackbox.NewDockerClient(config)
+		status := client.Cleanup()
+
+		log("info", status.Stdout...)
+		log("error", status.Stderr...)
 	},
 }

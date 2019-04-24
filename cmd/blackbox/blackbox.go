@@ -3,14 +3,14 @@ package blackbox
 import (
 	"fmt"
 	"io/ioutil"
-	"log"
+	logger "log"
 	"os"
 	"path/filepath"
 
 	"github.com/logrusorgru/aurora"
-	"github.com/mitchellh/go-homedir"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	"github.com/thoas/go-funk"
+	funk "github.com/thoas/go-funk"
 )
 
 // Application space
@@ -19,128 +19,63 @@ var appspace = "/var/lib/blackbox"
 // User space
 var userspace = ".blackbox"
 
-// Blackbox contains common variables and defaults used by blackboxd
-type Blackbox struct {
-	config             *viper.Viper
-	Debug              bool
-	ForceSwarm         bool
-	ServicesDir        string
-	DataDir            string
-	RegisteredServices map[string]*Service
+// getRecipe ...
+func getRecipe(v *viper.Viper) string {
+	legacy := v.GetString("recipe")
+	if legacy != "" {
+		return legacy
+	}
+	return v.GetString("x-blackbox.recipe")
 }
 
-// New ...
-// Overriding the configfile used should be done from outside this func
-func New(debug bool) *Blackbox {
-	// Create an empty config
-	v := loadDefault()
-
-	// LEGACY SPECIAL SUPPORT
-	if v.GetString("recipe") != "" {
-		configFile := GetRecipePath(v.GetString("recipe"))
-		v2 := viper.New()
-		v2.SetConfigFile(configFile)
-		v2.ReadInConfig()
-
-		fmt.Println("")
-		fmt.Println(configFile)
-		fmt.Printf("%#v\n", v2.AllKeys())
-		fmt.Println("")
-		// f, err := os.Open(viper.GetString("recipes_dir") + "/" + viper.GetString("recipe") + ".yml")
-		// if err != nil {
-		// 	panic(err)
-		// }
-		//
-		// err = viper.MergeConfig(bufio.NewReader(f))
-		// if err != nil {
-		// 	panic(err)
-		// }
-
-	}
-
-	config := &Blackbox{config: v,
-		Debug:              debug,
-		ServicesDir:        v.GetString("services_dir"),
-		DataDir:            v.GetString("x-env.data_dir"),
-		ForceSwarm:         v.GetBool("swarm"),
-		RegisteredServices: registerServices(),
-	}
-
-	return config
-}
-
+// loadDefault attempts to load a default "blackbox.yaml" file
 func loadDefault() *viper.Viper {
-	trace("loading default config ...")
 	v := viper.New()
 	v.SetConfigName("blackbox")
 
 	// Add search paths
-	paths := ConfigPaths()
-	trace(fmt.Sprintf("searching for config in %s", paths))
+	paths := configPaths()
+	trace(fmt.Sprintf("[init] searching paths ... %s", paths))
 	for _, path := range paths {
 		v.AddConfigPath(path)
 	}
 
 	if err := v.ReadInConfig(); err == nil {
-		trace(fmt.Sprintf("✓ config file found: '%s'\n", v.ConfigFileUsed()))
+		trace(fmt.Sprintf("[init] ✓ blackbox file found: %s", v.ConfigFileUsed()))
 	} else {
-		trace("⨯ no config file found", err.Error())
+		trace("[init] ⨯ no blackbox file found", err.Error())
 	}
 
 	return v
 }
 
-func ConfigPaths() []string {
+// configPaths is a slice of absolute paths, sorted in priority order, used as search roots
+func configPaths() []string {
 	// User space:
 	// Get the executing user's home directory.
 	pwd, err := os.Getwd()
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	home, err := homedir.Dir()
 	if err != nil {
-		log.Fatal(err)
+		logger.Fatal(err)
 	}
 
 	// A priority ordered slice
-	paths := []string{
+	return []string{
 		pwd,
 		filepath.Join(home, userspace),
 		appspace,
 	}
-
-	return paths
 }
 
-// GetRecipePath returns a full path to a service definition
-func GetRecipePath(name string) string {
-	// Given a name, look for a file
-	for _, path := range ConfigPaths() {
-		recipesPath := filepath.Join(path, "recipes", name+".yml")
-
-		// Does the recipes directory exist in this path?
-		if _, err := os.Stat(recipesPath); os.IsNotExist(err) {
-			continue
-		}
-
-		fmt.Println("found recipe:", aurora.Cyan(recipesPath))
-		return recipesPath
-		//
-		// if _, err := os.Stat(recipesPath); os.IsNotExist(err) {
-		// 	continue
-		// }
-
-	}
-	return ""
-}
-
-// RegisteredServices returns a slice of all defined service names
-// that are found by searching the approots for "services" dir
+// registerServices returns a slice of all defined services found by searching the configPaths for "services" dirs
 func registerServices() map[string]*Service {
 	services := make(map[string]*Service)
 
-	for _, path := range ConfigPaths() {
+	for _, path := range configPaths() {
 		servicesPath := filepath.Join(path, "services")
 
 		// Does the services directory exist in this path?
@@ -166,34 +101,29 @@ func registerServices() map[string]*Service {
 		}
 	}
 
-	trace(fmt.Sprintf("available services: %s", funk.Keys(services)))
-	return services
-}
-
-// Services are those defined in the root blackbox.yml file
-//
-func (b *Blackbox) Services() map[string]*Service {
-	available := registerServices()
-	services := make(map[string]*Service)
-
-	for key, _ := range b.config.GetStringMap("services") {
-		service, ok := available[key]
-		if !ok {
-			fmt.Println(aurora.Red("WARN: no registered service:"), key)
-			continue
-		}
-		services[key] = service
-
-		envvars := b.config.GetStringMap(fmt.Sprintf("services.%s.x-env", key))
-		service.Environment = envvars
-		fmt.Println(service)
-	}
-	fmt.Println(aurora.Green("Configured services:"), funk.Keys(services))
+	trace(fmt.Sprintf("[init] available services: %s", funk.Keys(services)))
 	return services
 }
 
 func trace(args ...string) {
 	for _, msg := range args {
-		fmt.Println(aurora.Brown("⊙"), aurora.Green(msg))
+		fmt.Println(aurora.Brown("✪ "), aurora.Green(msg))
 	}
+}
+
+// getRecipeFile returns a full path to a service definition
+func getRecipeFile(name string) string {
+	// Given a name, look for a file
+	for _, path := range configPaths() {
+		recipePath := filepath.Join(path, "recipes", name+".yml")
+
+		// Does the recipes directory exist in this path?
+		if _, err := os.Stat(recipePath); os.IsNotExist(err) {
+			continue
+		}
+
+		trace(fmt.Sprintf("[init] ✓ found recipe: %s", recipePath))
+		return recipePath
+	}
+	return ""
 }

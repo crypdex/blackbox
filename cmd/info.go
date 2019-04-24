@@ -4,11 +4,11 @@ import (
 	"fmt"
 	"strings"
 
+	"github.com/crypdex/blackbox/cmd/blackbox"
+
 	"github.com/logrusorgru/aurora"
 
 	yaml "gopkg.in/yaml.v2"
-
-	"github.com/crypdex/blackbox/cmd/docker"
 
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
@@ -23,11 +23,12 @@ var infoCmd = &cobra.Command{
 		// displayBlackboxInfo()
 		// fmt.Println("")
 		//
-		// for k, v := range env.Environment() {
+		// for k, v := range env.Env() {
 		// 	fmt.Println(k, "=", v)
 		// }
 		// fmt.Println("")
-		client := docker.NewClient(env)
+
+		client := blackbox.NewDockerClient(config)
 		status := client.ComposeConfig()
 		if status.Error != nil {
 			fatal(status.Error)

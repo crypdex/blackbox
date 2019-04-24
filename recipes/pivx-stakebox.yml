@@ -1,18 +1,13 @@
 version: '3.7'
 
-
-x-env:
-  data_dir: /Volumes/T5/data
-
 services:
-  #  portainer:
-  postgres:
+  portainer: {}
+  postgres: {}
   multiwallet:
     x-env:
       chains: pivx
   pivx:
     x-env:
-      yeaher: its
       walletnotify_cmd: curl -X POST http://multiwallet/pivx/walletnotify/$$1
     command:
       -rpcallowip=0.0.0.0/0

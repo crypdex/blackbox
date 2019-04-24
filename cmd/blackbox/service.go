@@ -1,11 +1,14 @@
 package blackbox
 
-import "fmt"
+import (
+	"fmt"
+	"strings"
+)
 
 type Service struct {
-	Name        string
-	FilePaths   []string
-	Environment map[string]interface{}
+	Name      string
+	FilePaths []string
+	Env       map[string]interface{}
 }
 
 func (service *Service) DockerComposePaths() []string {
@@ -14,4 +17,14 @@ func (service *Service) DockerComposePaths() []string {
 		paths = append(paths, fmt.Sprintf("%s/docker-compose.yml", path))
 	}
 	return paths
+}
+
+func (service *Service) EnvVars() map[string]string {
+	// This is a map so that we can override
+	output := make(map[string]string)
+	// Add defined environment variables
+	for k, v := range service.Env {
+		output[strings.ToUpper(service.Name)+"_"+strings.ToUpper(k)] = v.(string)
+	}
+	return output
 }
