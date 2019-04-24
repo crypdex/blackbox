@@ -5,8 +5,8 @@ services:
   postgres: {}
   multiwallet:
     x-env:
-      chains: pivx blocknet qtum
-  blocknet: {}
+      chains: pivx blocknetdx qtum
+  blocknetdx: {}
   qtum: {}
   pivx:
     x-env:

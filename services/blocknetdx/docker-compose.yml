@@ -1,0 +1,11 @@
+version: "3.7"
+
+services:
+  blocknetdx:
+    image: crypdex/blocknetdx:${BLOCKNETDX_VERSION:-3.13}
+    volumes:
+      - ${BLOCKNETDX_DATA_DIR:?BLOCKNETDX_DATA_DIR required}:/home/blocknetdx/.blocknetdx
+    command: --printtoconsole
+    ports:
+      - 41412:41412 # RPC
+      - 41414:41414 # P2P
