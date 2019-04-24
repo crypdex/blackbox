@@ -1,9 +1,19 @@
+version: '3.7'
+
+
+x-env:
+  data_dir: /Volumes/T5/data
+
 services:
-  portainer:
+  #  portainer:
   postgres:
   multiwallet:
-    chains: pivx
+    x-env:
+      chains: pivx
   pivx:
+    x-env:
+      yeaher: its
+      walletnotify_cmd: curl -X POST http://multiwallet/pivx/walletnotify/$$1
     command:
       -rpcallowip=0.0.0.0/0
       -enablezeromint=0
@@ -11,4 +21,20 @@ services:
       -maxconnections=10
       -printtoconsole
       -rpcthreads=2
-    walletnotify_cmd: curl -X POST http://multiwallet/pivx/walletnotify/$1
+
+
+
+#services:
+#  portainer:
+#  postgres:
+#  multiwallet:
+#    chains: pivx
+#  pivx:
+#    command:
+#      -rpcallowip=0.0.0.0/0
+#      -enablezeromint=0
+#      -checkblocks=25
+#      -maxconnections=10
+#      -printtoconsole
+#      -rpcthreads=2
+#    walletnotify_cmd: curl -X POST http://multiwallet/pivx/walletnotify/$1

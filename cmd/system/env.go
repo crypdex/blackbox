@@ -10,9 +10,9 @@ import (
 
 	"github.com/logrusorgru/aurora"
 
-	homedir "github.com/mitchellh/go-homedir"
+	"github.com/mitchellh/go-homedir"
 
-	funk "github.com/thoas/go-funk"
+	"github.com/thoas/go-funk"
 
 	"github.com/spf13/viper"
 )
@@ -27,55 +27,86 @@ var userspace = ".blackbox"
 type Config struct {
 	config      *viper.Viper
 	Debug       bool
-	ConfigDir   string
-	RecipesDir  string
 	ServicesDir string
 	ForceSwarm  bool
-	Recipe      string
 	DataDir     string
 	ConfigFile  string
 }
 
-func NewConfig(config *viper.Viper, debug bool) *Config {
-	return &Config{config: config, Debug: debug}
-}
-
 // Overriding the configfile used should be done from outside this func
-func NewConfig2(debug bool) *Config {
+func NewConfig(debug bool) *Config {
+	// Create an empty config
 	v := viper.New()
 	v.SetConfigName("blackbox")
 
-	for _, approot := range AppRoots() {
+	// Add search paths
+	for _, approot := range ConfigPaths() {
 		v.AddConfigPath(approot)
 	}
 
 	// ENV OVERRIDES ALL OTHER SETTINGS!
-	v.AutomaticEnv() // read in environment variables that match
-	// If a config file is found, read it in.
+	v.AutomaticEnv()
+
 	if err := v.ReadInConfig(); err == nil {
 		fmt.Printf("config file => %s\n", v.ConfigFileUsed())
 	} else {
 		fmt.Println("no config file found")
-		// fatal(errors.Wrap(err, "could not load a config"))
 	}
 
 	// LEGACY SPECIAL SUPPORT
 	if v.GetString("recipe") != "" {
-		panic(v.GetString("recipe"))
+		configFile := GetRecipePath(v.GetString("recipe"))
+		v2 := viper.New()
+		v2.SetConfigFile(configFile)
+		v2.ReadInConfig()
+
+		fmt.Println("")
+		fmt.Println(configFile)
+		fmt.Printf("%#v\n", v2.AllKeys())
+		fmt.Println("")
+		// f, err := os.Open(viper.GetString("recipes_dir") + "/" + viper.GetString("recipe") + ".yml")
+		// if err != nil {
+		// 	panic(err)
+		// }
+		//
+		// err = viper.MergeConfig(bufio.NewReader(f))
+		// if err != nil {
+		// 	panic(err)
+		// }
+
 	}
 
 	config := &Config{config: v,
 		Debug:       debug,
 		ConfigFile:  v.ConfigFileUsed(),
-		ConfigDir:   v.GetString("config_dir"),
-		Recipe:      v.GetString("recipe"),
 		ServicesDir: v.GetString("services_dir"),
-		RecipesDir:  v.GetString("recipes_dir"),
 		DataDir:     v.GetString("x-env.data_dir"),
 		ForceSwarm:  v.GetBool("swarm"),
 	}
 
 	return config
+}
+
+// GetRecipePath returns a full path to a service definition
+func GetRecipePath(name string) string {
+	// Given a name, look for a file
+	for _, path := range ConfigPaths() {
+		recipesPath := filepath.Join(path, "recipes", name+".yml")
+
+		// Does the recipes directory exist in this path?
+		if _, err := os.Stat(recipesPath); os.IsNotExist(err) {
+			continue
+		}
+
+		fmt.Println("found recipe:", aurora.Cyan(recipesPath))
+		return recipesPath
+		//
+		// if _, err := os.Stat(recipesPath); os.IsNotExist(err) {
+		// 	continue
+		// }
+
+	}
+	return ""
 }
 
 type Service struct {
@@ -97,8 +128,8 @@ func (service *Service) DockerComposePaths() []string {
 func (env *Config) RegisteredServices() map[string]*Service {
 	services := make(map[string]*Service)
 
-	for _, root := range AppRoots() {
-		servicesPath := filepath.Join(root, "services")
+	for _, path := range ConfigPaths() {
+		servicesPath := filepath.Join(path, "services")
 
 		// Does the services directory exist in this path?
 		if _, err := os.Stat(servicesPath); os.IsNotExist(err) {
@@ -112,7 +143,7 @@ func (env *Config) RegisteredServices() map[string]*Service {
 			}
 
 			name := entry.Name()
-			servicePath := filepath.Join(root, "services", name)
+			servicePath := filepath.Join(path, "services", name)
 			service, ok := services[name]
 			if !ok {
 				services[name] = &Service{Name: name, FilePaths: []string{servicePath}}
@@ -128,6 +159,7 @@ func (env *Config) RegisteredServices() map[string]*Service {
 }
 
 // Services are those defined in the root blackbox.yml file
+//
 func (env *Config) Services() map[string]*Service {
 	available := env.RegisteredServices()
 	services := make(map[string]*Service)
@@ -156,7 +188,7 @@ func (env *Config) GetService(name string) *Service {
 	return nil
 }
 
-func AppRoots() []string {
+func ConfigPaths() []string {
 	// User space:
 	// Get the executing user's home directory.
 	pwd, err := os.Getwd()

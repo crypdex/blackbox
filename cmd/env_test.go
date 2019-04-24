@@ -11,8 +11,8 @@ import (
 )
 
 func TestConfig(t *testing.T) {
-	// config, _ := system.NewConfig2(false)
-	paths := system.AppRoots()
+	// config, _ := system.NewConfig(false)
+	paths := system.ConfigPaths()
 	// At least 2 paths back.
 	// Userspace and Appspace
 	assert.Equal(t, len(paths), 3)
@@ -22,7 +22,7 @@ func TestConfig(t *testing.T) {
 }
 
 func TestNewConfig(t *testing.T) {
-	config := system.NewConfig2(false)
+	config := system.NewConfig(false)
 	fmt.Println(config)
 	config.Services()
 }

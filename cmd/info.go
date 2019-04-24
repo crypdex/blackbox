@@ -19,13 +19,14 @@ var infoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Displays the current configuration",
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("")
-		displayBlackboxInfo()
-		fmt.Println("")
-		for k, v := range env.Environment() {
-			fmt.Println(k, "=", v)
-		}
-		fmt.Println("")
+		// fmt.Println("")
+		// displayBlackboxInfo()
+		// fmt.Println("")
+		//
+		// for k, v := range env.Environment() {
+		// 	fmt.Println(k, "=", v)
+		// }
+		// fmt.Println("")
 		client := docker.NewClient(env)
 		status := client.ComposeConfig()
 		if status.Error != nil {

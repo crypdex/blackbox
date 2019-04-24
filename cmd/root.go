@@ -111,7 +111,7 @@ func initEnv() {
 	checkDataDir()
 	// Set the global env
 	// env = system.NewConfig(viper.GetViper(), debug)
-	env = system.NewConfig2(debug)
+	env = system.NewConfig(debug)
 }
 
 func setDataDir(home string) {
