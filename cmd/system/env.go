@@ -59,6 +59,11 @@ func NewConfig2(debug bool) *Config {
 		// fatal(errors.Wrap(err, "could not load a config"))
 	}
 
+	// LEGACY SPECIAL SUPPORT
+	if v.GetString("recipe") != "" {
+		panic(v.GetString("recipe"))
+	}
+
 	config := &Config{config: v,
 		Debug:       debug,
 		ConfigFile:  v.ConfigFileUsed(),

@@ -1,6 +1,6 @@
 version: '3.7'
 
-
+recipe: pivx-stakebox
 
 x-env:
   data_dir: /Volumes/T5/data
