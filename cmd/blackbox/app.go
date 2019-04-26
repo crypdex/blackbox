@@ -21,7 +21,19 @@ type App struct {
 
 // NewApp ...
 // Overriding the configfile used should be done from outside this func
-func NewApp(debug bool) *App {
+func NewApp(debug bool, configFile string) *App {
+	if configFile != "" {
+		v := viper.New()
+		v.SetConfigFile(configFile)
+		v.ReadInConfig()
+
+		return &App{
+			config:             v,
+			Debug:              debug,
+			ConfigFile:         v.ConfigFileUsed(),
+			RegisteredServices: registerServices(),
+		}
+	}
 	// Create an empty config
 	v := loadDefault()
 

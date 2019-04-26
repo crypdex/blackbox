@@ -25,10 +25,26 @@ else
 fi
 
 if [[ -d "${SPARKSWAP_DATA_DIR}/lnd_btc" ]]; then
-print "✓ Data directory ${SPARKSWAP_DATA_DIR}lnd_btc exists."
+print "✓ Data directory ${SPARKSWAP_DATA_DIR}/lnd_btc exists."
 else
     print "Creating directory for data at ${SPARKSWAP_DATA_DIR}/lnd_btc"
     mkdir -p ${SPARKSWAP_DATA_DIR}/lnd_btc
+fi
+
+
+if [[ -d "${SPARKSWAP_DATA_DIR}/shared" ]]; then
+print "✓ Data directory ${SPARKSWAP_DATA_DIR}/shared exists."
+else
+    print "Creating directory for data at ${SPARKSWAP_DATA_DIR}/shared"
+    mkdir -p ${SPARKSWAP_DATA_DIR}/shared
+fi
+
+
+if [[ -d "${SPARKSWAP_DATA_DIR}/data" ]]; then
+print "✓ Data directory ${SPARKSWAP_DATA_DIR}/data exists."
+else
+    print "Creating directory for data at ${SPARKSWAP_DATA_DIR}/data"
+    mkdir -p ${SPARKSWAP_DATA_DIR}/data
 fi
 
 
