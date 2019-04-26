@@ -8,6 +8,5 @@ services:
       - '51473:51473'
     volumes:
       - ${PIVX_DATA_DIR:?PIVX_DATA_DIR required}:/home/pivx/.pivx
-    # command: -rpcallowip=172.0.0.0/8
     # Command-line options override values set in the configuration file.
-    command: ${PIVX_COMMAND:--printtoconsole} --datadir=/home/pivx/.pivx
+    command: --printtoconsole

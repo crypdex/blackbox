@@ -12,8 +12,8 @@
 version: "3.7"
 
 services:
-  sparkswapd:
-    image: sparkswap/broker:0.6.1-beta
+  sparkswap:
+    image: crypdex/sparkswap-broker:0.6.2-beta
     depends_on:
       - lnd_btc
       - lnd_ltc
@@ -48,7 +48,7 @@ services:
   # LIGHTNING LTC
   # -------------
   lnd_btc:
-    image: sparkswap/lnd_btc:0.5.0-beta
+    image: crypdex/sparkswap-lnd-btc:0.5.2-beta
     depends_on:
       - bitcoin
     ports:
@@ -66,7 +66,7 @@ services:
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
       - DEBUG=info
       - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:?SPARKSWAP_EXTERNAL_BTC_ADDRESS is required}:10113"
-      - EXTPREIMAGE_HOST=sparkswapd:40369
+      - EXTPREIMAGE_HOST=sparkswap:40369
       - ZMQPUBRAWBLOCK=tcp://bitcoin:28333
       - ZMQPUBRAWTX=tcp://bitcoin:28334
 
@@ -74,7 +74,7 @@ services:
   # LIGHTNING LTC
   # -------------
   lnd_ltc:
-    image: sparkswap/lnd_ltc:0.5.0-beta
+    image: crypdex/sparkswap-lnd-ltc:0.5.0-beta
     depends_on:
       - litecoin
     ports:
@@ -94,4 +94,4 @@ services:
       - ZMQPUBRAWTX=tcp://litecoin:28334
       - DEBUG=info
       - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS?SPARKSWAP_EXTERNAL_LTC_ADDRESS is required}:10114"
-      - EXTPREIMAGE_HOST=sparkswapd:40369
+      - EXTPREIMAGE_HOST=sparkswap:40369

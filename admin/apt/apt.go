@@ -37,7 +37,7 @@ func (p *PackageInfo) UpgradeAvailable() bool {
 	return p.Installed != p.Candidate
 }
 
-// apt-get install --only-upgrade <packagename>
+// Upgrade runs `apt-get install --only-upgrade <package>`
 func Upgrade(name string) (*cmd.Status, error) {
 	info, err := GetPackageInfo(name)
 	if err != nil {
@@ -59,6 +59,7 @@ func Upgrade(name string) (*cmd.Status, error) {
 	return &status, nil
 }
 
+// GetPackageInfo gathers package info. It is fairly generalized, but is only intended for use by blackboxd
 func GetPackageInfo(name string) (*PackageInfo, error) {
 	updateCmd := cmd.NewCmdOptions(cmd.Options{Buffered: true}, "apt-get", "update")
 	status := <-updateCmd.Start()

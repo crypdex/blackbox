@@ -1,4 +1,4 @@
-package system
+package blackbox
 
 import (
 	"fmt"

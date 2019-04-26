@@ -1,0 +1,12 @@
+version: '3.7'
+
+services:
+  navcoin:
+    image: crypdex/navcoin:${NAVCOIN_VERSION:-4.5}
+    ports:
+      - '44440:44440' # P2P
+      - '44444:44444' # RPC
+    volumes:
+      - ${NAVCOIN_DATA_DIR:?NAVCOIN_DATA_DIR required}:/home/navcoin/.navcoin
+    # Command-line options override values set in the configuration file.
+    command: -printtoconsole -rpcallowip=0.0.0.0/0
