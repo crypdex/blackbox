@@ -14,7 +14,7 @@ services:
       - ${BITCOIN_DATA_DIR:?BITCOIN_DATA_DIR required}:/home/bitcoin/.bitcoin
     # Command-line options override values set in the configuration file.
     # -rpcallowip=0.0.0.0/0 -txindex=1 -printtoconsole
-    command: ${BITCOIN_COMMAND:--printtoconsole}
+    command: ${BITCOIN_COMMAND:-printtoconsole}
 
 
 

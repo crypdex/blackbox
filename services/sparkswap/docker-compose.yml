@@ -60,7 +60,7 @@ services:
       options:
         max-size: 50m
     environment:
-      - RPC_HOST=${BTC_RPC_HOST:-bitcoin}
+      - RPC_HOST=${SPARKSWAP_BTC_RPC_HOST:-bitcoin}
       - RPC_USER=${SPARKSWAP_BTC_RPC_USER:?SPARKSWAP_BTC_RPC_USER is required}
       - RPC_PASS=${SPARKSWAP_BTC_RPC_PASSWORD:?SPARKSWAP_BTC_RPC_PASSWORD is required}
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
@@ -74,7 +74,7 @@ services:
   # LIGHTNING LTC
   # -------------
   lnd_ltc:
-    image: crypdex/sparkswap-lnd-ltc:0.5.0-beta
+    image: crypdex/sparkswap-lnd-ltc:0.5.2-beta
     depends_on:
       - litecoin
     ports:
@@ -86,7 +86,7 @@ services:
       options:
         max-size: 50m
     environment:
-      - RPC_HOST=litecoin
+      - RPC_HOST=${SPARKSWAP_LTC_RPC_HOST:-litecoin}
       - RPC_USER=${SPARKSWAP_LTC_RPC_USER:?SPARKSWAP_LTC_RPC_USER is required}
       - RPC_PASS=${SPARKSWAP_LTC_RPC_PASSWORD:?SPARKSWAP_LTC_RPC_PASSWORD is required}
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
