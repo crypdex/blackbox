@@ -44,11 +44,13 @@ fi
 file="${BLOCKNETDX_DATA_DIR}/blocknetdx.conf"
 
 if [[ -f "${file}" ]]; then
-    print "WARN: Config file ${file} exists. Overwriting."
-fi
-
+    print "WARN: Config file ${file} exists. Not overwriting."
+else
 # Be aware that the location of the walletnotify script is relative to the container
 cat >${file} <<EOF
 rpcuser=${BLOCKNETDX_RPCUSER}
 rpcpassword=${BLOCKNETDX_RPCPASSWORD}
 EOF
+fi
+
+
