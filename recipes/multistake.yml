@@ -6,6 +6,10 @@ services:
   multiwallet:
     x-env:
       chains: pivx blocknetdx qtum
+  navcoin:
+    command:
+      -rpcallowip=0.0.0.0/0
+      -printtoconsole
   blocknetdx:
     command:
       -rpcallowip=0.0.0.0/0
