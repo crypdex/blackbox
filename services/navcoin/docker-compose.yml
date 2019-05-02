@@ -9,4 +9,6 @@ services:
     volumes:
       - ${NAVCOIN_DATA_DIR:?NAVCOIN_DATA_DIR required}:/home/navcoin/.navcoin
     # Command-line options override values set in the configuration file.
-    command: -printtoconsole -rpcallowip=0.0.0.0/0
+    command:
+      -rpcallowip=0.0.0.0/0
+      -printtoconsole

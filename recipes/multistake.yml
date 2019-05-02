@@ -6,8 +6,14 @@ services:
   multiwallet:
     x-env:
       chains: pivx blocknetdx qtum
-  blocknetdx: {}
-  qtum: {}
+  blocknetdx:
+    command:
+      -rpcallowip=0.0.0.0/0
+      -printtoconsole
+  qtum:
+    command:
+      -rpcallowip=0.0.0.0/0
+      -printtoconsole
   pivx:
     x-env:
       walletnotify_cmd: curl -X POST http://multiwallet/pivx/walletnotify/$$1

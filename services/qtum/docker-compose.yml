@@ -10,4 +10,6 @@ services:
       - ${QTUM_DATA_DIR:?QTUM_DATA_DIR required}:/home/qtum/.qtum
     # command: -rpcallowip=172.0.0.0/8
     # Command-line options override values set in the configuration file.
-    command: -printtoconsole
+    command:
+      -rpcallowip=0.0.0.0/0
+      -printtoconsole
