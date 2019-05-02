@@ -3,7 +3,7 @@ title: Device Preparation
 sidebar_label: Device Preparation
 ---
 
-This guide show how to prepare and ARM64-based Linux device for the BlackboxOS. If you know your way around a command line, it should be fairly straighforward.
+This guide shows how to prepare an ARM64-based Linux device for the BlackboxOS. If you know your way around a command line, it should be fairly straighforward.
 
 In addition to some general Linux housekeeping and setup, you will be installing these things
 
@@ -12,6 +12,19 @@ In addition to some general Linux housekeeping and setup, you will be installing
 
 
 The following sequence is followed to prepare a device for delivery. It is assumed that you have a Linux OS installed and configured with enough RAM or swap. Armbian is a good place to start as it has zram already allocated.
+
+If you have an OS flashed that needs a swap disk setup, try this
+
+```bash
+# Creates a swapfile and adds it to fstab
+
+fallocate -l 2G /swapfile && \
+chmod 600 /swapfile && \
+mkswap /swapfile && \
+swapon /swapfile && \
+echo "/swapfile swap swap defaults 0 0" >> /etc/fstab && \
+swapon --show
+```
 
 ## Create the Defaults
 
