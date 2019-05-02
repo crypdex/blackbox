@@ -56,6 +56,14 @@ func Upgrade(name string) (*cmd.Status, error) {
 
 	log(status)
 
+	var restartCmd = cmd.NewCmdOptions(cmd.Options{Buffered: true}, "blackboxd", "start")
+	status = <-restartCmd.Start()
+	if status.Exit != 0 {
+		return nil, errors.Wrap(status.Error, "bad command")
+	}
+
+	log(status)
+
 	return &status, nil
 }
 
