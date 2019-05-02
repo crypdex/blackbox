@@ -5,7 +5,7 @@ services:
   postgres: {}
   multiwallet:
     x-env:
-      chains: pivx blocknetdx qtum
+      chains: pivx blocknetdx qtum navcoin
   navcoin:
     command:
       -rpcallowip=0.0.0.0/0
