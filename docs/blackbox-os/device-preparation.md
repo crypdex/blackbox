@@ -10,7 +10,6 @@ In addition to some general Linux housekeeping and setup, you will be installing
 - Docker
 - `blackboxd`
 
-
 The following sequence is followed to prepare a device for delivery. It is assumed that you have a Linux OS installed and configured with enough RAM or swap. Armbian is a good place to start as it has zram already allocated.
 
 If you have an OS flashed that needs a swap disk setup, try this
@@ -35,10 +34,19 @@ swapon --show
 
 ## Install Required Software
 
-### Add APT sources
+### Install some core software
+
+```bash
+# Install requirements
+apt update && apt install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common \
+htop iotop bmon \
+avahi-daemon avahi-discover avahi-utils libnss-mdns mdns-scan
+```
+
+### Add additional APT sources
+
 <!--DOCUSAURUS_CODE_TABS-->
 <!--arm64-->
-
 
 ```bash
 # DOCKER
@@ -49,7 +57,7 @@ add-apt-repository \
    "deb [arch=arm64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
-   
+
 # BLACKBOX
 
 echo "deb [trusted=yes] https://apt.fury.io/crypdex/ /" >> /etc/apt/sources.list.d/fury.list
@@ -66,25 +74,20 @@ add-apt-repository \
    "deb [arch=amd64] https://download.docker.com/linux/ubuntu \
    $(lsb_release -cs) \
    stable"
-   
+
 # BLACKBOX
 
 echo "deb [trusted=yes] https://apt.fury.io/crypdex/ /" >> /etc/apt/sources.list.d/fury.list
 ```
 
-
 <!--END_DOCUSAURUS_CODE_TABS-->
-
 
 ### Install Packages
 
 ```bash
-# Docker, then Avahi and utils
-apt-get update && \
-apt-get install -y apt-transport-https ca-certificates curl gnupg-agent software-properties-common \
-htop iotop bmon avahi-daemon avahi-discover avahi-utils libnss-mdns mdns-scan \
-blackboxd && \
-apt-get upgrade -y
+# Docker and Blacboxd
+apt update && apt install -y docker-ce docker-ce-cli containerd.io && \
+apt install -y blackboxd
 ```
 
 Finally, lets get Docker into swarm mode
@@ -93,13 +96,11 @@ Finally, lets get Docker into swarm mode
 docker swarm init
 ```
 
-
-Now is a good time to 
+Now is a good time to
 
 ```bash
 reboot
 ```
-
 
 ### Optional but Recommended
 
@@ -110,13 +111,22 @@ scp tools/docker-compose-Linux-aarch64 root@crypdex.local:/usr/local/bin/docker-
 chmod +x /usr/local/bin/docker-compose
 ```
 
+## Mount Disk
+
+https://www.digitalocean.com/community/tutorials/how-to-partition-and-format-storage-devices-in-linux
+
+```bash
+
+```
+
 ## Seed Data
 
 - Copy the blockchain data
+
 ```bash
 scp -r root@seedbox.local:~/.blackbox/data/pivx ~/.blackbox/data
 ```
-  
+
 ## Customer Delivery Considerations
 
 - Remove the Portainer directory
