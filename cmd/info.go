@@ -5,13 +5,10 @@ import (
 	"strings"
 
 	"github.com/crypdex/blackbox/cmd/blackbox"
-
 	"github.com/logrusorgru/aurora"
-
-	yaml "gopkg.in/yaml.v2"
-
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
+	yaml "gopkg.in/yaml.v2"
 )
 
 // versionCmd represents the version command

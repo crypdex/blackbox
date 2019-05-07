@@ -7,7 +7,8 @@
       "blackbox-os/installation",
       "blackbox-os/configuration",
       "blackbox-os/hardware-requirements",
-      "blackbox-os/conventions"
+      "blackbox-os/conventions",
+      "blackbox-os/access"
     ],
     "Blackbox Devices": ["pivx-staking-node/getting-started"]
   },

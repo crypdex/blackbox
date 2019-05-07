@@ -5,18 +5,19 @@
 # This script is clipped from https://github.com/sparkswap/broker/blob/master/scripts/build.sh
 #############################################
 
+
+
+
 # Setting this env is ONLY required for a hosted broker setup.
 #
 # This address is used during the build process so that certs can be generated
 # correctly for a hosted (remote) broker daemon.
 
-EXTERNAL_ADDRESS="localhost"
-if [ "$EXTERNAL_ADDRESS" == "" ]; then
-  EXTERNAL_ADDRESS="localhost"
-fi
+EXTERNAL_ADDRESS=${EXTERNAL_ADDRESS:-localhost}
+
+SPARKSWAP_DIRECTORY=${EXTERNAL_ADDRESS:-~/.sparkswap}
 
 
-SPARKSWAP_DIRECTORY=~/.sparkswap
 
 echo "Creating directories $SPARKSWAP_DIRECTORY and $SPARKSWAP_DIRECTORY/secure"
 
