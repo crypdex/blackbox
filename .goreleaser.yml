@@ -101,6 +101,7 @@ nfpm:
   files:
     'services/**/*': '/var/lib/blackbox/services'
     'recipes/**/*': '/var/lib/blackbox/recipes'
+    'scripts/blackbox.service': '/etc/systemd/system/blackbox.service'
     'scripts/blackbox-admin.service': '/etc/systemd/system/blackbox-admin.service'
     # "path/**/glob": "/var/foo/glob"
 
