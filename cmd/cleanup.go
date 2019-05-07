@@ -19,6 +19,6 @@ var cleanupCmd = &cobra.Command{
 		status := client.Cleanup()
 
 		log("info", status.Stdout...)
-		log("error", status.Stderr...)
+		// log("error", status.Stderr...)
 	},
 }
