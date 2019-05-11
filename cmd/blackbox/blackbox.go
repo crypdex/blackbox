@@ -63,7 +63,16 @@ func loadDotEnv() map[string]string {
 		files = append(files, path.Join(p, ".env"))
 	}
 
-	env, _ := godotenv.Read(files...)
+	if len(files) != 0 {
+		trace(fmt.Sprintf("[init] found .env %s", files))
+	} else {
+		trace("[init] no .env found ")
+	}
+
+	env, err := godotenv.Read(files...)
+	if err != nil {
+		fmt.Println(err)
+	}
 
 	return env
 }
