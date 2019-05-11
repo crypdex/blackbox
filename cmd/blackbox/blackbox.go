@@ -60,7 +60,11 @@ func loadDotEnv() map[string]string {
 
 	var files []string
 	for _, p := range paths {
-		files = append(files, path.Join(p, ".env"))
+		file := path.Join(p, ".env")
+		//  godotenv is not kind to files that dont exist ...
+		if _, err := os.Stat(file); !os.IsNotExist(err) {
+			files = append(files, file)
+		}
 	}
 
 	if len(files) != 0 {
