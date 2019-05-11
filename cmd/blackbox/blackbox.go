@@ -5,12 +5,15 @@ import (
 	"io/ioutil"
 	logger "log"
 	"os"
+	"path"
 	"path/filepath"
 
-	"github.com/logrusorgru/aurora"
+	"github.com/joho/godotenv"
 	homedir "github.com/mitchellh/go-homedir"
-	"github.com/spf13/viper"
 	funk "github.com/thoas/go-funk"
+
+	"github.com/logrusorgru/aurora"
+	"github.com/spf13/viper"
 )
 
 // Application space
@@ -47,6 +50,22 @@ func loadDefault() *viper.Viper {
 	}
 
 	return v
+}
+
+func loadDotEnv() map[string]string {
+
+	// Add search paths
+	paths := configPaths()
+	trace(fmt.Sprintf("[init] searching paths for .env ... %s", paths))
+
+	var files []string
+	for _, p := range paths {
+		files = append(files, path.Join(p, ".env"))
+	}
+
+	env, _ := godotenv.Read(files...)
+
+	return env
 }
 
 // configPaths is a slice of absolute paths, sorted in priority order, used as search roots

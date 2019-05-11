@@ -2,6 +2,7 @@ package blackbox
 
 import (
 	"fmt"
+	"strconv"
 	"strings"
 )
 
@@ -24,7 +25,18 @@ func (service *Service) EnvVars() map[string]string {
 	output := make(map[string]string)
 	// Add defined environment variables
 	for k, v := range service.Env {
-		output[strings.ToUpper(service.Name)+"_"+strings.ToUpper(k)] = v.(string)
+		var value string
+		switch i := v.(type) {
+		case string:
+			value = i
+		case int:
+			value = strconv.Itoa(i)
+		case bool:
+			value = strconv.FormatBool(i)
+		default:
+			fmt.Printf("I don't know about type %T!\n", v)
+		}
+		output[strings.ToUpper(service.Name)+"_"+strings.ToUpper(k)] = value
 	}
 	return output
 }
