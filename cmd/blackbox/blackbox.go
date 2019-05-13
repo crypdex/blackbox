@@ -60,7 +60,9 @@ func loadDotEnv() map[string]string {
 
 	var files []string
 	for _, p := range paths {
-		files = append(files, path.Join(p, ".env"))
+		if _, err := os.Stat(p); !os.IsNotExist(err) {
+			files = append(files, path.Join(p, ".env"))
+		}
 	}
 
 	if len(files) != 0 {
