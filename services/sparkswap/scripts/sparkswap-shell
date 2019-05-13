@@ -1,0 +1,4 @@
+#!/usr/bin/env bash
+
+docker exec -ti blackbox_sparkswap.1.$(docker service ps -f 'name=blackbox_sparkswap.1' blackbox_sparkswap -q --no-trunc | head -n1) /bin/bash
+# docker exec $(docker ps -q -f name=servicename) ls
