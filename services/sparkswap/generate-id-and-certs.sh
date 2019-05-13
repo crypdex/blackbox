@@ -7,7 +7,7 @@
 
 
 
-EXTERNAL_ADDRESS=${EXTERNAL_ADDRESS}
+EXTERNAL_ADDRESS=${EXTERNAL_ADDRESS:-sparkswap.local}
 
 SPARKSWAP_DIRECTORY=${SPARKSWAP_DIRECTORY:-~/.sparkswap}
 
@@ -31,6 +31,7 @@ resolve_ip() {
   fi
 
   # CURRENT
+  # THIS WILL NEVER HAPPEN
   if [[ ${EXTERNAL_ADDRESS} == "" ]]; then
     EXTERNAL_ADDRESS=$(hostname -i)
   fi
