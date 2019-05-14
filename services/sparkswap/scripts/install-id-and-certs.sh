@@ -6,46 +6,11 @@
 #############################################
 
 
-EXTERNAL_ADDRESS=${EXTERNAL_ADDRESS:-sparkswap.local}
 
 SPARKSWAP_DIRECTORY=${SPARKSWAP_DIRECTORY:-~/.sparkswap}
 
 echo "Creating directories $SPARKSWAP_DIRECTORY/secure"
 mkdir -p ${SPARKSWAP_DIRECTORY}/secure
-
-# RESOLVE THE IP ADDRESS
-
-PREVIOUS_ADDRESS=""
-
-resolve_ip() {
-  echo "Resolving IP address"
-  local file=${SPARKSWAP_DIRECTORY}/ipaddress.txt
-
-  # PREVIOUS
-  if [[ -f ${file} ]]; then
-    while IFS= read line
-    do
-      PREVIOUS_ADDRESS=${line}
-    done <"$file"
-  fi
-
-  # CURRENT
-  # THIS WILL NEVER HAPPEN
-  if [[ ${EXTERNAL_ADDRESS} == "" ]]; then
-    EXTERNAL_ADDRESS=$(hostname -i)
-  fi
-
-  echo "The current IP is set to ${EXTERNAL_ADDRESS}"
-
-# Write current to file
-/bin/cat <<EOM >${file}
-${EXTERNAL_ADDRESS}
-EOM
-}
-
-# Call the function
-resolve_ip
-
 
 
 #############################################
@@ -57,6 +22,13 @@ resolve_ip
 # Primary use is TLS between Broker-CLI and Broker Daemon
 #
 #############################################
+
+# The external address is used for creating the TLS cert
+# By default, it is set to "sparkswap.local".
+# If you know what the IP is going to be,
+# put it in a .env var
+
+EXTERNAL_ADDRESS=${SPARKSWAP_EXTERNAL_ADDRESS:-sparkswap.local}
 
 KEY_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-tls.key
 CERT_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-tls.cert
@@ -80,18 +52,13 @@ generate_tls_certs() {
   rm -f ${CSR_PATH}
 }
 
-# If the IP has changed, re-generate the certs
-if [[ ${PREVIOUS_ADDRESS} != ${EXTERNAL_ADDRESS} ]]; then
-  echo "WARNING: IP has changed. Will regenerate TLS certs."
-  generate_tls_certs
+
+if [[ -f "$KEY_PATH" ]]; then
+  echo "WARNING: TLS Private Key already exists at $KEY_PATH for Broker Daemon. Skipping cert generation"
+elif [[ -f "$CERT_PATH" ]]; then
+  echo "WARNING: TLS Cert already exists at $CERT_PATH for Broker Daemon. Skipping cert generation"
 else
-  if [[ -f "$KEY_PATH" ]]; then
-    echo "WARNING: TLS Private Key already exists at $KEY_PATH for Broker Daemon. Skipping cert generation"
-  elif [[ -f "$CERT_PATH" ]]; then
-    echo "WARNING: TLS Cert already exists at $CERT_PATH for Broker Daemon. Skipping cert generation"
-  else
-    generate_tls_certs
-  fi
+  generate_tls_certs
 fi
 
 
@@ -122,3 +89,39 @@ elif [[ "$NO_IDENTITY" != "true" ]]; then
   openssl ecparam -name prime256v1 -genkey -noout > ${ID_PRIV_KEY}
   openssl ec -in ${ID_PRIV_KEY} -pubout > ${ID_PUB_KEY}
 fi
+
+##################
+# UNUSED FUNCTIONS
+##################
+
+# RESOLVE THE IP ADDRESS
+
+# This function ended up being too clever and does not detect the IP address reliably.
+
+PREVIOUS_ADDRESS=""
+
+resolve_ip() {
+  echo "Resolving IP address"
+  local file=${SPARKSWAP_DIRECTORY}/ipaddress.txt
+
+  # PREVIOUS
+  if [[ -f ${file} ]]; then
+    while IFS= read line
+    do
+      PREVIOUS_ADDRESS=${line}
+    done <"$file"
+  fi
+
+  # CURRENT
+  # THIS WILL NEVER HAPPEN
+  if [[ ${EXTERNAL_ADDRESS} == "" ]]; then
+    EXTERNAL_ADDRESS=$(hostname -i)
+  fi
+
+  echo "The current IP is set to ${EXTERNAL_ADDRESS}"
+
+# Write current to file
+/bin/cat <<EOM >${file}
+${EXTERNAL_ADDRESS}
+EOM
+}
