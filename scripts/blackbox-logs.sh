@@ -6,7 +6,7 @@ echo "tailing $names"
 while read -r name
 do
   # eval to show container name in jobs list
-  eval "docker logs -f --tail=5 \"$name\" | sed -e \"s/^/[-- $name --] /\" &"
+  eval "docker logs -f --tail=100 \"$name\" | sed -e \"s/^/[-- $name --] /\" &"
   # For Ubuntu 16.04
   #eval "docker logs -f --tail=5 \"$name\" |& sed -e \"s/^/[-- $name --] /\" &"
 done <<< "$names"

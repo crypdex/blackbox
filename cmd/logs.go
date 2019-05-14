@@ -15,9 +15,8 @@ var logsCmd = &cobra.Command{
 	Short: "Show the logs of all running containers",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		status := blackbox.Logs()
+		blackbox.Logs()
 
-		log("info", status.Stdout...)
 		// log("error", status.Stderr...)
 	},
 }

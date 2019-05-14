@@ -4,7 +4,7 @@ go 1.12
 
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
-	github.com/crypdex/blackbox/admin v0.0.0-20190511124147-c6f7de48607c // indirect
+	github.com/crypdex/blackbox/admin v0.0.0-20190514190918-7d4d5c4db632 // indirect
 	github.com/go-cmd/cmd v1.0.4
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/joho/godotenv v1.3.0
