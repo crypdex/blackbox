@@ -38,3 +38,5 @@ done
 
 # Execute using the same bash process
 source ${__dir}/scripts/install-id-and-certs.sh
+
+source ${__dir}/scripts/install-shell.sh
