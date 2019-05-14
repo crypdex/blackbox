@@ -23,6 +23,21 @@ mkdir -p ${SPARKSWAP_DIRECTORY}/secure
 #
 #############################################
 
+
+# A previous version of this script placed an file called ipaddress.txt to be clever
+# If this is there, remove any existing certs and allow them to regenerate
+cleanup() {
+  local file=${SPARKSWAP_DIRECTORY}/ipaddress.txt
+
+  if [[ -f ${file} ]]; then
+    echo "Cleaning up potentially bad RPC certs ..."
+    rm ${SPARKSWAP_DIRECTORY}/secure/broker-rpc*
+    rm ${file}
+  fi
+}
+
+cleanup
+
 # The external address is used for creating the TLS cert
 # By default, it is set to "sparkswap.local".
 # If you know what the IP is going to be,
@@ -90,6 +105,8 @@ elif [[ "$NO_IDENTITY" != "true" ]]; then
   openssl ec -in ${ID_PRIV_KEY} -pubout > ${ID_PUB_KEY}
 fi
 
+
+
 ##################
 # UNUSED FUNCTIONS
 ##################
@@ -112,8 +129,6 @@ resolve_ip() {
     done <"$file"
   fi
 
-  # CURRENT
-  # THIS WILL NEVER HAPPEN
   if [[ ${EXTERNAL_ADDRESS} == "" ]]; then
     EXTERNAL_ADDRESS=$(hostname -i)
   fi
