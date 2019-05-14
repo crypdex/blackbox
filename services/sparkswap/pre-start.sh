@@ -1,5 +1,8 @@
 #!/usr/bin/env bash
 
+# This is necessary to avoid "random state" error
+export RANDFILE=/tmp/.rnd
+
 # Get the location of this script
 __dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 

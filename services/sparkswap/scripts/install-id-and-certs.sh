@@ -35,7 +35,7 @@ CERT_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-tls.cert
 CSR_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-csr.csr
 
 generate_tls_certs() {
-  echo "Generating TLS certs for Broker Daemon"
+  echo "Generating TLS certs for Broker Daemon: ${EXTERNAL_ADDRESS}"
   openssl ecparam -genkey -name prime256v1 > ${KEY_PATH}
   openssl req -new -sha256 -key ${KEY_PATH} \
     -reqexts SAN \
