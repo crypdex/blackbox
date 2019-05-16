@@ -17,9 +17,11 @@ services:
     depends_on:
       - lnd_btc
       - lnd_ltc
-    ports:
-      - "27492:27492"
-      - "27592:27592"
+#    ports:
+#      - "27492:27492"
+#      - "27592:27592"
+    deploy:
+      endpoint_mode: dnsrr
     working_dir: "/home/app"
     volumes:
       # block order and other sparkswap storage
@@ -51,8 +53,10 @@ services:
     image: crypdex/sparkswap-lnd-btc:0.5.2-beta
     depends_on:
       - bitcoin
-    ports:
-      - "10113:9735"
+#    ports:
+#      - "10113:9735"
+    deploy:
+      endpoint_mode: dnsrr
     volumes:
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_btc:/data"
@@ -79,8 +83,10 @@ services:
     image: crypdex/sparkswap-lnd-ltc:0.5.2-beta
     depends_on:
       - litecoin
-    ports:
-      - "10114:9735"
+#    ports:
+#      - "10114:9735"
+    deploy:
+      endpoint_mode: dnsrr
     volumes:
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_ltc:/data"

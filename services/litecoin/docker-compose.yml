@@ -3,12 +3,14 @@ version: "3.7"
 services:
   litecoin:
     image: crypdex/litecoin-core:${LITECOIN_VERSION:-0.16}
-    ports:
-      - "9332:9332" # RPC
-      - "9333:9333" # P2P
-      - "19332:19332"
-      - "19333:19333"
-      - "19444:19444"
+#    ports:
+#      - "9332:9332" # RPC
+#      - "9333:9333" # P2P
+#      - "19332:19332"
+#      - "19333:19333"
+#      - "19444:19444"
+    deploy:
+      endpoint_mode: dnsrr
     volumes:
       - ${LITECOIN_DATA_DIR:?LITECOIN_DATA_DIR required}:/home/litecoin/.litecoin
     # Command-line options override values set in the configuration file.
