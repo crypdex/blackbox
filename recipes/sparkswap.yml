@@ -10,36 +10,9 @@ version: '3.7'
 # SPARKSWAP_LTC_RPCPASSWORD
 
 services:
-  portainer: {}
   sparkswap: {}
-  bitcoin:
-    command:
-      -rpcallowip=0.0.0.0/0
-      -txindex=1
-      -printtoconsole
-      -zmqpubrawblock=tcp://0.0.0.0:28333
-      -zmqpubrawtx=tcp://0.0.0.0:28334
-      -dbcache=20
-      -maxmempool=20
-      -maxconnections=4
-      -rpcthreads=2
-      -maxorphantx=20
-      -rpcuser=$SPARKSWAP_BTC_RPCUSER
-      -rpcpassword=$SPARKSWAP_BTC_RPCPASSWORD
-  litecoin:
-    command:
-      -rpcallowip=0.0.0.0/0
-      -txindex=1
-      -printtoconsole
-      -zmqpubrawblock=tcp://0.0.0.0:28333
-      -zmqpubrawtx=tcp://0.0.0.0:28334
-      -dbcache=20
-      -maxmempool=20
-      -maxconnections=4
-      -rpcthreads=2
-      -maxorphantx=20
-      -rpcuser=$SPARKSWAP_LTC_RPCUSER
-      -rpcpassword=$SPARKSWAP_LTC_RPCPASSWORD
+  portainer: {}
+
 
 
 

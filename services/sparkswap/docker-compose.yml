@@ -12,6 +12,56 @@
 version: "3.7"
 
 services:
+#  nginx:
+#    image: nginx:latest
+#    ports:
+#      - '27492:27492'
+#    volumes:
+#      - ./nginx.conf:/etc/nginx/default.conf
+
+  bitcoin:
+    image: crypdex/bitcoin-core:${BITCOIN_VERSION:-0.17}
+    deploy:
+      endpoint_mode: dnsrr
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/bitcoin:/home/bitcoin/.bitcoin
+    # Command-line options override values set in the configuration file.
+    command:
+      -rpcallowip=0.0.0.0/0
+      -txindex=1
+      -printtoconsole
+      -zmqpubrawblock=tcp://0.0.0.0:28333
+      -zmqpubrawtx=tcp://0.0.0.0:28334
+      -dbcache=20
+      -maxmempool=20
+      -maxconnections=4
+      -rpcthreads=2
+      -maxorphantx=20
+      -rpcuser=$SPARKSWAP_BTC_RPCUSER
+      -rpcpassword=$SPARKSWAP_BTC_RPCPASSWORD
+
+  litecoin:
+    image: crypdex/litecoin-core:${LITECOIN_VERSION:-0.16}
+    deploy:
+      endpoint_mode: dnsrr
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/litecoin:/home/litecoin/.litecoin
+    # Command-line options override values set in the configuration file.
+    command:
+      -rpcallowip=0.0.0.0/0
+      -txindex=1
+      -printtoconsole
+      -zmqpubrawblock=tcp://0.0.0.0:28333
+      -zmqpubrawtx=tcp://0.0.0.0:28334
+      -dbcache=20
+      -maxmempool=20
+      -maxconnections=4
+      -rpcthreads=2
+      -maxorphantx=20
+      -rpcuser=$SPARKSWAP_LTC_RPCUSER
+      -rpcpassword=$SPARKSWAP_LTC_RPCPASSWORD
+
+
   sparkswap:
     image: crypdex/sparkswap-broker:0.6.2-beta
     depends_on:
