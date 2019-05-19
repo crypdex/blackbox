@@ -1,16 +1,16 @@
-package blackbox
+package cmd2
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
-	"path"
 	"path/filepath"
 	"strings"
 
 	. "github.com/logrusorgru/aurora"
-	homedir "github.com/mitchellh/go-homedir"
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	funk "github.com/thoas/go-funk"
+	"github.com/thoas/go-funk"
 )
 
 // App contains common variables and defaults used by blackboxd
@@ -24,17 +24,7 @@ type App struct {
 // NewApp ...
 // Overriding the configfile used should be done from outside this func
 func NewApp(debug bool, configFile string) *App {
-	// Let's start with some assumed basic configuration
-	// Create an empty config
-	var v *viper.Viper
-
-	if configFile == "" {
-		v = loadDefault()
-	} else {
-		v = viper.New()
-		v.SetConfigFile(configFile)
-		v.ReadInConfig()
-	}
+	v := loadConfig(configFile)
 
 	// Load recipe if defined
 	// LEGACY SUPPORT
@@ -56,14 +46,46 @@ func NewApp(debug bool, configFile string) *App {
 		// v = v2
 	}
 
-	config := &App{
+	return &App{
 		config:             v,
 		Debug:              debug,
 		ConfigFile:         v.ConfigFileUsed(),
 		RegisteredServices: registerServices(),
 	}
+}
 
-	return config
+// registerServices returns a slice of all defined services found by searching the configPaths for "services" dirs
+func registerServices() map[string]*Service {
+	services := make(map[string]*Service)
+
+	for _, path := range searchPaths() {
+		servicesPath := filepath.Join(path, "services")
+
+		// Does the services directory exist in this path?
+		if _, err := os.Stat(servicesPath); os.IsNotExist(err) {
+			continue
+		}
+
+		entries, _ := ioutil.ReadDir(servicesPath)
+		for _, entry := range entries {
+			if !entry.IsDir() {
+				continue
+			}
+
+			name := entry.Name()
+			servicePath := filepath.Join(path, "services", name)
+			service, ok := services[name]
+			if !ok {
+				services[name] = &Service{Name: name, FilePaths: []string{servicePath}}
+				continue
+			}
+
+			service.FilePaths = append(service.FilePaths, servicePath)
+		}
+	}
+
+	trace(fmt.Sprintf("[init] available services: %s", funk.Keys(services)))
+	return services
 }
 
 // DataDir is the global data directory. It may be overridden in each service using x-blackbox
@@ -124,7 +146,7 @@ func (app *App) EnvVars() map[string]string {
 		output[k] = v
 	}
 
-	// app.log("debug", fmt.Sprintf("%#v", output))
+	trace("debug", fmt.Sprintf("%#v", output))
 	return output
 }
 
@@ -145,56 +167,56 @@ func (app *App) ServiceEnvVars(service *Service) map[string]string {
 	return output
 }
 
-// Prestart runs the pre-start.sh script for all services if they exist
-func (app *App) Prestart() {
-	// Add up all the services files
-	for _, service := range app.Services() {
-		err := app.runScript(service, "pre-start")
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-}
+// // Prestart runs the pre-start.sh script for all services if they exist
+// func (app *App) Prestart() {
+// 	// Add up all the services files
+// 	for _, service := range app.Services() {
+// 		err := app.runScript(service, "pre-start")
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+// 	}
+// }
 
 // RESET
 
-// Prestart runs the pre-start.sh script for all services if they exist
-func (app *App) Reset() {
-	// Add up all the services files
-	for _, service := range app.Services() {
-		err := app.runScript(service, "reset")
-		if err != nil {
-			fmt.Println(err)
-		}
-	}
-}
+// // Prestart runs the pre-start.sh script for all services if they exist
+// func (app *App) Reset() {
+// 	// Add up all the services files
+// 	for _, service := range app.Services() {
+// 		err := app.runScript(service, "reset")
+// 		if err != nil {
+// 			fmt.Println(err)
+// 		}
+// 	}
+// }
 
-func (app *App) runScript(service *Service, name string) error {
-	script := fmt.Sprintf("%s.sh", name)
-	trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
-
-	for _, p := range service.FilePaths {
-		if _, err := os.Stat(path.Join(p, script)); os.IsNotExist(err) {
-			return fmt.Errorf("%s %s not found", service.Name, script)
-		}
-		status := ExecCommand("bash", []string{"-c", path.Join(p, script)}, app.ServiceEnvVars(service), app.Debug)
-
-		trace(status.Stdout...)
-		trace(status.Stderr...)
-	}
-
-	return nil
-}
-
-func (app *App) log(level string, msg ...string) {
-	for _, m := range msg {
-		switch level {
-		case "error":
-			fmt.Println(Red(m))
-		default:
-			if app.Debug {
-				fmt.Println(Gray(20-1, fmt.Sprintf(" %s ", m)).BgGray(4 - 1))
-			}
-		}
-	}
-}
+// func (app *App) runScript(service *Service, name string) error {
+// 	script := fmt.Sprintf("%s.sh", name)
+// 	trace(fmt.Sprintf("[%s] running for %s", name, service.Name))
+//
+// 	for _, p := range service.FilePaths {
+// 		if _, err := os.Stat(path.Join(p, script)); os.IsNotExist(err) {
+// 			return fmt.Errorf("%s %s not found", service.Name, script)
+// 		}
+// 		status := ExecCommand("bash", []string{"-c", path.Join(p, script)}, app.ServiceEnvVars(service), app.Debug)
+//
+// 		app.log("debug", status.Stdout...)
+// 		app.log("error", status.Stderr...)
+// 	}
+//
+// 	return nil
+// }
+//
+// func (app *App) log(level string, msg ...string) {
+// 	for _, m := range msg {
+// 		switch level {
+// 		case "error":
+// 			fmt.Println(Red(m))
+// 		default:
+// 			if app.Debug {
+// 				fmt.Println(Gray(20-1, fmt.Sprintf(" %s ", m)).BgGray(4 - 1))
+// 			}
+// 		}
+// 	}
+// }

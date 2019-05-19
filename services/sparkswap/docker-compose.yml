@@ -12,146 +12,148 @@
 version: "3.7"
 
 services:
-#  nginx:
-#    image: nginx:latest
-#    ports:
-#      - '27492:27492'
-#    volumes:
-#      - ./nginx.conf:/etc/nginx/default.conf
-
-  bitcoin:
-    image: crypdex/bitcoin-core:${BITCOIN_VERSION:-0.17}
-    deploy:
-      endpoint_mode: dnsrr
-    volumes:
-      - ${DATA_DIR:?DATA_DIR required}/bitcoin:/home/bitcoin/.bitcoin
-    # Command-line options override values set in the configuration file.
-    command:
-      -rpcallowip=0.0.0.0/0
-      -txindex=1
-      -printtoconsole
-      -zmqpubrawblock=tcp://0.0.0.0:28333
-      -zmqpubrawtx=tcp://0.0.0.0:28334
-      -dbcache=20
-      -maxmempool=20
-      -maxconnections=4
-      -rpcthreads=2
-      -maxorphantx=20
-      -rpcuser=$SPARKSWAP_BTC_RPCUSER
-      -rpcpassword=$SPARKSWAP_BTC_RPCPASSWORD
-
-  litecoin:
-    image: crypdex/litecoin-core:${LITECOIN_VERSION:-0.16}
-    deploy:
-      endpoint_mode: dnsrr
-    volumes:
-      - ${DATA_DIR:?DATA_DIR required}/litecoin:/home/litecoin/.litecoin
-    # Command-line options override values set in the configuration file.
-    command:
-      -rpcallowip=0.0.0.0/0
-      -txindex=1
-      -printtoconsole
-      -zmqpubrawblock=tcp://0.0.0.0:28333
-      -zmqpubrawtx=tcp://0.0.0.0:28334
-      -dbcache=20
-      -maxmempool=20
-      -maxconnections=4
-      -rpcthreads=2
-      -maxorphantx=20
-      -rpcuser=$SPARKSWAP_LTC_RPCUSER
-      -rpcpassword=$SPARKSWAP_LTC_RPCPASSWORD
-
-
   sparkswap:
-    image: crypdex/sparkswap-broker:0.6.2-beta
-    depends_on:
-      - lnd_btc
-      - lnd_ltc
-#    ports:
-#      - "27492:27492"
-#      - "27592:27592"
-    deploy:
-      endpoint_mode: dnsrr
-    working_dir: "/home/app"
+    image: nginx:latest
+    ports:
+      - 80:80
+      - 443:443
     volumes:
-      # block order and other sparkswap storage
-      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/data:/data"
-      # This is populated externally w/ an engine
-      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
-      # Persistent certs/keys for broker
-      - "${SPARKSWAP_SECURE_PATH:?SPARKSWAP_SECURE_PATH is required}:/secure"
-    environment:
-      - NODE_ENV=production
-      # - DATA_DIR=${DATA_DIR:-}
-      - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
-      - RPC_ADDRESS=${SPARKSWAP_BROKER_RPC_ADDRESS:-}
-      - RPC_HTTP_PROXY_ADDRESS=${SPARKSWAP_RPC_HTTP_PROXY_ADDRESS:-}
-      - RPC_USER=${SPARKSWAP_BROKER_RPC_USER:?SPARKSWAP_BROKER_RPC_USER is required}
-      - RPC_PASS=${SPARKSWAP_BROKER_RPC_PASSWORD:?SPARKSWAP_BROKER_RPC_PASSWORD is required}
-      - RPC_PUB_KEY=${SPARKSWAP_RPC_PUB_KEY:-}
-      - RPC_PRIV_KEY=${SPARKSWAP_RPC_PRIV_KEY:-}
-      - ID_PRIV_KEY=${SPARKSWAP_ID_PRIV_KEY:-}
-      - ID_PUB_KEY=${SPARKSWAP_ID_PUB_KEY:-}
-      - RELAYER_RPC_HOST=${SPARKSWAP_RELAYER_RPC_HOST:-relayer.mainnet.sparkswap.com:28492}
-      - RELAYER_CERT_PATH=${SPARKSWAP_RELAYER_CERT_PATH:-}
+      - ${DATA_DIR:?DATA_DIR required}:/root/x
+      - ./nginx.conf:/etc/nginx/default.conf
 
-
-  # -------------
-  # LIGHTNING LTC
-  # -------------
-  lnd_btc:
-    image: crypdex/sparkswap-lnd-btc:0.5.2-beta
-    depends_on:
-      - bitcoin
-#    ports:
-#      - "10113:9735"
-    deploy:
-      endpoint_mode: dnsrr
-    volumes:
-      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
-      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_btc:/data"
-    logging:
-      options:
-        max-size: 50m
-    environment:
-      - DEBUG=info
-      - EXTPREIMAGE_HOST=sparkswap:40369
-      - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
-      - RPC_HOST=${SPARKSWAP_BTC_RPCHOST:-bitcoin}
-      - RPC_PASS=${SPARKSWAP_BTC_RPCPASSWORD:?SPARKSWAP_BTC_RPCPASSWORD is required}
-      - RPC_USER=${SPARKSWAP_BTC_RPCUSER:?SPARKSWAP_BTC_RPCUSER is required}
-      - ZMQPUBRAWBLOCK=tcp://bitcoin:28333
-      - ZMQPUBRAWTX=tcp://bitcoin:28334
-      # No longer required
-      - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:-}"
-      # - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:?SPARKSWAP_EXTERNAL_BTC_ADDRESS is required}:10113"
-
-  # -------------
-  # LIGHTNING LTC
-  # -------------
-  lnd_ltc:
-    image: crypdex/sparkswap-lnd-ltc:0.5.2-beta
-    depends_on:
-      - litecoin
-#    ports:
-#      - "10114:9735"
-    deploy:
-      endpoint_mode: dnsrr
-    volumes:
-      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
-      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_ltc:/data"
-    logging:
-      options:
-        max-size: 50m
-    environment:
-      - DEBUG=info
-      - EXTPREIMAGE_HOST=sparkswap:40369
-      - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
-      - RPC_HOST=${SPARKSWAP_LTC_RPCHOST:-litecoin}
-      - RPC_PASS=${SPARKSWAP_LTC_RPCPASSWORD:?SPARKSWAP_LTC_RPCPASSWORD is required}
-      - RPC_USER=${SPARKSWAP_LTC_RPCUSER:?SPARKSWAP_LTC_RPCUSER is required}
-      - ZMQPUBRAWBLOCK=tcp://litecoin:28333
-      - ZMQPUBRAWTX=tcp://litecoin:28334
-      # No longer required
-#      - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS?SPARKSWAP_EXTERNAL_LTC_ADDRESS is required}:10114"
-      - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS:-}"
+#  bitcoin:
+#    image: crypdex/bitcoin-core:${BITCOIN_VERSION:-0.17}
+#    deploy:
+#      endpoint_mode: dnsrr
+#    volumes:
+#      - ${DATA_DIR:?DATA_DIR required}/bitcoin:/home/bitcoin/.bitcoin
+#    # Command-line options override values set in the configuration file.
+#    command:
+#      -rpcallowip=0.0.0.0/0
+#      -txindex=1
+#      -printtoconsole
+#      -zmqpubrawblock=tcp://0.0.0.0:28333
+#      -zmqpubrawtx=tcp://0.0.0.0:28334
+#      -dbcache=20
+#      -maxmempool=20
+#      -maxconnections=4
+#      -rpcthreads=2
+#      -maxorphantx=20
+#      -rpcuser=$SPARKSWAP_BTC_RPCUSER
+#      -rpcpassword=$SPARKSWAP_BTC_RPCPASSWORD
+#
+#  litecoin:
+#    image: crypdex/litecoin-core:${LITECOIN_VERSION:-0.16}
+#    deploy:
+#      endpoint_mode: dnsrr
+#    volumes:
+#      - ${DATA_DIR:?DATA_DIR required}/litecoin:/home/litecoin/.litecoin
+#    # Command-line options override values set in the configuration file.
+#    command:
+#      -rpcallowip=0.0.0.0/0
+#      -txindex=1
+#      -printtoconsole
+#      -zmqpubrawblock=tcp://0.0.0.0:28333
+#      -zmqpubrawtx=tcp://0.0.0.0:28334
+#      -dbcache=20
+#      -maxmempool=20
+#      -maxconnections=4
+#      -rpcthreads=2
+#      -maxorphantx=20
+#      -rpcuser=$SPARKSWAP_LTC_RPCUSER
+#      -rpcpassword=$SPARKSWAP_LTC_RPCPASSWORD
+#
+#
+#  sparkswap:
+#    image: crypdex/sparkswap-broker:0.6.2-beta
+#    depends_on:
+#      - lnd_btc
+#      - lnd_ltc
+##    ports:
+##      - "27492:27492"
+##      - "27592:27592"
+#    deploy:
+#      endpoint_mode: dnsrr
+#    working_dir: "/home/app"
+#    volumes:
+#      # block order and other sparkswap storage
+#      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/data:/data"
+#      # This is populated externally w/ an engine
+#      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
+#      # Persistent certs/keys for broker
+#      - "${SPARKSWAP_SECURE_PATH:?SPARKSWAP_SECURE_PATH is required}:/secure"
+#    environment:
+#      - NODE_ENV=production
+#      # - DATA_DIR=${DATA_DIR:-}
+#      - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
+#      - RPC_ADDRESS=${SPARKSWAP_BROKER_RPC_ADDRESS:-}
+#      - RPC_HTTP_PROXY_ADDRESS=${SPARKSWAP_RPC_HTTP_PROXY_ADDRESS:-}
+#      - RPC_USER=${SPARKSWAP_BROKER_RPC_USER:?SPARKSWAP_BROKER_RPC_USER is required}
+#      - RPC_PASS=${SPARKSWAP_BROKER_RPC_PASSWORD:?SPARKSWAP_BROKER_RPC_PASSWORD is required}
+#      - RPC_PUB_KEY=${SPARKSWAP_RPC_PUB_KEY:-}
+#      - RPC_PRIV_KEY=${SPARKSWAP_RPC_PRIV_KEY:-}
+#      - ID_PRIV_KEY=${SPARKSWAP_ID_PRIV_KEY:-}
+#      - ID_PUB_KEY=${SPARKSWAP_ID_PUB_KEY:-}
+#      - RELAYER_RPC_HOST=${SPARKSWAP_RELAYER_RPC_HOST:-relayer.mainnet.sparkswap.com:28492}
+#      - RELAYER_CERT_PATH=${SPARKSWAP_RELAYER_CERT_PATH:-}
+#
+#
+#  # -------------
+#  # LIGHTNING LTC
+#  # -------------
+#  lnd_btc:
+#    image: crypdex/sparkswap-lnd-btc:0.5.2-beta
+#    depends_on:
+#      - bitcoin
+##    ports:
+##      - "10113:9735"
+#    deploy:
+#      endpoint_mode: dnsrr
+#    volumes:
+#      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
+#      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_btc:/data"
+#    logging:
+#      options:
+#        max-size: 50m
+#    environment:
+#      - DEBUG=info
+#      - EXTPREIMAGE_HOST=sparkswap:40369
+#      - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
+#      - RPC_HOST=${SPARKSWAP_BTC_RPCHOST:-bitcoin}
+#      - RPC_PASS=${SPARKSWAP_BTC_RPCPASSWORD:?SPARKSWAP_BTC_RPCPASSWORD is required}
+#      - RPC_USER=${SPARKSWAP_BTC_RPCUSER:?SPARKSWAP_BTC_RPCUSER is required}
+#      - ZMQPUBRAWBLOCK=tcp://bitcoin:28333
+#      - ZMQPUBRAWTX=tcp://bitcoin:28334
+#      # No longer required
+#      - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:-}"
+#      # - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:?SPARKSWAP_EXTERNAL_BTC_ADDRESS is required}:10113"
+#
+#  # -------------
+#  # LIGHTNING LTC
+#  # -------------
+#  lnd_ltc:
+#    image: crypdex/sparkswap-lnd-ltc:0.5.2-beta
+#    depends_on:
+#      - litecoin
+##    ports:
+##      - "10114:9735"
+#    deploy:
+#      endpoint_mode: dnsrr
+#    volumes:
+#      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
+#      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_ltc:/data"
+#    logging:
+#      options:
+#        max-size: 50m
+#    environment:
+#      - DEBUG=info
+#      - EXTPREIMAGE_HOST=sparkswap:40369
+#      - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
+#      - RPC_HOST=${SPARKSWAP_LTC_RPCHOST:-litecoin}
+#      - RPC_PASS=${SPARKSWAP_LTC_RPCPASSWORD:?SPARKSWAP_LTC_RPCPASSWORD is required}
+#      - RPC_USER=${SPARKSWAP_LTC_RPCUSER:?SPARKSWAP_LTC_RPCUSER is required}
+#      - ZMQPUBRAWBLOCK=tcp://litecoin:28333
+#      - ZMQPUBRAWTX=tcp://litecoin:28334
+#      # No longer required
+##      - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS?SPARKSWAP_EXTERNAL_LTC_ADDRESS is required}:10114"
+#      - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS:-}"

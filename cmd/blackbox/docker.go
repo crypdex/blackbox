@@ -128,11 +128,37 @@ func (client *DockerClient) IsSwarmManager() (bool, error) {
 // There are being phased out.
 // ---------------------------
 
+func (client *DockerClient) ComposeUp() cmd.Status {
+	// docker-compose -f file up
+	// command := fmt.Sprintf("docker-compose -p blackbox %s up", strings.Join(client.composeFiles(), " "))
+	command := "docker-compose -p blackbox -f /Users/dmichael/go/src/github.com/crypdex/blackbox/services/sparkswap/docker-compose.yml -f /Users/dmichael/go/src/github.com/crypdex/blackbox/recipes/sparkswap.yml up -d"
+	Run(command, client.config.EnvVars(), client.config.Debug)
+	return cmd.Status{} // ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
+}
+
+func (client *DockerClient) ComposeDown() cmd.Status {
+	// docker-compose -f file up
+	command := fmt.Sprintf("docker-compose -p blackbox %s down", strings.Join(client.composeFiles(), " "))
+	Run(command, client.config.EnvVars(), client.config.Debug)
+	return cmd.Status{} // ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
+}
+
+func (client *DockerClient) ComposeLogs() cmd.Status {
+	// docker-compose -f file up
+	command := fmt.Sprintf("docker-compose -p blackbox %s logs -f", strings.Join(client.composeFiles(), " "))
+	Run(command, client.config.EnvVars(), client.config.Debug)
+	return cmd.Status{} // ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
+}
+
 // ComposeConfig calls `docker-compose config` with all the right parameters
 // I dont think there is a docker stack equivalent
 func (client *DockerClient) ComposeConfig() cmd.Status {
 	args := append(client.composeFiles(), "config")
-	return ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
+
+	command := "docker-compose " + strings.Join(args, " ")
+	fmt.Println(command)
+	Run(command, client.config.EnvVars(), client.config.Debug)
+	return cmd.Status{} // ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
 }
 
 func (client *DockerClient) composeFiles() []string {

@@ -38,15 +38,15 @@ func loadDefault() *viper.Viper {
 
 	// Add search paths
 	paths := configPaths()
-	trace(fmt.Sprintf("[init] searching paths ... %s", paths))
+	trace(fmt.Sprintf("Searching paths ... %s", paths))
 	for _, path := range paths {
 		v.AddConfigPath(path)
 	}
 
 	if err := v.ReadInConfig(); err == nil {
-		trace(fmt.Sprintf("[init] ✓ blackbox file found: %s", v.ConfigFileUsed()))
+		trace(fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
 	} else {
-		trace("[init] ⨯ no blackbox file found", err.Error())
+		trace("No blackbox config file found", err.Error())
 	}
 
 	return v
@@ -56,7 +56,7 @@ func loadDotEnv() map[string]string {
 
 	// Add search paths
 	paths := configPaths()
-	trace(fmt.Sprintf("[init] searching paths for .env ... %s", paths))
+	trace(fmt.Sprintf("Searching paths for .env ... %s", paths))
 
 	var files []string
 	for _, p := range paths {
@@ -68,9 +68,9 @@ func loadDotEnv() map[string]string {
 	}
 
 	if len(files) != 0 {
-		trace(fmt.Sprintf("[init] found .env %s", files))
+		trace(fmt.Sprintf("Found .env %s", files))
 	} else {
-		trace("[init] no .env found ")
+		trace("No .env found ")
 	}
 
 	env, err := godotenv.Read(files...)
@@ -133,13 +133,13 @@ func registerServices() map[string]*Service {
 		}
 	}
 
-	trace(fmt.Sprintf("[init] available services: %s", funk.Keys(services)))
+	trace(fmt.Sprintf("Available services: %s", funk.Keys(services)))
 	return services
 }
 
 func trace(args ...string) {
 	for _, msg := range args {
-		fmt.Println(aurora.Brown("✪ "), aurora.Green(msg))
+		fmt.Println(aurora.Brown("[blackbox]"), aurora.Green(msg))
 	}
 }
 
@@ -154,8 +154,8 @@ func getRecipeFile(name string) (string, error) {
 			continue
 		}
 
-		trace(fmt.Sprintf("[init] ✓ found recipe: %s", recipePath))
+		trace(fmt.Sprintf("Found recipe: %s", recipePath))
 		return recipePath, nil
 	}
-	return "", fmt.Errorf("no recipe found named %s", name)
+	return "", fmt.Errorf("No recipe found named %s", name)
 }
