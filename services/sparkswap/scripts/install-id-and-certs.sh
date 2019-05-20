@@ -9,7 +9,7 @@
 
 SPARKSWAP_DIRECTORY=${SPARKSWAP_DIRECTORY:-~/.sparkswap}
 
-echo "Creating directories $SPARKSWAP_DIRECTORY/secure"
+print "Creating directories $SPARKSWAP_DIRECTORY/secure"
 mkdir -p ${SPARKSWAP_DIRECTORY}/secure
 
 
@@ -30,7 +30,7 @@ cleanup() {
   local file=${SPARKSWAP_DIRECTORY}/ipaddress.txt
 
   if [[ -f ${file} ]]; then
-    echo "Cleaning up potentially bad RPC certs ..."
+    print "Cleaning up potentially bad RPC certs ..."
     rm ${SPARKSWAP_DIRECTORY}/secure/broker-rpc*
     rm ${file}
   fi
@@ -50,7 +50,7 @@ CERT_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-tls.cert
 CSR_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-csr.csr
 
 generate_tls_certs() {
-  echo "Generating TLS certs for Broker Daemon: ${EXTERNAL_ADDRESS}"
+  print "Generating TLS certs for Broker Daemon: ${EXTERNAL_ADDRESS}"
   openssl ecparam -genkey -name prime256v1 > ${KEY_PATH}
   openssl req -new -sha256 -key ${KEY_PATH} \
     -reqexts SAN \
@@ -69,9 +69,9 @@ generate_tls_certs() {
 
 
 if [[ -f "$KEY_PATH" ]]; then
-  echo "WARNING: TLS Private Key already exists at $KEY_PATH for Broker Daemon. Skipping cert generation"
+  print "WARNING: TLS Private Key already exists at $KEY_PATH for Broker Daemon. Skipping cert generation"
 elif [[ -f "$CERT_PATH" ]]; then
-  echo "WARNING: TLS Cert already exists at $CERT_PATH for Broker Daemon. Skipping cert generation"
+  print "WARNING: TLS Cert already exists at $CERT_PATH for Broker Daemon. Skipping cert generation"
 else
   generate_tls_certs
 fi
@@ -89,7 +89,7 @@ fi
 #
 #############################################
 
-echo "Generating the Broker identity"
+print "Generating the Broker identity"
 
 ID_PRIV_KEY=${SPARKSWAP_DIRECTORY}/secure/broker-identity.private.pem
 ID_PUB_KEY=${SPARKSWAP_DIRECTORY}/secure/broker-identity.public.pem
@@ -97,9 +97,9 @@ ID_PUB_KEY=${SPARKSWAP_DIRECTORY}/secure/broker-identity.public.pem
 NO_IDENTITY=false
 
 if [[ -f "$ID_PRIV_KEY" ]]; then
-  echo "WARNING: ID already exists for Broker Daemon. Skipping ID generation"
+  print "WARNING: ID already exists for Broker Daemon. Skipping ID generation"
 elif [[ -f "$ID_PUB_KEY" ]]; then
-  echo "WARNING: ID Public Key already exists for Broker Daemon. Skipping ID generation"
+  print "WARNING: ID Public Key already exists for Broker Daemon. Skipping ID generation"
 elif [[ "$NO_IDENTITY" != "true" ]]; then
   openssl ecparam -name prime256v1 -genkey -noout > ${ID_PRIV_KEY}
   openssl ec -in ${ID_PRIV_KEY} -pubout > ${ID_PUB_KEY}

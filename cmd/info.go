@@ -2,10 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"strings"
 
 	"github.com/crypdex/blackbox/cmd/blackbox"
-	"github.com/logrusorgru/aurora"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
 	yaml "gopkg.in/yaml.v2"
@@ -26,13 +24,17 @@ var infoCmd = &cobra.Command{
 		// fmt.Println("")
 
 		client := blackbox.NewDockerClient(config)
-		status := client.ComposeConfig()
-		if status.Error != nil {
-			fatal(status.Error)
+		err := client.ComposeConfig()
+		if err != nil {
+			fatal(err)
 		}
 
-		fmt.Println(strings.Join(status.Stdout, "\n"))
-		fmt.Println(aurora.Red(strings.Join(status.Stderr, "\n")))
+		// if status.Error != nil {
+		// 	fatal(status.Error)
+		// }
+		//
+		// fmt.Println(strings.Join(status.Stdout, "\n"))
+		// fmt.Println(aurora.Red(strings.Join(status.Stderr, "\n")))
 	},
 }
 

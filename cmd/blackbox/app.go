@@ -10,7 +10,6 @@ import (
 	. "github.com/logrusorgru/aurora"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	funk "github.com/thoas/go-funk"
 )
 
 // App contains common variables and defaults used by blackboxd
@@ -39,7 +38,6 @@ func NewApp(debug bool, configFile string) *App {
 	// Load recipe if defined
 	// LEGACY SUPPORT
 	recipe := getRecipe(v)
-	fmt.Println("Found recipe", recipe)
 	if recipe != "" {
 		file, err := getRecipeFile(recipe)
 		if err != nil {
@@ -96,7 +94,9 @@ func (app *App) Services() map[string]*Service {
 		envvars := app.config.GetStringMap(fmt.Sprintf("services.%s.x-env", key))
 		service.Env = envvars
 	}
-	trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
+
+	// trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
+
 	return services
 }
 

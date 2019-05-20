@@ -1,7 +1,11 @@
 #!/usr/bin/env bash
 
-if [[ $@ == "logs" ]]; then
-  blackbox-logs
+if [[ $1 == "start" ]]; then
+  blackboxd start
+elif [[ $1 == "stop" ]]; then
+  blackboxd stop
+elif [[ $1 == "logs" ]]; then
+  blackboxd logs
 else
-  docker exec -ti blackbox_sparkswap.1.$(docker service ps -f 'name=blackbox_sparkswap.1' blackbox_sparkswap -q --no-trunc | head -n1) sparkswap $@
+  docker exec -ti $(docker ps -qf "name=sparkswap") sparkswap $@
 fi

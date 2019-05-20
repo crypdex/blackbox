@@ -8,12 +8,14 @@ import (
 )
 
 type DockerClient struct {
-	config *App
+	config      *App
+	projectName string
 }
 
 func NewDockerClient(config *App) *DockerClient {
 	return &DockerClient{
-		config: config,
+		config:      config,
+		projectName: "blackbox",
 	}
 }
 
@@ -47,6 +49,79 @@ func (client *DockerClient) StackRemove(name string) cmd.Status {
 // StackServices returns a formatted string of all files to "compose" when creating a stack
 func (client *DockerClient) stackFiles() []string {
 	return client.formatServices("-c")
+}
+
+// ---------------------------
+// Docker Compose functions
+// ---------------------------
+
+// composeOptions, commandOptions
+func (client *DockerClient) Compose(cmd string, cmdOpts []string) error {
+	if cmdOpts == nil {
+		cmdOpts = []string{}
+	}
+
+	// options to docker-compose command
+	composeOpts := append(
+		[]string{"-p", client.projectName},
+		client.composeFiles()...,
+	)
+
+	return Run(
+		"docker-compose",
+		append(
+			// docker-compose options
+			composeOpts,
+			// command and command options
+			append([]string{cmd}, cmdOpts...)...,
+		),
+		client.config.EnvVars(),
+		client.config.Debug,
+	)
+}
+
+func (client *DockerClient) ComposeUp(options []string) error {
+	return client.Compose("up", options)
+}
+
+func (client *DockerClient) ComposeDown(options []string) error {
+	return client.Compose("down", options)
+}
+
+func (client *DockerClient) ComposeLogs(options []string) error {
+	return client.Compose("logs", options)
+}
+
+// ComposeConfig calls `docker-compose config` with all the right parameters
+func (client *DockerClient) ComposeConfig() error {
+	return client.Compose("config", []string{})
+}
+
+func (client *DockerClient) ComposePs(options []string) error {
+	return client.Compose("ps", options)
+}
+
+func (client *DockerClient) composeFiles() []string {
+	return client.formatServices("-f")
+}
+
+// ------------
+// helpers
+// ------------
+
+func (client *DockerClient) formatServices(flagName string) []string {
+	var args []string
+
+	// Add up all the services files
+	for _, service := range client.config.Services() {
+		args = append(args, flagName)
+		args = append(args, service.DockerComposePaths()...)
+	}
+
+	// Finally, the root config file overrides
+	args = append(args, flagName, client.config.ConfigFile)
+
+	return args
 }
 
 // ---------------------------
@@ -121,65 +196,4 @@ func (client *DockerClient) IsSwarmManager() (bool, error) {
 		return false, status.Error
 	}
 	return "true" == strings.Join(status.Stdout, ""), nil
-}
-
-// ---------------------------
-// Docker Compose functions
-// There are being phased out.
-// ---------------------------
-
-func (client *DockerClient) ComposeUp() cmd.Status {
-	// docker-compose -f file up
-	// command := fmt.Sprintf("docker-compose -p blackbox %s up", strings.Join(client.composeFiles(), " "))
-	command := "docker-compose -p blackbox -f /Users/dmichael/go/src/github.com/crypdex/blackbox/services/sparkswap/docker-compose.yml -f /Users/dmichael/go/src/github.com/crypdex/blackbox/recipes/sparkswap.yml up -d"
-	Run(command, client.config.EnvVars(), client.config.Debug)
-	return cmd.Status{} // ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
-}
-
-func (client *DockerClient) ComposeDown() cmd.Status {
-	// docker-compose -f file up
-	command := fmt.Sprintf("docker-compose -p blackbox %s down", strings.Join(client.composeFiles(), " "))
-	Run(command, client.config.EnvVars(), client.config.Debug)
-	return cmd.Status{} // ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
-}
-
-func (client *DockerClient) ComposeLogs() cmd.Status {
-	// docker-compose -f file up
-	command := fmt.Sprintf("docker-compose -p blackbox %s logs -f", strings.Join(client.composeFiles(), " "))
-	Run(command, client.config.EnvVars(), client.config.Debug)
-	return cmd.Status{} // ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
-}
-
-// ComposeConfig calls `docker-compose config` with all the right parameters
-// I dont think there is a docker stack equivalent
-func (client *DockerClient) ComposeConfig() cmd.Status {
-	args := append(client.composeFiles(), "config")
-
-	command := "docker-compose " + strings.Join(args, " ")
-	fmt.Println(command)
-	Run(command, client.config.EnvVars(), client.config.Debug)
-	return cmd.Status{} // ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
-}
-
-func (client *DockerClient) composeFiles() []string {
-	return client.formatServices("-f")
-}
-
-// ------------
-// helpers
-// ------------
-
-func (client *DockerClient) formatServices(flagName string) []string {
-	var args []string
-
-	// Add up all the services files
-	for _, service := range client.config.Services() {
-		args = append(args, flagName)
-		args = append(args, service.DockerComposePaths()...)
-	}
-
-	// Finally, the root config file overrides
-	args = append(args, flagName, client.config.ConfigFile)
-
-	return args
 }

@@ -7,6 +7,7 @@ require (
 	github.com/crypdex/blackbox/admin v0.0.0-20190514190918-7d4d5c4db632 // indirect
 	github.com/go-cmd/cmd v1.0.4
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
+	github.com/jessevdk/go-flags v1.4.0 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/kr/pretty v0.1.0 // indirect
 	github.com/logrusorgru/aurora v0.0.0-20190428105938-cea283e61946

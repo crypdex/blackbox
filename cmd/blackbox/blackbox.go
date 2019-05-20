@@ -139,7 +139,7 @@ func registerServices() map[string]*Service {
 
 func trace(args ...string) {
 	for _, msg := range args {
-		fmt.Println(aurora.Brown("[blackbox]"), aurora.Green(msg))
+		fmt.Println(aurora.Brown("❯"), aurora.Green(msg))
 	}
 }
 

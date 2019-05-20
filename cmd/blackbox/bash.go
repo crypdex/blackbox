@@ -12,15 +12,15 @@ import (
 	"github.com/logrusorgru/aurora"
 )
 
-func Run(cmdString string, env map[string]string, debug bool) error {
+func Run(command string, cmdArgs []string, env map[string]string, debug bool) error {
 
-	cmdArgs := strings.Fields(cmdString)
-	cmd := exec.Command(cmdArgs[0], cmdArgs[1:]...)
+	// cmdArgs := strings.Fields(cmdString)
+	cmd := exec.Command(command, cmdArgs...)
 	setEnv(env)
 
 	// DEBUG
 	if debug {
-		debugCmd := fmt.Sprintf("%s %s", strings.Join(formatEnv(env), " "), cmdString)
+		debugCmd := fmt.Sprintf("%s %s %s", strings.Join(formatEnv(env), " "), command, strings.Join(cmdArgs, " "))
 		trace(aurora.Cyan(debugCmd).String())
 	}
 
@@ -53,7 +53,6 @@ func Run(cmdString string, env map[string]string, debug bool) error {
 	}()
 
 	err = cmd.Wait()
-	time.Sleep(1 * time.Second)
 	return err
 }
 

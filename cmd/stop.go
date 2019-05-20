@@ -17,13 +17,17 @@ var stopCmd = &cobra.Command{
 	Args:  cobra.MaximumNArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
-		// name := "blackbox"
-		// if len(args) > 0 {
-		// 	name = args[0]
-		// }
+		name := "blackbox"
+		if len(args) > 0 {
+			name = args[0]
+		}
 
 		client := blackbox.NewDockerClient(config)
-		client.ComposeDown()
+
+		// Ensure that any existing running stack is removed
+		client.StackRemove(name)
+
+		client.ComposeDown([]string{})
 		// status := client.StackRemove(name)
 		// if status.Error != nil {
 		// 	fatal(status.Error)

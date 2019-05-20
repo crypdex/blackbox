@@ -16,7 +16,7 @@ func init() {
 
 func cleanup(client *blackbox.DockerClient) {
 	fmt.Println("\nCleaning up ...")
-	client.ComposeDown()
+	client.ComposeDown(nil)
 }
 
 // startCmd represents the start command
@@ -26,6 +26,7 @@ var startCmd = &cobra.Command{
 	Args:  cobra.MaximumNArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
+
 		// Name the project/stack
 		// name := "blackbox"
 		// if len(args) > 0 {
@@ -34,6 +35,10 @@ var startCmd = &cobra.Command{
 
 		// When we start up, let's assure that we are in swarm mode
 		client := blackbox.NewDockerClient(config)
+
+		// Let's ensure that we have left the swarm (legacy)
+		// This can be removed after everyone has updated ;)
+		client.SwarmLeave()
 
 		c := make(chan os.Signal)
 		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
@@ -45,7 +50,7 @@ var startCmd = &cobra.Command{
 
 		config.Prestart()
 
-		client.ComposeUp()
+		client.ComposeUp([]string{"-d"})
 
 		// if status.Exit != 0 {
 		// 	log("info", status.Stdout...)
