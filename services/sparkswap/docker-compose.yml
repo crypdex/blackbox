@@ -13,8 +13,9 @@ version: "3.7"
 
 services:
   sparkswap:
-    image: crypdex/sparkswap-broker:0.6.2-beta
+    image: crypdex/sparkswap-broker:0.7.0-beta
     container_name: sparkswap
+    restart: on-failure
     depends_on:
       - lnd_btc
       - lnd_ltc
@@ -51,6 +52,7 @@ services:
   lnd_btc:
     image: crypdex/sparkswap-lnd-btc:0.5.2-beta
     container_name: lnd_btc
+    restart: on-failure
     depends_on:
       - bitcoin
     ports:
@@ -80,6 +82,7 @@ services:
   lnd_ltc:
     image: crypdex/sparkswap-lnd-ltc:0.5.2-beta
     container_name: lnd_ltc
+    restart: on-failure
     depends_on:
       - litecoin
     ports:

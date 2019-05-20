@@ -4,6 +4,7 @@ services:
   bitcoin:
     image: crypdex/bitcoin-core:${BITCOIN_VERSION:-0.17}
     container_name: bitcoin
+    restart: on-failure
     ports:
       - "8332:8332" # RPC
       - "8333:8333" # P2P

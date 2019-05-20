@@ -1,6 +1,10 @@
 #!/usr/bin/env bash
 
-if [[ $1 == "start" ]]; then
+# A wrapper script so that blackboxd is transparent
+
+if [[ $1 == "upgrade" ]]; then
+  blackboxd stop && apt update && apt install --only-upgrade blackboxd && blackboxd start
+elif [[ $1 == "start" ]]; then
   blackboxd start
 elif [[ $1 == "stop" ]]; then
   blackboxd stop
