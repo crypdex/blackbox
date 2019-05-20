@@ -4,6 +4,8 @@ version: "3.7"
 services:
   multiwallet:
     image: crypdex/multiwallet:0.1.8
+    container_name: multiwallet
+    restart: on-failure
     environment:
       - PORT=80
       - CHAINS=${MULTIWALLET_CHAINS} # CHAINS can be empty for now

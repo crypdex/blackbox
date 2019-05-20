@@ -3,6 +3,8 @@ version: '3.7'
 services:
   qtum:
     image: crypdex/qtum:${QTUM_VERSION:-0.17}
+    container_name: qtum
+    restart: on-failure
     ports:
       - '3888:3888' # P2P
       - '3889:3889' # RPC

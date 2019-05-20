@@ -15,7 +15,9 @@ var logsCmd = &cobra.Command{
 	Short: "Show the logs of all running containers",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		blackbox.Logs()
+		client := blackbox.NewDockerClient(config)
+
+		client.ComposeLogs([]string{"-f"})
 
 		// log("error", status.Stderr...)
 	},

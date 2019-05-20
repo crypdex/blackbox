@@ -4,6 +4,7 @@ version: "3.7"
 services:
   portainer:
     image: portainer/portainer
+    container_name: portainer
     volumes:
       - /var/run/docker.sock:/var/run/docker.sock
       - ${PORTAINER_DATA_DIR:?PORTAINER_DATA_DIR required}:/data

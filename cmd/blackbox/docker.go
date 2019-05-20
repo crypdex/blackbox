@@ -1,19 +1,18 @@
 package blackbox
 
 import (
-	"fmt"
-	"strings"
-
 	"github.com/go-cmd/cmd"
 )
 
 type DockerClient struct {
-	config *App
+	config      *App
+	projectName string
 }
 
 func NewDockerClient(config *App) *DockerClient {
 	return &DockerClient{
-		config: config,
+		config:      config,
+		projectName: "blackbox",
 	}
 }
 
@@ -50,89 +49,53 @@ func (client *DockerClient) stackFiles() []string {
 }
 
 // ---------------------------
-// Swarm-related functions
-// ---------------------------
-
-func (client *DockerClient) EnsureSwarmMode() error {
-	if !client.config.ForceSwarm() {
-		trace("[swarm] flag not set.")
-		return nil
-	}
-
-	trace("[swarm] found swarm setting.")
-	isManager, err := client.IsSwarmManager()
-	if err != nil {
-		return err
-	}
-
-	if isManager {
-		trace("[swarm] already a swarm manager, no need to force.")
-		return nil
-	}
-
-	trace("[swarm] forcing the Docker daemon into swarm mode.")
-
-	status := client.SwarmLeave()
-	fmt.Println(strings.Join(status.Stdout, "\n"))
-
-	status = client.SwarmInit()
-	if status.Exit == 0 {
-		fmt.Println(status.Stdout[0])
-	}
-	return nil
-}
-
-// SwarmInit initialized a swarm
-// `docker swarm init`
-func (client *DockerClient) SwarmInit() cmd.Status {
-	return ExecCommand("docker", []string{"swarm", "init"}, client.config.EnvVars(), client.config.Debug)
-}
-
-// SwarmState reports on the current state of the Docker node.
-// It is used to determine if its necessary to initialize or join a swarm.
-func (client *DockerClient) SwarmState() cmd.Status {
-	return ExecCommand("docker", []string{"info", "--format", "{{.Swarm.LocalNodeState}}"}, nil, client.config.Debug)
-}
-
-// SwarmLeave forces the current Docker node to leave a swarm. This is only really good for troubleshooting.
-// `docker swarm leave --force`
-func (client *DockerClient) SwarmLeave() cmd.Status {
-	return ExecCommand("docker", []string{"swarm", "leave", "--force"}, client.config.EnvVars(), client.config.Debug)
-}
-
-// IsSwarmNode determines if the current Docker node is part of a swarm.
-func (client *DockerClient) IsSwarmNode() (bool, error) {
-	status := client.SwarmState()
-	if status.Error != nil {
-		return false, status.Error
-	}
-
-	return "active" == strings.Join(status.Stdout, ""), nil
-}
-
-// IsSwarmManager determines if this current node is a manager of a swarm.
-func (client *DockerClient) IsSwarmManager() (bool, error) {
-	if _, err := client.IsSwarmNode(); err != nil {
-		return false, err
-	}
-
-	status := ExecCommand("docker", []string{"node", "inspect", "self", "-f", "{{.ManagerStatus.Leader}}"}, nil, client.config.Debug)
-	if status.Error != nil {
-		return false, status.Error
-	}
-	return "true" == strings.Join(status.Stdout, ""), nil
-}
-
-// ---------------------------
 // Docker Compose functions
-// There are being phased out.
 // ---------------------------
+
+// composeOptions, commandOptions
+func (client *DockerClient) Compose(cmd string, cmdOpts []string) error {
+	if cmdOpts == nil {
+		cmdOpts = []string{}
+	}
+
+	// options to docker-compose command
+	composeOpts := append(
+		[]string{"-p", client.projectName},
+		client.composeFiles()...,
+	)
+
+	return Run(
+		"docker-compose",
+		append(
+			// docker-compose options
+			composeOpts,
+			// command and command options
+			append([]string{cmd}, cmdOpts...)...,
+		),
+		client.config.EnvVars(),
+		client.config.Debug,
+	)
+}
+
+func (client *DockerClient) ComposeUp(options []string) error {
+	return client.Compose("up", options)
+}
+
+func (client *DockerClient) ComposeDown(options []string) error {
+	return client.Compose("down", options)
+}
+
+func (client *DockerClient) ComposeLogs(options []string) error {
+	return client.Compose("logs", options)
+}
 
 // ComposeConfig calls `docker-compose config` with all the right parameters
-// I dont think there is a docker stack equivalent
-func (client *DockerClient) ComposeConfig() cmd.Status {
-	args := append(client.composeFiles(), "config")
-	return ExecCommand("docker-compose", args, client.config.EnvVars(), client.config.Debug)
+func (client *DockerClient) ComposeConfig() error {
+	return client.Compose("config", []string{})
+}
+
+func (client *DockerClient) ComposePs(options []string) error {
+	return client.Compose("ps", options)
 }
 
 func (client *DockerClient) composeFiles() []string {
@@ -156,4 +119,14 @@ func (client *DockerClient) formatServices(flagName string) []string {
 	args = append(args, flagName, client.config.ConfigFile)
 
 	return args
+}
+
+// ---------------------------
+// Swarm-related functions
+// ---------------------------
+
+// SwarmLeave forces the current Docker node to leave a swarm. This is only really good for troubleshooting.
+// `docker swarm leave --force`
+func (client *DockerClient) SwarmLeave() error {
+	return Run("docker", []string{"swarm", "leave", "--force"}, client.config.EnvVars(), client.config.Debug)
 }

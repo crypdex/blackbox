@@ -23,12 +23,17 @@ var stopCmd = &cobra.Command{
 		}
 
 		client := blackbox.NewDockerClient(config)
-		status := client.StackRemove(name)
-		if status.Error != nil {
-			fatal(status.Error)
-		}
 
-		log("info", status.Stdout...)
-		log("error", status.Stderr...)
+		// Ensure that any existing running stack is removed
+		client.StackRemove(name)
+
+		client.ComposeDown([]string{})
+		// status := client.StackRemove(name)
+		// if status.Error != nil {
+		// 	fatal(status.Error)
+		// }
+		//
+		// log("info", status.Stdout...)
+		// log("error", status.Stderr...)
 	},
 }

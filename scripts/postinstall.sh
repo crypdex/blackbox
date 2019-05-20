@@ -14,7 +14,7 @@ deb-systemd-helper daemon-reload
 echo "[postinstall] Starting the services ..."
 
 deb-systemd-invoke start blackbox-admin.service
-deb-systemd-invoke start blackbox.service
+#deb-systemd-invoke start blackbox.service
 
 echo "[postinstall] Cleaning up Docker ..."
 

@@ -1,5 +1,19 @@
 #!/usr/bin/env bash
 
+echo ""
+echo "    ▄▄██████▄▄                              ▄▄                                "
+echo "  ▄██████████▀█▄                            ██                                "
+echo " ████████▀▀ ▄████    ▄███▄ ████▄  ████▄ ███ ██  ██ ▄███▄ ██ ██ ██ ████▄ ████▄ "
+echo "█████▀    ▄███████   ██    ██  ██     █ ██▀ ████▀  ██    ██▄██▄██     █ ██  ██"
+echo "██████▄    ▀██████   ▀███▄ ██  ██ ▄████ ██  ████   ▀███▄  ██████  ▄████ ██  ██"
+echo "███████▀    ▄█████      ██ ██  ██ ██  █ ██  ██ ██     ██  ▀██ █▀  ██  █ ██  ██"
+echo " ████▀ ▄▄████████    ▀███▀ ████▀  █████ ██  ██  ██ ▀███▀   ██ █   █████ ████▀ "
+echo "  ▀█▄██████████▀           ██                                           ██    "
+echo "    ▀▀██████▀▀             ▀▀                                           ▀▀    "
+echo "                                                         https://sparkswap.com"
+echo ""
+echo ""
+
 # This is necessary to avoid "random state" error
 export RANDFILE=/tmp/.rnd
 
@@ -8,10 +22,10 @@ __dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 function print() {
-    echo "[sparkswap pre-start] ${1}"
+    echo "[sparkswap] ${1}"
 }
 
-print "Configuring Sparkswap"
+print "Configuring Sparkswap ..."
 
 # Ensure that the Sparkswap directories are in place
 # SPARKSWAP_DATA_DIR

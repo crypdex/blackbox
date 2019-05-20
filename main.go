@@ -1,8 +1,6 @@
 package main
 
-import (
-	"github.com/crypdex/blackbox/cmd"
-)
+import "github.com/crypdex/blackbox/cmd"
 
 var (
 	version = "dev"

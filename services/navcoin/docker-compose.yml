@@ -3,6 +3,8 @@ version: '3.7'
 services:
   navcoin:
     image: crypdex/navcoin:${NAVCOIN_VERSION:-4.5}
+    container_name: navcoin
+    restart: on-failure
     ports:
       - '44440:44440' # P2P
       - '44444:44444' # RPC

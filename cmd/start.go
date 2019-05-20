@@ -2,6 +2,9 @@ package cmd
 
 import (
 	"fmt"
+	"os"
+	"os/signal"
+	"syscall"
 
 	"github.com/crypdex/blackbox/cmd/blackbox"
 	"github.com/spf13/cobra"
@@ -11,6 +14,11 @@ func init() {
 	rootCmd.AddCommand(startCmd)
 }
 
+func cleanup(client *blackbox.DockerClient) {
+	fmt.Println("\nCleaning up ...")
+	client.ComposeDown(nil)
+}
+
 // startCmd represents the start command
 var startCmd = &cobra.Command{
 	Use:   "start [name]",
@@ -18,30 +26,39 @@ var startCmd = &cobra.Command{
 	Args:  cobra.MaximumNArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
-		name := "blackbox"
-		if len(args) > 0 {
-			name = args[0]
-		}
+
+		// Name the project/stack
+		// name := "blackbox"
+		// if len(args) > 0 {
+		// 	name = args[0]
+		// }
 
 		// When we start up, let's assure that we are in swarm mode
 		client := blackbox.NewDockerClient(config)
-		err := client.EnsureSwarmMode()
-		if err != nil {
-			fatal(err)
-		}
+
+		// Let's ensure that we have left the swarm (legacy)
+		// This can be removed after everyone has updated ;)
+		client.SwarmLeave()
+
+		c := make(chan os.Signal)
+		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
+		go func() {
+			<-c
+			cleanup(client)
+			os.Exit(0)
+		}()
 
 		config.Prestart()
 
-		log("info", fmt.Sprintf("Deploying stack '%s' ...", name))
+		client.ComposeUp([]string{"-d"})
 
-		status := client.StackDeploy(name)
-		if status.Exit != 0 {
-			log("info", status.Stdout...)
-			log("error", status.Stderr...)
-			fatal(status.Error)
-			return
-		}
-
-		log("info", status.Stdout...)
+		// if status.Exit != 0 {
+		// 	log("info", status.Stdout...)
+		// 	log("error", status.Stderr...)
+		// 	fatal(status.Error)
+		// 	return
+		// }
+		//
+		// log("info", status.Stdout...)
 	},
 }

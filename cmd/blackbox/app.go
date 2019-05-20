@@ -10,7 +10,6 @@ import (
 	. "github.com/logrusorgru/aurora"
 	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
-	funk "github.com/thoas/go-funk"
 )
 
 // App contains common variables and defaults used by blackboxd
@@ -39,7 +38,6 @@ func NewApp(debug bool, configFile string) *App {
 	// Load recipe if defined
 	// LEGACY SUPPORT
 	recipe := getRecipe(v)
-	fmt.Println("Found recipe", recipe)
 	if recipe != "" {
 		file, err := getRecipeFile(recipe)
 		if err != nil {
@@ -96,7 +94,9 @@ func (app *App) Services() map[string]*Service {
 		envvars := app.config.GetStringMap(fmt.Sprintf("services.%s.x-env", key))
 		service.Env = envvars
 	}
-	trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
+
+	// trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
+
 	return services
 }
 
@@ -124,7 +124,7 @@ func (app *App) EnvVars() map[string]string {
 		output[k] = v
 	}
 
-	app.log("debug", fmt.Sprintf("%#v", output))
+	// app.log("debug", fmt.Sprintf("%#v", output))
 	return output
 }
 
@@ -171,7 +171,7 @@ func (app *App) Reset() {
 
 func (app *App) runScript(service *Service, name string) error {
 	script := fmt.Sprintf("%s.sh", name)
-	trace(fmt.Sprintf("[%s] running for %s", name, service.Name))
+	trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
 
 	for _, p := range service.FilePaths {
 		if _, err := os.Stat(path.Join(p, script)); os.IsNotExist(err) {
@@ -179,8 +179,8 @@ func (app *App) runScript(service *Service, name string) error {
 		}
 		status := ExecCommand("bash", []string{"-c", path.Join(p, script)}, app.ServiceEnvVars(service), app.Debug)
 
-		app.log("debug", status.Stdout...)
-		app.log("error", status.Stderr...)
+		trace(status.Stdout...)
+		trace(status.Stderr...)
 	}
 
 	return nil
