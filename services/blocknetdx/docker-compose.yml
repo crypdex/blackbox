@@ -3,6 +3,8 @@ version: "3.7"
 services:
   blocknetdx:
     image: crypdex/blocknetdx:${BLOCKNETDX_VERSION:-3.13}
+    container_name: blocknetdx
+    restart: on-failure
     volumes:
       - ${BLOCKNETDX_DATA_DIR:?BLOCKNETDX_DATA_DIR required}:/home/blocknetdx/.blocknetdx
     command:

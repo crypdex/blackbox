@@ -3,6 +3,8 @@ version: "3.7"
 services:
   dash:
     image: crypdex/dash-core:${DASH_VERSION:-0.13}
+    container_name: dash
+    restart: on-failure
     volumes:
       - ${DASH_DATA_DIR:?DASH_DATA_DIR required}:/home/dash/.dash
     command:
