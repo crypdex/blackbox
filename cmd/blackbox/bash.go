@@ -12,16 +12,34 @@ import (
 	"github.com/logrusorgru/aurora"
 )
 
+func RunSync(command string, cmdArgs []string, env map[string]string, debug bool) error {
+	cmd := exec.Command(command, cmdArgs...)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	cmd.Stdin = os.Stdin
+	setEnv(env)
+
+	err := cmd.Run()
+	if err != nil {
+		return err
+	}
+
+	fmt.Println(cmd.Stderr)
+
+	return nil
+}
+
 func Run(command string, cmdArgs []string, env map[string]string, debug bool) error {
 
 	// cmdArgs := strings.Fields(cmdString)
 	cmd := exec.Command(command, cmdArgs...)
+
 	setEnv(env)
 
 	// DEBUG
 	if debug {
 		debugCmd := fmt.Sprintf("%s %s %s", strings.Join(formatEnv(env), " "), command, strings.Join(cmdArgs, " "))
-		trace(aurora.Cyan(debugCmd).String())
+		trace("debug", debugCmd)
 	}
 
 	stdout, err := cmd.StdoutPipe()
@@ -41,14 +59,15 @@ func Run(command string, cmdArgs []string, env map[string]string, debug bool) er
 	stdoutScanner := bufio.NewScanner(stdout)
 	go func() {
 		for stdoutScanner.Scan() {
-			fmt.Printf("%s\n", stdoutScanner.Bytes())
+			fmt.Println(stdoutScanner.Text())
+			// trace("info", stdoutScanner.Text())
 		}
 	}()
 
 	stderrScanner := bufio.NewScanner(stderr)
 	go func() {
 		for stderrScanner.Scan() {
-			fmt.Printf("%s\n", stderrScanner.Bytes())
+			trace("error", stderrScanner.Text())
 		}
 	}()
 

@@ -2,13 +2,8 @@
 
 
 function print() {
-    echo "[portainer pre-start] ${1}"
+    echo "[portainer] ${1}"
 }
-
-# The PIVX pre-start needs to do the following
-# - Ensure that the data directory exists!
-# - Create the pivx.conf file
-# - Create the walletnotify.sh file
 
 print "Configuring Portainer"
 

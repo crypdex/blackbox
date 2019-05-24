@@ -48,7 +48,10 @@ var startCmd = &cobra.Command{
 			os.Exit(0)
 		}()
 
-		config.Prestart()
+		err := config.Prestart()
+		if err != nil {
+			fatal(err)
+		}
 
 		client.ComposeUp([]string{"-d"})
 

@@ -146,14 +146,15 @@ func (app *App) ServiceEnvVars(service *Service) map[string]string {
 }
 
 // Prestart runs the pre-start.sh script for all services if they exist
-func (app *App) Prestart() {
+func (app *App) Prestart() error {
 	// Add up all the services files
 	for _, service := range app.Services() {
-		err := app.runScript(service, "pre-start")
+		err := app.runScript(service, "prestart")
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 	}
+	return nil
 }
 
 // RESET
@@ -174,13 +175,20 @@ func (app *App) runScript(service *Service, name string) error {
 	trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
 
 	for _, p := range service.FilePaths {
-		if _, err := os.Stat(path.Join(p, script)); os.IsNotExist(err) {
+		scriptpath := path.Join(p, "scripts", script)
+		if _, err := os.Stat(scriptpath); os.IsNotExist(err) {
 			return fmt.Errorf("%s %s not found", service.Name, script)
 		}
-		status := ExecCommand("bash", []string{"-c", path.Join(p, script)}, app.ServiceEnvVars(service), app.Debug)
 
-		trace(status.Stdout...)
-		trace(status.Stderr...)
+		err := RunSync(scriptpath, []string{}, app.ServiceEnvVars(service), app.Debug)
+		if err != nil {
+			return err
+		}
+		// trace("info", status.Stdout...)
+		// if status.Exit == 1 {
+		// 	trace("error", status.Stderr...)
+		// 	return fmt.Errorf("script error: [%s] %s", service.Name, name)
+		// }
 	}
 
 	return nil

@@ -10,7 +10,6 @@ import (
 
 	"github.com/joho/godotenv"
 	homedir "github.com/mitchellh/go-homedir"
-	funk "github.com/thoas/go-funk"
 
 	"github.com/logrusorgru/aurora"
 	"github.com/spf13/viper"
@@ -38,15 +37,15 @@ func loadDefault() *viper.Viper {
 
 	// Add search paths
 	paths := configPaths()
-	trace(fmt.Sprintf("Searching paths ... %s", paths))
+	// trace(fmt.Sprintf("Searching paths ... %s", paths))
 	for _, path := range paths {
 		v.AddConfigPath(path)
 	}
 
 	if err := v.ReadInConfig(); err == nil {
-		trace(fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
+		trace("info", fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
 	} else {
-		trace("No blackbox config file found", err.Error())
+		trace("error", "No blackbox config file found", err.Error())
 	}
 
 	return v
@@ -56,7 +55,7 @@ func loadDotEnv() map[string]string {
 
 	// Add search paths
 	paths := configPaths()
-	trace(fmt.Sprintf("Searching paths for .env ... %s", paths))
+	// trace(fmt.Sprintf("Searching paths for .env ... %s", paths))
 
 	var files []string
 	for _, p := range paths {
@@ -68,9 +67,9 @@ func loadDotEnv() map[string]string {
 	}
 
 	if len(files) != 0 {
-		trace(fmt.Sprintf("Found .env %s", files))
+		// trace(fmt.Sprintf("Found .env %s", files))
 	} else {
-		trace("No .env found ")
+		trace("info", "No .env found ")
 	}
 
 	env, err := godotenv.Read(files...)
@@ -133,13 +132,20 @@ func registerServices() map[string]*Service {
 		}
 	}
 
-	trace(fmt.Sprintf("Available services: %s", funk.Keys(services)))
+	// trace(fmt.Sprintf("Available services: %s", funk.Keys(services)))
 	return services
 }
 
-func trace(args ...string) {
+func trace(level string, args ...string) {
 	for _, msg := range args {
-		fmt.Println(aurora.Brown("❯"), aurora.Green(msg))
+		switch level {
+		case "error":
+			fmt.Println(aurora.Brown("❯"), aurora.Red(msg))
+		case "debug":
+			fmt.Println(aurora.Brown("❯"), aurora.Cyan(msg))
+		default:
+			fmt.Println(aurora.Brown("❯"), aurora.Green(msg))
+		}
 	}
 }
 
