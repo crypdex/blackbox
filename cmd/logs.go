@@ -17,7 +17,7 @@ var logsCmd = &cobra.Command{
 	Run: func(cmd *cobra.Command, args []string) {
 		client := blackbox.NewDockerClient(config)
 
-		client.ComposeLogs([]string{"-f"})
+		client.ComposeLogs([]string{"-f", "--tail=1000"})
 
 		// log("error", status.Stderr...)
 	},

@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   navcoin:
-    image: crypdex/navcoin:${NAVCOIN_VERSION:-4.5}
+    image: crypdex/navcoin:${NAVCOIN_VERSION:-4.6}
     container_name: navcoin
     restart: on-failure
     ports:

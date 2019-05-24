@@ -9,6 +9,8 @@ github.com/crypdex/blackbox/admin v0.0.0-20190514190918-7d4d5c4db632/go.mod h1:z
 github.com/davecgh/go-spew v1.1.0/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
 github.com/davecgh/go-spew v1.1.1 h1:vj9j/u1bqnvCEfJOwUhtlOARqs3+rkHYY13jYWTU97c=
 github.com/davecgh/go-spew v1.1.1/go.mod h1:J7Y8YcW2NihsgmVo/mv3lAwl/skON4iLHjSsI+c5H38=
+github.com/decred/dcrd/certgen v1.0.2 h1:g1Wg3iy0RJzpmBFUB6Jeh+OhDvvHbEa61DwVEOgIq0k=
+github.com/decred/dcrd/certgen v1.0.2/go.mod h1:NxEyGwzPHak+h3tNLYAXU4vWuL98HrY9Z59hc1E3SGI=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible h1:7qlOGliEKZXTDg6OTjfoBKDXWrumCAMpl/TFQ4/5kLM=
 github.com/dgrijalva/jwt-go v3.2.0+incompatible/go.mod h1:E3ru+11k8xSBh+hMPgOLZmtrrCbhqsmaPHjLKYnJCaQ=
 github.com/fsnotify/fsnotify v1.4.7 h1:IXs+QLmnXW2CcXuY+8Mzv/fWEsPGWxqefPtCP5CnV9I=

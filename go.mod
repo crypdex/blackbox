@@ -5,6 +5,7 @@ go 1.12
 require (
 	github.com/BurntSushi/toml v0.3.1 // indirect
 	github.com/crypdex/blackbox/admin v0.0.0-20190514190918-7d4d5c4db632 // indirect
+	github.com/decred/dcrd/certgen v1.0.2 // indirect
 	github.com/go-cmd/cmd v1.0.4
 	github.com/inconshreveable/mousetrap v1.0.0 // indirect
 	github.com/jessevdk/go-flags v1.4.0 // indirect
