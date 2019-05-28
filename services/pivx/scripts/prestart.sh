@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 function print() {
-    echo "[pivx pre-start] ${1}"
+    echo "[pivx] ${1}"
 }
 
 # The PIVX pre-start needs to do the following
@@ -35,17 +35,7 @@ else
     mkdir -p ${PIVX_DATA_DIR}
 fi
 
-if [[ -z "${PIVX_RPCUSER}" ]]
-then
-  print "PIVX_RPCUSER is empty, generating one"
-  PIVX_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
-fi
 
-if [[ -z "${PIVX_RPCPASSWORD}" ]]
-then
-  print "PIVX_RPCPASSWORD is empty, generating one"
-  PIVX_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
-fi
 
 # -----------
 # CONFIG FILE
@@ -55,10 +45,20 @@ fi
 file="${PIVX_DATA_DIR}/pivx.conf"
 
 if [[ -f "${file}" ]]; then
-    print "WARN: Config file ${file} exists. Not overwriting."
+  print "INFO: Config file ${file} exists. Not overwriting."
 else
-    print "Writing default config for PIVX to ${file}"
+  print "Writing default config for PIVX to ${file}"
+  if [[ -z "${PIVX_RPCUSER}" ]]
+  then
+    print "PIVX_RPCUSER is empty, generating one"
+    PIVX_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
+  fi
 
+  if [[ -z "${PIVX_RPCPASSWORD}" ]]
+  then
+    print "PIVX_RPCPASSWORD is empty, generating one"
+    PIVX_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
+  fi
 # Be aware that the location of the walletnotify script is relative to the container
 cat >${file} <<EOF
 rpcuser=${PIVX_RPCUSER}
@@ -74,10 +74,10 @@ fi
 # This assumes the service runs in docker and is addressable as "api"
 walletnotify="${PIVX_DATA_DIR}/walletnotify.sh"
 if [[ -f "${file}" ]]; then
-    echo "[pivx pre-start] WARN: The file ${walletnotify} exists, overwriting."
+    print "INFO: The file ${walletnotify} exists, overwriting."
 fi
 
-echo "[pivx pre-start] Writing walletnotify for PIVX to ${walletnotify}"
+print "Writing walletnotify for PIVX to ${walletnotify}"
 cat >${walletnotify} <<EOF
 #!/usr/bin/env bash
 

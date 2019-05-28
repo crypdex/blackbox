@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 function print() {
-    echo "[navcoin pre-start] ${1}"
+    echo "[navcoin] ${1}"
 }
 
 # The PIVX pre-start needs to do the following
@@ -24,23 +24,12 @@ fi
 
 # 1. Ensure that the data directory exists!
 if [[ -d "${NAVCOIN_DATA_DIR}" ]]; then
-print "✓ Data directory ${NAVCOIN_DATA_DIR} exists."
+  print "✓ Data directory ${NAVCOIN_DATA_DIR} exists."
 else
-    print "Creating directory for data at ${NAVCOIN_DATA_DIR}"
-    mkdir -p ${NAVCOIN_DATA_DIR}
+  print "Creating directory for data at ${NAVCOIN_DATA_DIR}"
+  mkdir -p ${NAVCOIN_DATA_DIR}
 fi
 
-if [[ -z "${NAVCOIN_RPCUSER}" ]]
-then
-  print "NAVCOIN_RPCUSER is empty, generating one"
-  NAVCOIN_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
-fi
-
-if [[ -z "${NAVCOIN_RPCPASSWORD}" ]]
-then
-  print "NAVCOIN_RPCPASSWORD is empty, generating one"
-  NAVCOIN_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
-fi
 
 # -----------
 # CONFIG FILE
@@ -50,9 +39,18 @@ fi
 file="${NAVCOIN_DATA_DIR}/navcoin.conf"
 
 if [[ -f "${file}" ]]; then
-    print "WARN: Config file ${file} exists. Not overwriting."
+    print "INFO: Config file ${file} exists. Not overwriting."
 else
     print "Writing default config for NavCoin to ${file}"
+    if [[ -z "${NAVCOIN_RPCUSER}" ]]; then
+      print "NAVCOIN_RPCUSER is empty, generating one"
+      NAVCOIN_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
+    fi
+
+    if [[ -z "${NAVCOIN_RPCPASSWORD}" ]]; then
+      print "NAVCOIN_RPCPASSWORD is empty, generating one"
+      NAVCOIN_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
+    fi
 
 # Be aware that the location of the walletnotify script is relative to the container
 cat >${file} <<EOF

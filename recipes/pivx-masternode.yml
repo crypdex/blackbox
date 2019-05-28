@@ -1,3 +1,5 @@
+verison: '3.7'
+
 services:
   portainer:
   pivx:

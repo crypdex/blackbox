@@ -11,6 +11,7 @@ require (
 	github.com/jessevdk/go-flags v1.4.0 // indirect
 	github.com/joho/godotenv v1.3.0
 	github.com/kr/pretty v0.1.0 // indirect
+	github.com/kr/pty v1.1.4
 	github.com/logrusorgru/aurora v0.0.0-20190428105938-cea283e61946
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/spf13/cobra v0.0.3

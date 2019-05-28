@@ -1,0 +1,16 @@
+version: "3.7"
+
+services:
+  portainer:
+  zcoin:
+    command: -printtoconsole
+  pivx:
+    command: -rpcallowip=0.0.0.0/0 -printtoconsole
+  dash:
+  qtum:
+  navcoin:
+  blocknetdx:
+  litecoin:
+    command: -printtoconsole -txindex=1
+  bitcoin:
+    command: -printtoconsole -txindex=1

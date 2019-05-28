@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 function print() {
-    echo "[bitcoin pre-start] ${1}"
+    echo "[bitcoin] ${1}"
 }
 
 print "Configuring Bitcoin"
@@ -33,7 +33,7 @@ fi
 file="${BITCOIN_DATA_DIR}/bitcoin.conf"
 
 if [[ -f "${file}" ]]; then
-    print "WARN: Config file ${file} exists. NOT OVERWRITING."
+    print "INFO: Config file ${file} exists. NOT OVERWRITING."
 else
     if [[ -z "${BITCOIN_RPCUSER}" ]]
     then

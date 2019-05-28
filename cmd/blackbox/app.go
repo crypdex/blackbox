@@ -23,6 +23,9 @@ type App struct {
 // NewApp ...
 // Overriding the configfile used should be done from outside this func
 func NewApp(debug bool, configFile string) *App {
+	// Loads from .env files and assures we have the env vars
+	loadEnv()
+
 	// Let's start with some assumed basic configuration
 	// Create an empty config
 	var v *viper.Viper
@@ -65,8 +68,11 @@ func NewApp(debug bool, configFile string) *App {
 }
 
 // DataDir is the global data directory. It may be overridden in each service using x-blackbox
-//
 func (app *App) DataDir() (string, error) {
+	if os.Getenv("DATA_DIR") != "" {
+		return os.Getenv("DATA_DIR"), nil
+	}
+
 	// If a root data directory is defined ...
 	datadir := app.config.GetString("x-blackbox.data_dir")
 	if datadir != "" {
@@ -79,7 +85,6 @@ func (app *App) DataDir() (string, error) {
 }
 
 // Services are those defined in the root blackbox.yml file
-//
 func (app *App) Services() map[string]*Service {
 	services := make(map[string]*Service)
 
@@ -95,7 +100,7 @@ func (app *App) Services() map[string]*Service {
 		service.Env = envvars
 	}
 
-	// trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
+	// Trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
 
 	return services
 }
@@ -103,6 +108,8 @@ func (app *App) Services() map[string]*Service {
 func (app *App) ForceSwarm() bool {
 	return app.config.GetBool("swarm") || app.config.GetBool("x-blackbox.swarm")
 }
+
+
 
 func (app *App) EnvVars() map[string]string {
 
@@ -120,7 +127,7 @@ func (app *App) EnvVars() map[string]string {
 	// Add environment variables from .env files
 	// This should overrride variables set by the service definitions
 	// as well as variables set by the main "recipe"
-	for k, v := range loadDotEnv() {
+	for k, v := range loadEnv() {
 		output[k] = v
 	}
 
@@ -146,14 +153,16 @@ func (app *App) ServiceEnvVars(service *Service) map[string]string {
 }
 
 // Prestart runs the pre-start.sh script for all services if they exist
-func (app *App) Prestart() {
+func (app *App) Prestart() error {
 	// Add up all the services files
 	for _, service := range app.Services() {
-		err := app.runScript(service, "pre-start")
+		Trace("info", fmt.Sprintf("Running prestart script for %s", service.Name))
+		err := app.runScript(service, "prestart")
 		if err != nil {
-			fmt.Println(err)
+			return err
 		}
 	}
+	return nil
 }
 
 // RESET
@@ -171,16 +180,24 @@ func (app *App) Reset() {
 
 func (app *App) runScript(service *Service, name string) error {
 	script := fmt.Sprintf("%s.sh", name)
-	trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
+	Trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
 
 	for _, p := range service.FilePaths {
-		if _, err := os.Stat(path.Join(p, script)); os.IsNotExist(err) {
-			return fmt.Errorf("%s %s not found", service.Name, script)
+		scriptpath := path.Join(p, "scripts", script)
+		if _, err := os.Stat(scriptpath); os.IsNotExist(err) {
+			Trace("error", fmt.Sprintf("%s %s not found", service.Name, script))
+			continue
 		}
-		status := ExecCommand("bash", []string{"-c", path.Join(p, script)}, app.ServiceEnvVars(service), app.Debug)
 
-		trace(status.Stdout...)
-		trace(status.Stderr...)
+		err := RunSync(scriptpath, []string{}, app.ServiceEnvVars(service), app.Debug)
+		if err != nil {
+			return err
+		}
+		// Trace("info", status.Stdout...)
+		// if status.Exit == 1 {
+		// 	Trace("error", status.Stderr...)
+		// 	return fmt.Errorf("script error: [%s] %s", service.Name, name)
+		// }
 	}
 
 	return nil

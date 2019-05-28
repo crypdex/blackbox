@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+
+# wallet related commands are to be run on the wallet daemon
+if [[ $1 = "--wallet" ]]; then
+  docker exec -it -u decred dcrwallet dcrctl -u alice -P bob -c /home/decred/.dcrwallet/dcrw.cert $@
+else
+  docker exec -it -u decred dcrd dcrctl -u alice -P bob -c /home/decred/.dcrwallet/dcrd.cert $@
+fi
+

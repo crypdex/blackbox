@@ -54,6 +54,6 @@ for dir in ${directories}; do
 done
 
 # Execute using the same bash process
-source ${__dir}/scripts/install-id-and-certs.sh
+source ${__dir}/install-id-and-certs.sh
 
-source ${__dir}/scripts/install-shell.sh
+source ${__dir}/install-shell.sh

@@ -17,6 +17,8 @@ var stopCmd = &cobra.Command{
 	Args:  cobra.MaximumNArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
+		blackbox.Trace("info", "BLACKBOX stopping ...")
+
 		name := "blackbox"
 		if len(args) > 0 {
 			name = args[0]

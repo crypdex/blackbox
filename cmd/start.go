@@ -27,6 +27,7 @@ var startCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
+		blackbox.Trace("info", "BLACKBOX starting ...")
 		// Name the project/stack
 		// name := "blackbox"
 		// if len(args) > 0 {
@@ -48,9 +49,12 @@ var startCmd = &cobra.Command{
 			os.Exit(0)
 		}()
 
-		config.Prestart()
+		err := config.Prestart()
+		if err != nil {
+			fatal(err)
+		}
 
-		client.ComposeUp([]string{"-d"})
+		client.ComposeUp([]string{"-d", "--remove-orphans"})
 
 		// if status.Exit != 0 {
 		// 	log("info", status.Stdout...)

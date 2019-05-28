@@ -1,0 +1,8 @@
+version: '3.7'
+
+# IMPORTANT
+# Default data directory maps to ~/.blackbox/data.
+# Create a .env file with DATA_DIR= to change this.
+
+x-blackbox:
+  recipe: pivx-stakebox

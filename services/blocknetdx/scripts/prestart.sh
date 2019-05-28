@@ -5,10 +5,10 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 function print() {
-    echo "[blocknetdx pre-start] ${1}"
+    echo "[blocknetdx] ${1}"
 }
 
-print "Configuring Blocknet"
+print "Configuring BlocknetDX"
 
 if [[ -z "${BLOCKNETDX_DATA_DIR}" ]]
 then
@@ -25,17 +25,7 @@ else
     mkdir -p ${BLOCKNETDX_DATA_DIR}
 fi
 
-if [[ -z "${BLOCKNETDX_RPCUSER}" ]]
-then
-  print "BLOCKNETDX_RPCUSER is empty, generating one"
-  BLOCKNETDX_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
-fi
 
-if [[ -z "${BLOCKNETDX_RPCPASSWORD}" ]]
-then
-  print "BLOCKNETDX_RPCPASSWORD is empty, generating one"
-  BLOCKNETDX_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
-fi
 
 # -----------
 # CONFIG FILE
@@ -44,8 +34,21 @@ fi
 file="${BLOCKNETDX_DATA_DIR}/blocknetdx.conf"
 
 if [[ -f "${file}" ]]; then
-    print "WARN: Config file ${file} exists. Not overwriting."
+    print "INFO: Config file ${file} exists. Not overwriting."
 else
+  print "Writing default config for BlocknetDX to ${file}"
+
+  if [[ -z "${BLOCKNETDX_RPCUSER}" ]]
+  then
+    print "BLOCKNETDX_RPCUSER is empty, generating one"
+    BLOCKNETDX_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
+  fi
+
+  if [[ -z "${BLOCKNETDX_RPCPASSWORD}" ]]
+  then
+    print "BLOCKNETDX_RPCPASSWORD is empty, generating one"
+    BLOCKNETDX_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
+  fi
 # Be aware that the location of the walletnotify script is relative to the container
 cat >${file} <<EOF
 rpcuser=${BLOCKNETDX_RPCUSER}
