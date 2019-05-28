@@ -27,6 +27,7 @@ var startCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 
+		blackbox.Trace("info", "BLACKBOX starting ...")
 		// Name the project/stack
 		// name := "blackbox"
 		// if len(args) > 0 {

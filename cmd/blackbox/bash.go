@@ -12,6 +12,13 @@ import (
 	"github.com/logrusorgru/aurora"
 )
 
+// type Tracer struct{}
+//
+// func (t *Tracer) Write(p []byte) (n int, err error) {
+// 	os.Stdout.Write(append([]byte(">"), p...))
+// 	return len(p), nil
+// }
+
 func RunSync(command string, cmdArgs []string, env map[string]string, debug bool) error {
 	cmd := exec.Command(command, cmdArgs...)
 	cmd.Stdout = os.Stdout
@@ -19,12 +26,18 @@ func RunSync(command string, cmdArgs []string, env map[string]string, debug bool
 	cmd.Stdin = os.Stdin
 	setEnv(env)
 
-	err := cmd.Run()
-	if err != nil {
-		return err
+	if debug {
+		debugCmd := fmt.Sprintf("%s %s %s", strings.Join(formatEnv(env), " "), command, strings.Join(cmdArgs, " "))
+		cmd.Stdout.Write([]byte(aurora.Cyan(debugCmd).String() + "\n"))
 	}
 
-	fmt.Println(cmd.Stderr)
+	if err := cmd.Run(); err != nil {
+		if exitError, ok := err.(*exec.ExitError); ok {
+			fmt.Println(exitError.ExitCode())
+			return exitError
+		}
+		return err
+	}
 
 	return nil
 }
@@ -39,7 +52,7 @@ func Run(command string, cmdArgs []string, env map[string]string, debug bool) er
 	// DEBUG
 	if debug {
 		debugCmd := fmt.Sprintf("%s %s %s", strings.Join(formatEnv(env), " "), command, strings.Join(cmdArgs, " "))
-		trace("debug", debugCmd)
+		Trace("debug", debugCmd)
 	}
 
 	stdout, err := cmd.StdoutPipe()
@@ -59,15 +72,14 @@ func Run(command string, cmdArgs []string, env map[string]string, debug bool) er
 	stdoutScanner := bufio.NewScanner(stdout)
 	go func() {
 		for stdoutScanner.Scan() {
-			fmt.Println(stdoutScanner.Text())
-			// trace("info", stdoutScanner.Text())
+			Trace("info", stdoutScanner.Text())
 		}
 	}()
 
 	stderrScanner := bufio.NewScanner(stderr)
 	go func() {
 		for stderrScanner.Scan() {
-			trace("error", stderrScanner.Text())
+			Trace("error", stderrScanner.Text())
 		}
 	}()
 
@@ -88,7 +100,7 @@ func ExecCommand(command string, args []string, env map[string]string, debug boo
 	// DEBUG
 	if debug {
 		debugCmd := fmt.Sprintf("%s %s %s", strings.Join(formatEnv(env), " "), command, strings.Join(args, " "))
-		trace(aurora.Cyan(debugCmd).String())
+		Trace(aurora.Cyan(debugCmd).String())
 	}
 
 	// Run and wait for Cmd to return, discard Status

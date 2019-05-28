@@ -64,7 +64,7 @@ func (client *DockerClient) Compose(cmd string, cmdOpts []string) error {
 		client.composeFiles()...,
 	)
 
-	return Run(
+	return RunSync(
 		"docker-compose",
 		append(
 			// docker-compose options
@@ -78,10 +78,12 @@ func (client *DockerClient) Compose(cmd string, cmdOpts []string) error {
 }
 
 func (client *DockerClient) ComposeUp(options []string) error {
+	Trace("info", "Bringing up Docker Compose")
 	return client.Compose("up", options)
 }
 
 func (client *DockerClient) ComposeDown(options []string) error {
+	Trace("info", "Bringing down Docker Compose")
 	return client.Compose("down", options)
 }
 
@@ -128,5 +130,5 @@ func (client *DockerClient) formatServices(flagName string) []string {
 // SwarmLeave forces the current Docker node to leave a swarm. This is only really good for troubleshooting.
 // `docker swarm leave --force`
 func (client *DockerClient) SwarmLeave() error {
-	return Run("docker", []string{"swarm", "leave", "--force"}, client.config.EnvVars(), client.config.Debug)
+	return RunSync("docker", []string{"swarm", "leave", "--force"}, client.config.EnvVars(), client.config.Debug)
 }

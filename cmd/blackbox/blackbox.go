@@ -37,15 +37,15 @@ func loadDefault() *viper.Viper {
 
 	// Add search paths
 	paths := configPaths()
-	// trace(fmt.Sprintf("Searching paths ... %s", paths))
+	// Trace(fmt.Sprintf("Searching paths ... %s", paths))
 	for _, path := range paths {
 		v.AddConfigPath(path)
 	}
 
 	if err := v.ReadInConfig(); err == nil {
-		trace("info", fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
+		Trace("info", fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
 	} else {
-		trace("error", "No blackbox config file found", err.Error())
+		Trace("error", "No blackbox config file found", err.Error())
 	}
 
 	return v
@@ -55,7 +55,7 @@ func loadDotEnv() map[string]string {
 
 	// Add search paths
 	paths := configPaths()
-	// trace(fmt.Sprintf("Searching paths for .env ... %s", paths))
+	// Trace(fmt.Sprintf("Searching paths for .env ... %s", paths))
 
 	var files []string
 	for _, p := range paths {
@@ -67,9 +67,9 @@ func loadDotEnv() map[string]string {
 	}
 
 	if len(files) != 0 {
-		// trace(fmt.Sprintf("Found .env %s", files))
+		// Trace(fmt.Sprintf("Found .env %s", files))
 	} else {
-		trace("info", "No .env found ")
+		Trace("info", "No .env found ")
 	}
 
 	env, err := godotenv.Read(files...)
@@ -132,19 +132,19 @@ func registerServices() map[string]*Service {
 		}
 	}
 
-	// trace(fmt.Sprintf("Available services: %s", funk.Keys(services)))
+	// Trace(fmt.Sprintf("Available services: %s", funk.Keys(services)))
 	return services
 }
 
-func trace(level string, args ...string) {
+func Trace(level string, args ...string) {
 	for _, msg := range args {
 		switch level {
 		case "error":
-			fmt.Println(aurora.Brown("❯"), aurora.Red(msg))
+			fmt.Printf("%s %s\n", aurora.Brown("❯"), aurora.Red(msg))
 		case "debug":
 			fmt.Println(aurora.Brown("❯"), aurora.Cyan(msg))
 		default:
-			fmt.Println(aurora.Brown("❯"), aurora.Green(msg))
+			fmt.Printf("%s %s\n", aurora.Brown("❯"), aurora.Green(msg))
 		}
 	}
 }
@@ -160,7 +160,7 @@ func getRecipeFile(name string) (string, error) {
 			continue
 		}
 
-		trace(fmt.Sprintf("Found recipe: %s", recipePath))
+		Trace(fmt.Sprintf("Found recipe: %s", recipePath))
 		return recipePath, nil
 	}
 	return "", fmt.Errorf("No recipe found named %s", name)

@@ -51,22 +51,31 @@ done
 ########################
 
 for service in dcrd dcrwallet; do
-  print "Generating ${service} TLS certs"
   prefix=${DECRED_DATA_DIR}/${service}/${service}
+  KEY=${prefix}.key
+  CSR=${prefix}.csr
+  CERT=${prefix}.cert
+
+  if [[ -f "${CERT}" ]]; then
+    print "✓ ${service}: RPC certs exist"
+    continue
+  fi
+
+  print "Generating ${service} TLS certs"
   # Generate a key file
-  output=$(openssl ecparam -name secp521r1 -genkey -out ${prefix}.key 2>&1)
-  if [ $? -eq 1 ]; then
+  output=$(openssl ecparam -name secp521r1 -genkey -out ${KEY} 2>&1)
+  if [[ $? -eq 1 ]]; then
     fatal ${output}
   fi
 
-  output=$(openssl req -new -out ${prefix}.csr -key ${prefix}.key -config ${__dir}/openssl-decred.cnf -subj "/CN=dcrd cert" 2>&1)
-  if [ $? -eq 1 ]; then
+  output=$(openssl req -new -out ${CSR} -key ${KEY} -config ${__dir}/openssl-decred.cnf -subj "/CN=dcrd cert" 2>&1)
+  if [[ $? -eq 1 ]]; then
     fatal "${output}"
   fi
 
   #openssl req -text -noout -in dcrd.csr
-  output=$(openssl x509 -req -days 36500 -in ${prefix}.csr -signkey ${prefix}.key -out ${prefix}.cert -extensions v3_req -extfile ${__dir}/openssl-decred.cnf 2>&1)
-  if [ $? -eq 1 ]; then
+  output=$(openssl x509 -req -days 36500 -in ${CSR} -signkey ${KEY} -out ${CERT} -extensions v3_req -extfile ${__dir}/openssl-decred.cnf 2>&1)
+  if [[ $? -eq 1 ]]; then
     fatal ${output}
   fi
 
@@ -78,10 +87,14 @@ done
 # Check for a wallet: MAINNET ONLY RIGHT NOW
 #####################
 
+
+
 DECRED_NETWORK=${DECRED_NETWORK:-mainnet}
-print "Checking for ${DECRED_NETWORK} wallet"
 WALLET_FILE=${DECRED_DATA_DIR}/dcrwallet/${DECRED_NETWORK}/wallet.db
-if [[ ! -f "$WALLET_FILE" ]]; then
+if [[  -f "$WALLET_FILE" ]]; then
+  print "✓ Wallet exists"
+else
+  print "ATTENTION: You need to create a wallet ..."
   source ${__dir}/../bin/dcrwallet-create
 
   # echo

@@ -95,7 +95,7 @@ func (app *App) Services() map[string]*Service {
 		service.Env = envvars
 	}
 
-	// trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
+	// Trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
 
 	return services
 }
@@ -149,6 +149,7 @@ func (app *App) ServiceEnvVars(service *Service) map[string]string {
 func (app *App) Prestart() error {
 	// Add up all the services files
 	for _, service := range app.Services() {
+		Trace("info", fmt.Sprintf("Running prestart script for %s", service.Name))
 		err := app.runScript(service, "prestart")
 		if err != nil {
 			return err
@@ -172,21 +173,22 @@ func (app *App) Reset() {
 
 func (app *App) runScript(service *Service, name string) error {
 	script := fmt.Sprintf("%s.sh", name)
-	trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
+	Trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
 
 	for _, p := range service.FilePaths {
 		scriptpath := path.Join(p, "scripts", script)
 		if _, err := os.Stat(scriptpath); os.IsNotExist(err) {
-			return fmt.Errorf("%s %s not found", service.Name, script)
+			Trace("error", fmt.Sprintf("%s %s not found", service.Name, script))
+			continue
 		}
 
 		err := RunSync(scriptpath, []string{}, app.ServiceEnvVars(service), app.Debug)
 		if err != nil {
 			return err
 		}
-		// trace("info", status.Stdout...)
+		// Trace("info", status.Stdout...)
 		// if status.Exit == 1 {
-		// 	trace("error", status.Stderr...)
+		// 	Trace("error", status.Stderr...)
 		// 	return fmt.Errorf("script error: [%s] %s", service.Name, name)
 		// }
 	}
