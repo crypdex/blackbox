@@ -1,0 +1,43 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>blackbox-os/nanopc-t4 · Blackbox</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;The NanoPC T4 has 16GB eMMC card on the board. It has Android pre-installed. You can install Ubuntu Core by using FriendlyElec&#x27;s &amp;quot;eFlasher&amp;quot;.&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="blackbox-os/nanopc-t4 · Blackbox"/><meta property="og:type" content="website"/><meta property="og:url" content="https://crypdex.io/blackbox/"/><meta property="og:description" content="&lt;p&gt;The NanoPC T4 has 16GB eMMC card on the board. It has Android pre-installed. You can install Ubuntu Core by using FriendlyElec&#x27;s &amp;quot;eFlasher&amp;quot;.&lt;/p&gt;
+"/><meta property="og:image" content="https://crypdex.io/blackbox/img/docusaurus.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://crypdex.io/blackbox/img/docusaurus.png"/><link rel="shortcut icon" href="/blackbox/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/blackbox/css/main.css"/><script src="/blackbox/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/blackbox/"><img class="logo" src="/blackbox/img/logo.svg" alt="Blackbox"/><h2 class="headerTitleWithLogo">Blackbox</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class=""><a href="/blackbox/docs/intro" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">blackbox-os/nanopc-t4</h1></header><article><div><span><p>The NanoPC T4 has 16GB eMMC card on the board. It has Android pre-installed. You can install Ubuntu Core by using FriendlyElec's &quot;eFlasher&quot;.</p>
+<p>Here is how to do that</p>
+<ol>
+<li>Download the eFlasher image <a href="https://drive.google.com/drive/folders/1gaLKSlIHvqhJ5cASTFGSjJ9XvtgosZFQ">here</a>. The file is called <code>rk3399-eflasher-friendlycore-bionic-4.4-arm64-20190308.img.zip</code>.</li>
+<li>Using Etcher (or an equivalent), flash this image to a microSD card. Any size will do.</li>
+<li>Insert the card into the NanoPC T4 and boot it.</li>
+<li>Click install from the GUI. The end.</li>
+</ol>
+<p>Detailed instructions can be found here:</p>
+<ul>
+<li><a href="http://wiki.friendlyarm.com/wiki/index.php/NanoPC-T4#Flash_Image_to_eMMC">http://wiki.friendlyarm.com/wiki/index.php/NanoPC-T4#Flash_Image_to_eMMC</a></li>
+</ul>
+<h2><a class="anchor" aria-hidden="true" id="install-m2-disk"></a><a href="#install-m2-disk" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Install M.2 disk</h2>
+<p>Following the tutorial here:</p>
+<ul>
+<li><a href="https://www.digitalocean.com/community/tutorials/how-to-partition-and-format-storage-devices-in-linux">https://www.digitalocean.com/community/tutorials/how-to-partition-and-format-storage-devices-in-linux</a></li>
+</ul>
+<pre><code class="hljs css language-bash"><span class="hljs-comment"># Identify the disk</span>
+lsblk
+
+<span class="hljs-comment"># Choose a partitioning standard</span>
+parted /dev/nvme0n1 mklabel gpt
+
+<span class="hljs-comment"># Create the new partition over the whole disk</span>
+parted -a opt /dev/nvme0n1 mkpart primary ext4 0% 100%
+
+<span class="hljs-comment"># Create a filesystem with a label "data"</span>
+<span class="hljs-comment"># ... notice that we are using the new partition</span>
+mkfs.ext4 -L data /dev/nvme0n1p1
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="mount-the-filesystem-on-boot"></a><a href="#mount-the-filesystem-on-boot" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Mount the filesystem on boot</h3>
+<pre><code class="hljs css language-bash"><span class="hljs-comment"># Make a mount dir</span>
+mkdir -p /mnt/data
+
+<span class="hljs-comment"># edit the fstab</span>
+nano /etc/fstab
+
+<span class="hljs-comment"># Add this line:</span>
+LABEL=data /mnt/data ext4 defaults,nofail 0 2
+</code></pre>
+</span></div></article></div><div class="docs-prevnext"></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#install-m2-disk">Install M.2 disk</a><ul class="toc-headings"><li><a href="#mount-the-filesystem-on-boot">Mount the filesystem on boot</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://crypdex.io" class="nav-home"><img src="/blackbox/img/logo-full-white.png" alt="Blackbox"/></a><div><h5>Community</h5><a href="https://discord.gg/TjmNPth">Discord</a><a href="https://www.instagram.com/crypdex_io/" target="_blank" rel="noreferrer noopener">Instagram</a></div><div><h5>More</h5><a href="https://medium.com/crypdex" target="_blank" rel="noreferrer noopener">Medium</a><a href="https://github.com/crypdex/blackbox">GitHub</a><a class="github-button" href="https://github.com/crypdex/blackbox" data-icon="octicon-star" data-count-href="/crypdex/blackbox/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Crypdex</section></footer></div></body></html>

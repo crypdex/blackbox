@@ -1,0 +1,113 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Decred · Blackbox</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;&lt;img src=&quot;/blackbox/docs/assets/dcr.svg&quot; alt=&quot;alt-text&quot;&gt;&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Decred · Blackbox"/><meta property="og:type" content="website"/><meta property="og:url" content="https://crypdex.io/blackbox/"/><meta property="og:description" content="&lt;p&gt;&lt;img src=&quot;/blackbox/docs/assets/dcr.svg&quot; alt=&quot;alt-text&quot;&gt;&lt;/p&gt;
+"/><meta property="og:image" content="https://crypdex.io/blackbox/img/docusaurus.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://crypdex.io/blackbox/img/docusaurus.png"/><link rel="shortcut icon" href="/blackbox/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/blackbox/css/main.css"/><script src="/blackbox/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/blackbox/"><img class="logo" src="/blackbox/img/logo.svg" alt="Blackbox"/><h2 class="headerTitleWithLogo">Blackbox</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/blackbox/docs/intro" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Services</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/intro">Intro</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">BlackboxOS</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/device-preparation">Device Preparation</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/security">Security</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/installation">Installation</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/configuration">Configuration</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/hardware-requirements">Hardware</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/conventions">Conventions</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/access">Access</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Services</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/services/pivx">PIVX</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/blackbox/docs/services/decred">Decred</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Blackbox Devices</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/pivx-staking-node/getting-started">PIVX Staking Node</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Decred</h1></header><article><div><span><p><img src="/blackbox/docs/assets/dcr.svg" alt="alt-text"></p>
+<p>From the Decred <a href="https://docs.decred.org/">docs</a></p>
+<blockquote>
+<p>Decred (/ˈdi:ˈkred/, /dɪˈkred/, dee-cred) is a blockchain-based cryptocurrency with a strong focus on community input, open governance, and sustainable funding for development. It utilizes a hybrid Proof-of-Work (PoW) and Proof-of-Stake (PoS) mining system to ensure that a small group cannot dominate the flow of transactions or make changes to Decred without the input of the community. A unit of the currency is called a decred (DCR).</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<p>The <code>decred</code> service is composed of 2 individual services: <code>dcrd</code> and <code>dcrwallet</code>. These sub-services are not currently separable from the main <code>decred</code> service since they function together.</p>
+<p>To use the recipe, configure your <code>blackbox.yml</code> file as follows:</p>
+<pre><code class="hljs css language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.7"</span>
+
+<span class="hljs-attr">services:</span> 
+<span class="hljs-attr">  decred:</span>
+</code></pre>
+<blockquote>
+<p>This service requires manual setup</p>
+</blockquote>
+<p>Once you have specified the <code>decred</code> recipe, run <code>blackboxd start</code> and follow the prompts to initialize your wallet.
+After this is done, you should be able to reliably boot <code>blackboxd</code> unattended.</p>
+<h2><a class="anchor" aria-hidden="true" id="environment-variables"></a><a href="#environment-variables" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variables</h2>
+<p>When using the service, these environment variables are generated by <code>blackboxd</code> with reasonable defaults. You may override them in your shell or <code>.env</code> file.</p>
+<pre><code class="hljs css language-.env"><span class="hljs-attr">DECRED_DATA_DIR</span>=<span class="hljs-variable">${DATA_DIR}</span>/decred
+<span class="hljs-comment"># The following environment variable should be set for unattended operation.</span>
+<span class="hljs-attr">DECRED_WALLET_PASSWORD</span>=youshouldsetthis
+</code></pre>
+<p>You may <code>export</code> these in the shell before startup, or put them in a <code>.env</code> file at the root of the blackbox dir.</p>
+<h2><a class="anchor" aria-hidden="true" id="ports"></a><a href="#ports" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ports</h2>
+<p>See the <a href="https://docs.decred.org/faq/configuration/">Decred docs</a> for more information.</p>
+<h3><a class="anchor" aria-hidden="true" id="dcrd"></a><a href="#dcrd" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>dcrd</h3>
+<table>
+<thead>
+<tr><th></th><th>Mainnet</th><th>Testnet</th><th>Simnet</th></tr>
+</thead>
+<tbody>
+<tr><td>Peer to Peer</td><td>9108</td><td>19108</td><td>18555</td></tr>
+<tr><td>RPC Server</td><td>9109</td><td>19109</td><td>19556</td></tr>
+</tbody>
+</table>
+<h3><a class="anchor" aria-hidden="true" id="dcrwallet"></a><a href="#dcrwallet" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>dcrwallet</h3>
+<table>
+<thead>
+<tr><th></th><th>Mainnet</th><th>Testnet</th><th>Simnet</th></tr>
+</thead>
+<tbody>
+<tr><td>JSON-RPC</td><td>9110</td><td>19110</td><td>19557</td></tr>
+<tr><td>gRPC</td><td>9111</td><td>19111</td><td>19558</td></tr>
+</tbody>
+</table>
+<p>By default, these ports are not exposed. To open them, add the <code>ports</code> key to the config file.</p>
+<pre><code class="hljs css language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.7"</span>
+
+<span class="hljs-attr">services:</span>
+<span class="hljs-attr">  pivx:</span>
+<span class="hljs-attr">    ports:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-number">9108</span><span class="hljs-string">:9108</span>
+      <span class="hljs-string">...</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="tls-certs"></a><a href="#tls-certs" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>TLS Certs</h2>
+<p>Decred is pretty serious about security and verification in its communications. As such, it uses TLS certs for its RPC connections. The daemons generate their own certs if left alone, but the daemon generated certs are not compatible with this Docker network. This is due to the way that the domains are registered in the cert.</p>
+<p>This project generates certs that can be used to get Decred working in its default case. This happens at service boot (see the prestart script). If you would like to heighten your own security, you may generate new certs manually.</p>
+<p><a href="https://stakey.club/en/digital-certificates-for-rpc-connections/">This article</a> gives a nice tutorial.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/blackbox/docs/services/pivx"><span class="arrow-prev">← </span><span>PIVX</span></a><a class="docs-next button" href="/blackbox/docs/pivx-staking-node/getting-started"><span>PIVX Staking Node</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#usage">Usage</a></li><li><a href="#environment-variables">Environment Variables</a></li><li><a href="#ports">Ports</a><ul class="toc-headings"><li><a href="#dcrd">dcrd</a></li><li><a href="#dcrwallet">dcrwallet</a></li></ul></li><li><a href="#tls-certs">TLS Certs</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://crypdex.io" class="nav-home"><img src="/blackbox/img/logo-full-white.png" alt="Blackbox"/></a><div><h5>Community</h5><a href="https://discord.gg/TjmNPth">Discord</a><a href="https://www.instagram.com/crypdex_io/" target="_blank" rel="noreferrer noopener">Instagram</a></div><div><h5>More</h5><a href="https://medium.com/crypdex" target="_blank" rel="noreferrer noopener">Medium</a><a href="https://github.com/crypdex/blackbox">GitHub</a><a class="github-button" href="https://github.com/crypdex/blackbox" data-icon="octicon-star" data-count-href="/crypdex/blackbox/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Crypdex</section></footer></div></body></html>

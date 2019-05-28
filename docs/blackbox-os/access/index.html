@@ -1,0 +1,95 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Access · Blackbox</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;h2&gt;&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; id=&quot;talking-to-your-node&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#talking-to-your-node&quot; aria-hidden=&quot;true&quot; class=&quot;hash-link&quot;&gt;&lt;svg class=&quot;hash-link-icon&quot; aria-hidden=&quot;true&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Talking to your node&lt;/h2&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Access · Blackbox"/><meta property="og:type" content="website"/><meta property="og:url" content="https://crypdex.io/blackbox/"/><meta property="og:description" content="&lt;h2&gt;&lt;a class=&quot;anchor&quot; aria-hidden=&quot;true&quot; id=&quot;talking-to-your-node&quot;&gt;&lt;/a&gt;&lt;a href=&quot;#talking-to-your-node&quot; aria-hidden=&quot;true&quot; class=&quot;hash-link&quot;&gt;&lt;svg class=&quot;hash-link-icon&quot; aria-hidden=&quot;true&quot; height=&quot;16&quot; version=&quot;1.1&quot; viewBox=&quot;0 0 16 16&quot; width=&quot;16&quot;&gt;&lt;path fill-rule=&quot;evenodd&quot; d=&quot;M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z&quot;&gt;&lt;/path&gt;&lt;/svg&gt;&lt;/a&gt;Talking to your node&lt;/h2&gt;
+"/><meta property="og:image" content="https://crypdex.io/blackbox/img/docusaurus.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://crypdex.io/blackbox/img/docusaurus.png"/><link rel="shortcut icon" href="/blackbox/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/blackbox/css/main.css"/><script src="/blackbox/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/blackbox/"><img class="logo" src="/blackbox/img/logo.svg" alt="Blackbox"/><h2 class="headerTitleWithLogo">Blackbox</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/blackbox/docs/intro" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>BlackboxOS</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/intro">Intro</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">BlackboxOS</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/device-preparation">Device Preparation</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/security">Security</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/installation">Installation</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/configuration">Configuration</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/hardware-requirements">Hardware</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/conventions">Conventions</a></li><li class="navListItem navListItemActive"><a class="navItem" href="/blackbox/docs/blackbox-os/access">Access</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Services</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/services/pivx">PIVX</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/services/decred">Decred</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Blackbox Devices</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/pivx-staking-node/getting-started">PIVX Staking Node</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Access</h1></header><article><div><span><h2><a class="anchor" aria-hidden="true" id="talking-to-your-node"></a><a href="#talking-to-your-node" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Talking to your node</h2>
+<blockquote>
+<p>Upon receiving your device, you should change SSH passwords and Portainer login credentials before proceeding with setup.</p>
+</blockquote>
+<blockquote>
+<p>While all services are password protected, you should operate this device in a relatively isolated network environment. While a residence is typically fine, don't plug it directly into a WeWork socket. A cheap consumer-grade router can create a no-frills subnet in a pinch.</p>
+</blockquote>
+<p>You have several options for communicating with your device.</p>
+<ul>
+<li>Portainer</li>
+<li>Command Line Interface (CLI)</li>
+<li>SSH</li>
+</ul>
+<p>The hostname has been set to <code>crypdex.local</code> by default using mDNS. Specific editions may have a different hostname. See the documentation for your specific edition for details. If you have multiple devices with the same hostname, they will be named sequentially.</p>
+<h2><a class="anchor" aria-hidden="true" id="portainer"></a><a href="#portainer" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Portainer</h2>
+<blockquote>
+<p>The Portainer instance is unconfigured. You should immediately configure it with a really strong user/pass.</p>
+</blockquote>
+<p>BlackboxOS stacks typically include <a href="https://portainer.io">Portainer</a>, a Docker management GUI. It is really nice. Portainer will give you a complete view into the software on the device including volume mounts, ports, and running containers.</p>
+<blockquote>
+<p><strong>Portainer can be a sharp knife.</strong> Because you can manage the entire Docker deployment, you can potentiaally</p>
+</blockquote>
+<p>Your device should arrive with fresh Portainer installation, so you will create a user and password when you first hit it's address.</p>
+<p><img src="/blackbox/docs/assets/portainer-init.png" alt="alt-text"></p>
+<p>Choose the option on the far left to manage the &quot;Local&quot; Docker environment and click &quot;connect&quot;.</p>
+<p><img src="/blackbox/docs/assets/portainer-local.png" alt="alt-text"></p>
+<p>Finally, if you click on the &quot;services&quot; menu item on the left, you will see the running containers and can get at some interesting things like the logs, which can show you blockchain progress, as well as a console into any of the running containers.</p>
+<p><img src="/blackbox/docs/assets/portainer-services.png" alt="alt-text"></p>
+<h3><a class="anchor" aria-hidden="true" id="multiwallet-http-api"></a><a href="#multiwallet-http-api" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Multiwallet HTTP API</h3>
+<p>The HTTP API for Crypdex's multiwallet is the subject of it's own documentation.</p>
+<h3><a class="anchor" aria-hidden="true" id="pivx-rpc"></a><a href="#pivx-rpc" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>PIVX RPC</h3>
+<p>You may choose to not use the multiwallet and instead call PIVX RPC commands directly. Actually its not a binary choice, as you may use both.</p>
+<p>The PIVX RPC may be accessed through a console lauched via Portainer (see below) or using a local <code>pivx-cli</code> client. The <code>rpcuser</code> and <code>rpcpassword</code> are generated uniquely per device and are only available by logging into the device and viewing the blockchain config file at</p>
+<pre><code class="hljs css language-shell"><span class="hljs-meta">$</span><span class="bash"> cat /root/.blackbox/data/pivx/pivx.conf</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="ssh"></a><a href="#ssh" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>SSH</h3>
+<p>And finally the section you have all been waiting for.</p>
+<p>The PIVX Staking Node has been given a default SSH user/password combination. You can find this information on a small sticker on the device. You should login and change your password.</p>
+<pre><code class="hljs css language-shell"><span class="hljs-meta">$</span><span class="bash"> ssh root@crypdex.local</span>
+<span class="hljs-meta">&gt;</span><span class="bash"> passwd</span>
+</code></pre>
+<p>The device runs BlackboxOS. You can find more documentation about using <code>blackboxd</code> in these pages.</p>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/blackbox/docs/blackbox-os/conventions"><span class="arrow-prev">← </span><span>Conventions</span></a><a class="docs-next button" href="/blackbox/docs/services/pivx"><span>PIVX</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#talking-to-your-node">Talking to your node</a></li><li><a href="#portainer">Portainer</a><ul class="toc-headings"><li><a href="#multiwallet-http-api">Multiwallet HTTP API</a></li><li><a href="#pivx-rpc">PIVX RPC</a></li><li><a href="#ssh">SSH</a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://crypdex.io" class="nav-home"><img src="/blackbox/img/logo-full-white.png" alt="Blackbox"/></a><div><h5>Community</h5><a href="https://discord.gg/TjmNPth">Discord</a><a href="https://www.instagram.com/crypdex_io/" target="_blank" rel="noreferrer noopener">Instagram</a></div><div><h5>More</h5><a href="https://medium.com/crypdex" target="_blank" rel="noreferrer noopener">Medium</a><a href="https://github.com/crypdex/blackbox">GitHub</a><a class="github-button" href="https://github.com/crypdex/blackbox" data-icon="octicon-star" data-count-href="/crypdex/blackbox/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Crypdex</section></footer></div></body></html>

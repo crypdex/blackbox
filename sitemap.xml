@@ -7,11 +7,13 @@
 <url> <loc>https://crypdex.io/blackbox/blog/2017/09/25/testing-rss</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://crypdex.io/blackbox/blog/2017/04/10/blog-post-two</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
 <url> <loc>https://crypdex.io/blackbox/blog/2016/03/11/blog-post</loc> <changefreq>weekly</changefreq> <priority>0.3</priority> </url>
+<url> <loc>https://crypdex.io/blackbox/docs/blackbox-os/access</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-os/access" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/blackbox-os/configuration</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-os/configuration" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/blackbox-os/conventions</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-os/conventions" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/blackbox-os/device-preparation</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-os/device-preparation" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/blackbox-os/hardware-requirements</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-os/hardware-requirements" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/blackbox-os/installation</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-os/installation" /> </url>
+<url> <loc>https://crypdex.io/blackbox/docs/blackbox-os/nanopc-t4</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-os/nanopc-t4" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/blackbox-os/security</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-os/security" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/blackbox-summary</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/blackbox-summary" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/doc2</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/doc2" /> </url>
@@ -21,4 +23,6 @@
 <url> <loc>https://crypdex.io/blackbox/docs/intro</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/intro" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/pivx-staking-node/getting-started</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/pivx-staking-node/getting-started" /> </url>
 <url> <loc>https://crypdex.io/blackbox/docs/pivx-staking-node/troubleshooting</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/pivx-staking-node/troubleshooting" /> </url>
+<url> <loc>https://crypdex.io/blackbox/docs/services/decred</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/services/decred" /> </url>
+<url> <loc>https://crypdex.io/blackbox/docs/services/pivx</loc> <changefreq>hourly</changefreq> <priority>1.0</priority> <xhtml:link rel="alternate" hreflang="en" href="https://crypdex.io/blackbox/docs/services/pivx" /> </url>
 </urlset>
