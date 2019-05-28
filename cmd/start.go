@@ -54,7 +54,7 @@ var startCmd = &cobra.Command{
 			fatal(err)
 		}
 
-		client.ComposeUp([]string{"-d"})
+		client.ComposeUp([]string{"-d", "--remove-orphans"})
 
 		// if status.Exit != 0 {
 		// 	log("info", status.Stdout...)

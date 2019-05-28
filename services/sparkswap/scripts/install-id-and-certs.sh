@@ -69,9 +69,9 @@ generate_tls_certs() {
 
 
 if [[ -f "$KEY_PATH" ]]; then
-  print "WARNING: TLS Private Key already exists at $KEY_PATH for Broker Daemon. Skipping cert generation"
+  print "TLS Private Key already exists at $KEY_PATH for Broker Daemon. Skipping cert generation"
 elif [[ -f "$CERT_PATH" ]]; then
-  print "WARNING: TLS Cert already exists at $CERT_PATH for Broker Daemon. Skipping cert generation"
+  print "TLS Cert already exists at $CERT_PATH for Broker Daemon. Skipping cert generation"
 else
   generate_tls_certs
 fi
@@ -89,7 +89,7 @@ fi
 #
 #############################################
 
-print "Generating the Broker identity"
+
 
 ID_PRIV_KEY=${SPARKSWAP_DIRECTORY}/secure/broker-identity.private.pem
 ID_PUB_KEY=${SPARKSWAP_DIRECTORY}/secure/broker-identity.public.pem
@@ -97,10 +97,11 @@ ID_PUB_KEY=${SPARKSWAP_DIRECTORY}/secure/broker-identity.public.pem
 NO_IDENTITY=false
 
 if [[ -f "$ID_PRIV_KEY" ]]; then
-  print "WARNING: ID already exists for Broker Daemon. Skipping ID generation"
+  print "ID already exists for Broker Daemon. Skipping ID generation"
 elif [[ -f "$ID_PUB_KEY" ]]; then
-  print "WARNING: ID Public Key already exists for Broker Daemon. Skipping ID generation"
+  print "ID Public Key already exists for Broker Daemon. Skipping ID generation"
 elif [[ "$NO_IDENTITY" != "true" ]]; then
+  print "Generating the Broker identity"
   openssl ecparam -name prime256v1 -genkey -noout > ${ID_PRIV_KEY}
   openssl ec -in ${ID_PRIV_KEY} -pubout > ${ID_PUB_KEY}
 fi

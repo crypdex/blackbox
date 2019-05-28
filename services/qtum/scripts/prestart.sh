@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 function print() {
-    echo "[qtum pre-start] ${1}"
+    echo "[qtum] ${1}"
 }
 
 # The PIVX pre-start needs to do the following
@@ -26,21 +26,10 @@ fi
 if [[ -d "${QTUM_DATA_DIR}" ]]; then
 print "✓ Data directory ${QTUM_DATA_DIR} exists."
 else
-    print "Creating directory for data at ${QTUM_DATA_DIR}"
-    mkdir -p ${QTUM_DATA_DIR}
+  print "Creating directory for data at ${QTUM_DATA_DIR}"
+  mkdir -p ${QTUM_DATA_DIR}
 fi
 
-if [[ -z "${QTUM_RPCUSER}" ]]
-then
-  print "QTUM_RPCUSER is empty, generating one"
-  QTUM_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
-fi
-
-if [[ -z "${QTUM_RPCPASSWORD}" ]]
-then
-  print "QTUM_RPCPASSWORD is empty, generating one"
-  QTUM_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
-fi
 
 # -----------
 # CONFIG FILE
@@ -50,9 +39,20 @@ fi
 file="${QTUM_DATA_DIR}/qtum.conf"
 
 if [[ -f "${file}" ]]; then
-    print "WARN: Config file ${file} exists. Not overwriting."
+    print "INFO: Config file ${file} exists. Not overwriting."
 else
     print "Writing default config for QTUM to ${file}"
+    if [[ -z "${QTUM_RPCUSER}" ]]
+    then
+      print "QTUM_RPCUSER is empty, generating one"
+      QTUM_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
+    fi
+
+    if [[ -z "${QTUM_RPCPASSWORD}" ]]
+    then
+      print "QTUM_RPCPASSWORD is empty, generating one"
+      QTUM_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
+    fi
 
 # Be aware that the location of the walletnotify script is relative to the container
 cat >${file} <<EOF

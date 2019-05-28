@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 function print() {
-    echo "[litecoin pre-start] ${1}"
+    echo "[litecoin] ${1}"
 }
 
 print "Configuring Litecoin"
@@ -33,7 +33,7 @@ fi
 file="${LITECOIN_DATA_DIR}/litecoin.conf"
 
 if [[ -f "${file}" ]]; then
-    print "WARN: Config file ${file} exists. NOT OVERWRITING."
+    print "INFO: Config file ${file} exists. NOT OVERWRITING."
 else
     if [[ -z "${LITECOIN_RPCUSER}" ]]
     then

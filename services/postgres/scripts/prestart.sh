@@ -5,7 +5,7 @@ DIR="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
 function print() {
-    echo "[postgres pre-start] ${1}"
+    echo "[postgres] ${1}"
 }
 
 # The PIVX pre-start needs to do the following
