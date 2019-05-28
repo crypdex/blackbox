@@ -24,7 +24,7 @@ services:
     container_name: dcrwallet
     volumes:
       - ${DECRED_DATA_DIR:?DECRED_DATA_DIR required}/dcrd:/home/decred/.dcrd
-      - /Volumes/T5/data/decred/dcrwallet:/home/decred/.dcrwallet
+      - ${DECRED_DATA_DIR:?DECRED_DATA_DIR required}/dcrwallet:/home/decred/.dcrwallet
     # --pass= should be set in the .conf file!
     command: dcrwallet
       --rpclisten=0.0.0.0
@@ -34,4 +34,4 @@ services:
       --rpccert=/home/decred/.dcrwallet/dcrw.cert
       --rpckey=/home/decred/.dcrwallet/dcrw.key
       --cafile=/home/decred/.dcrd/dcrd.cert
-      --pass=${DECRED_WALLET_PASSWORD:?DECRED_WALLET_PASSWORD is required}
+      --pass=${DECRED_WALLET_PASSWORD}
