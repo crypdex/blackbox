@@ -51,7 +51,7 @@ func loadDefault() *viper.Viper {
 	return v
 }
 
-func loadDotEnv() map[string]string {
+func loadEnv() map[string]string {
 
 	// Add search paths
 	paths := configPaths()
@@ -70,6 +70,11 @@ func loadDotEnv() map[string]string {
 		// Trace(fmt.Sprintf("Found .env %s", files))
 	} else {
 		Trace("info", "No .env found ")
+	}
+
+	err := godotenv.Load(files...)
+	if err != nil {
+		fmt.Println(err)
 	}
 
 	env, err := godotenv.Read(files...)
@@ -136,6 +141,7 @@ func registerServices() map[string]*Service {
 	return services
 }
 
+// Trace gives us nice wrapped output
 func Trace(level string, args ...string) {
 	for _, msg := range args {
 		switch level {

@@ -23,6 +23,9 @@ type App struct {
 // NewApp ...
 // Overriding the configfile used should be done from outside this func
 func NewApp(debug bool, configFile string) *App {
+	// Loads from .env files and assures we have the env vars
+	loadEnv()
+
 	// Let's start with some assumed basic configuration
 	// Create an empty config
 	var v *viper.Viper
@@ -65,8 +68,11 @@ func NewApp(debug bool, configFile string) *App {
 }
 
 // DataDir is the global data directory. It may be overridden in each service using x-blackbox
-//
 func (app *App) DataDir() (string, error) {
+	if os.Getenv("DATA_DIR") != "" {
+		return os.Getenv("DATA_DIR"), nil
+	}
+
 	// If a root data directory is defined ...
 	datadir := app.config.GetString("x-blackbox.data_dir")
 	if datadir != "" {
@@ -79,7 +85,6 @@ func (app *App) DataDir() (string, error) {
 }
 
 // Services are those defined in the root blackbox.yml file
-//
 func (app *App) Services() map[string]*Service {
 	services := make(map[string]*Service)
 
@@ -104,6 +109,8 @@ func (app *App) ForceSwarm() bool {
 	return app.config.GetBool("swarm") || app.config.GetBool("x-blackbox.swarm")
 }
 
+
+
 func (app *App) EnvVars() map[string]string {
 
 	datadir, _ := app.DataDir()
@@ -120,7 +127,7 @@ func (app *App) EnvVars() map[string]string {
 	// Add environment variables from .env files
 	// This should overrride variables set by the service definitions
 	// as well as variables set by the main "recipe"
-	for k, v := range loadDotEnv() {
+	for k, v := range loadEnv() {
 		output[k] = v
 	}
 

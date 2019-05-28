@@ -14,6 +14,9 @@ var infoCmd = &cobra.Command{
 	Use:   "info",
 	Short: "Displays the current configuration",
 	Run: func(cmd *cobra.Command, args []string) {
+
+		blackbox.Trace("info", "BLACKBOX config:")
+
 		// fmt.Println("")
 		// displayBlackboxInfo()
 		// fmt.Println("")
