@@ -91,7 +91,7 @@ func (app *App) Services() map[string]*Service {
 	for key, _ := range app.config.GetStringMap("services") {
 		service, ok := app.RegisteredServices[key]
 		if !ok {
-			fmt.Println(Red("WARN: no registered service:"), key)
+			// Trace("debug", fmt.Sprintf("no registered service: %s", key))
 			continue
 		}
 		services[key] = service

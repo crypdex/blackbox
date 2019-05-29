@@ -3,7 +3,7 @@ title: PIVX
 sidebar_label: PIVX
 ---
 
-<img src="/blackbox/docs/assets/pivx.png" style="">
+<img src="/blackbox/docs/assets/pivx.png"  style="width:40%;"/>
 
 From the PIVX [Github repo](https://github.com/PIVX-Project/PIVX)
 

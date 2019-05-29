@@ -67,6 +67,10 @@
         "title": "Decred",
         "sidebar_label": "Decred"
       },
+      "services/lightning": {
+        "title": "Lightning Network",
+        "sidebar_label": "Lightning (LND)"
+      },
       "services/pivx": {
         "title": "PIVX",
         "sidebar_label": "PIVX"
