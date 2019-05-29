@@ -5,6 +5,10 @@
     "previous": "Previous",
     "tagline": "An ARM-first, pluggable framework for multi-chain deployments.",
     "docs": {
+      "blackbox-os/access": {
+        "title": "Access",
+        "sidebar_label": "Access"
+      },
       "blackbox-os/configuration": {
         "title": "Configuration",
         "sidebar_label": "Configuration"
@@ -24,6 +28,9 @@
       "blackbox-os/installation": {
         "title": "Installation",
         "sidebar_label": "Installation"
+      },
+      "blackbox-os/nanopc-t4": {
+        "title": "blackbox-os/nanopc-t4"
       },
       "blackbox-os/security": {
         "title": "Security",
@@ -55,6 +62,14 @@
       },
       "pivx-staking-node/troubleshooting": {
         "title": "pivx-staking-node/troubleshooting"
+      },
+      "services/decred": {
+        "title": "Decred",
+        "sidebar_label": "Decred"
+      },
+      "services/pivx": {
+        "title": "PIVX",
+        "sidebar_label": "PIVX"
       }
     },
     "links": {
@@ -63,6 +78,7 @@
     "categories": {
       "Introduction": "Introduction",
       "BlackboxOS": "BlackboxOS",
+      "Services": "Services",
       "Blackbox Devices": "Blackbox Devices"
     }
   },

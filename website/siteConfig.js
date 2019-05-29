@@ -21,7 +21,7 @@ const users = [
 ]
 
 const siteConfig = {
-  title: 'BlackboxOS', // Title for your website.
+  title: 'Blackbox', // Title for your website.
   tagline: 'An ARM-first, pluggable framework for multi-chain deployments.',
   url: 'https://crypdex.io', // Your website URL
   baseUrl: '/blackbox/', // Base URL for your project */
