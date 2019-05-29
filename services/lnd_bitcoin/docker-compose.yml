@@ -27,9 +27,9 @@ version: "3.7"
 
 services:
 
-  lightning_bitcoin:
+  lnd_bitcoin:
     image: crypdex/lnd:0.6
-    container_name: lightning_bitcoin
+    container_name: lnd_bitcoin
     restart: on-failure
     depends_on:
       - bitcoin

@@ -3,10 +3,10 @@
 CHAIN="${CHAIN:-bitcoin}"
 
 if [[ ${CHAIN} = "bitcoin" ]]; then
-  CONTAINER="${CONTAINER:-bitcoin_lnd}"
+  CONTAINER="${CONTAINER:-lnd_bitcoin}"
   docker exec -it -u lnd ${CONTAINER} lncli -c bitcoin $@
 else
-  CONTAINER="${CONTAINER:-litecoin_lnd}"
+  CONTAINER="${CONTAINER:-lnd_litecoin}"
   docker exec -it -u lnd ${CONTAINER} lncli -c litecoin $@
 fi
 
