@@ -1,0 +1,111 @@
+<!DOCTYPE html><html lang="en"><head><meta charSet="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><title>Lightning Network · Blackbox</title><meta name="viewport" content="width=device-width"/><meta name="generator" content="Docusaurus"/><meta name="description" content="&lt;p&gt;&lt;img src=&quot;/blackbox/docs/assets/lnd.png&quot;  style=&quot;width:40%;&quot;/&gt;&lt;/p&gt;
+"/><meta name="docsearch:language" content="en"/><meta property="og:title" content="Lightning Network · Blackbox"/><meta property="og:type" content="website"/><meta property="og:url" content="https://crypdex.io/blackbox/"/><meta property="og:description" content="&lt;p&gt;&lt;img src=&quot;/blackbox/docs/assets/lnd.png&quot;  style=&quot;width:40%;&quot;/&gt;&lt;/p&gt;
+"/><meta property="og:image" content="https://crypdex.io/blackbox/img/docusaurus.png"/><meta name="twitter:card" content="summary"/><meta name="twitter:image" content="https://crypdex.io/blackbox/img/docusaurus.png"/><link rel="shortcut icon" href="/blackbox/img/favicon.png"/><link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/9.12.0/styles/atom-one-dark.min.css"/><script type="text/javascript" src="https://buttons.github.io/buttons.js"></script><link rel="stylesheet" href="/blackbox/css/main.css"/><script src="/blackbox/js/codetabs.js"></script></head><body class="sideNavVisible separateOnPageNav"><div class="fixedHeaderContainer"><div class="headerWrapper wrapper"><header><a href="/blackbox/"><img class="logo" src="/blackbox/img/logo.svg" alt="Blackbox"/><h2 class="headerTitleWithLogo">Blackbox</h2></a><div class="navigationWrapper navigationSlider"><nav class="slidingNav"><ul class="nav-site nav-site-internal"><li class="siteNavGroupActive"><a href="/blackbox/docs/intro" target="_self">Docs</a></li></ul></nav></div></header></div></div><div class="navPusher"><div class="docMainWrapper wrapper"><div class="container docsNavContainer" id="docsNav"><nav class="toc"><div class="toggleNav"><section class="navWrapper wrapper"><div class="navBreadcrumb wrapper"><div class="navToggle" id="navToggler"><i></i></div><h2><i>›</i><span>Services</span></h2><div class="tocToggler" id="tocToggler"><i class="icon-toc"></i></div></div><div class="navGroups"><div class="navGroup"><h3 class="navGroupCategoryTitle">Introduction</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/intro">Intro</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">BlackboxOS</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/device-preparation">Device Preparation</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/security">Security</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/installation">Installation</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/configuration">Configuration</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/hardware-requirements">Hardware</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/conventions">Conventions</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/blackbox-os/access">Access</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Services</h3><ul class=""><li class="navListItem navListItemActive"><a class="navItem" href="/blackbox/docs/services/lightning">Lightning (LND)</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/services/pivx">PIVX</a></li><li class="navListItem"><a class="navItem" href="/blackbox/docs/services/decred">Decred</a></li></ul></div><div class="navGroup"><h3 class="navGroupCategoryTitle">Blackbox Devices</h3><ul class=""><li class="navListItem"><a class="navItem" href="/blackbox/docs/pivx-staking-node/getting-started">PIVX Staking Node</a></li></ul></div></div></section></div><script>
+            var coll = document.getElementsByClassName('collapsible');
+            var checkActiveCategory = true;
+            for (var i = 0; i < coll.length; i++) {
+              var links = coll[i].nextElementSibling.getElementsByTagName('*');
+              if (checkActiveCategory){
+                for (var j = 0; j < links.length; j++) {
+                  if (links[j].classList.contains('navListItemActive')){
+                    coll[i].nextElementSibling.classList.toggle('hide');
+                    coll[i].childNodes[1].classList.toggle('rotate');
+                    checkActiveCategory = false;
+                    break;
+                  }
+                }
+              }
+
+              coll[i].addEventListener('click', function() {
+                var arrow = this.childNodes[1];
+                arrow.classList.toggle('rotate');
+                var content = this.nextElementSibling;
+                content.classList.toggle('hide');
+              });
+            }
+
+            document.addEventListener('DOMContentLoaded', function() {
+              createToggler('#navToggler', '#docsNav', 'docsSliderActive');
+              createToggler('#tocToggler', 'body', 'tocActive');
+
+              const headings = document.querySelector('.toc-headings');
+              headings && headings.addEventListener('click', function(event) {
+                if (event.target.tagName === 'A') {
+                  document.body.classList.remove('tocActive');
+                }
+              }, false);
+
+              function createToggler(togglerSelector, targetSelector, className) {
+                var toggler = document.querySelector(togglerSelector);
+                var target = document.querySelector(targetSelector);
+
+                if (!toggler) {
+                  return;
+                }
+
+                toggler.onclick = function(event) {
+                  event.preventDefault();
+
+                  target.classList.toggle(className);
+                };
+              }
+            });
+        </script></nav></div><div class="container mainContainer"><div class="wrapper"><div class="post"><header class="postHeader"><h1 class="postHeaderTitle">Lightning Network</h1></header><article><div><span><p><img src="/blackbox/docs/assets/lnd.png"  style="width:40%;"/></p>
+<p>From the LND <a href="https://github.com/lightningnetwork/lnd">docs</a></p>
+<blockquote>
+<p>The Lightning Network Daemon (lnd) - is a complete implementation of a Lightning Network node. lnd has several pluggable back-end chain services including btcd (a full-node), bitcoind, and neutrino (a new experimental light client). The project's codebase uses the btcsuite set of Bitcoin libraries, and also exports a large set of isolated re-usable Lightning Network related libraries within it</p>
+</blockquote>
+<h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<p>To use the recipe, configure your <code>blackbox.yml</code> file as follows:</p>
+<pre><code class="hljs css language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.7"</span>
+
+<span class="hljs-attr">services:</span> 
+<span class="hljs-attr">  lnd_bitcoin:</span>
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="environment-variables"></a><a href="#environment-variables" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variables</h2>
+<p>When using the service, these environment variables are generated by <code>blackboxd</code> with reasonable defaults. You may override them in your shell or <code>.env</code> file.</p>
+<pre><code class="hljs css language-bash"><span class="hljs-comment"># Required</span>
+BITCOIN_RPCUSER=
+BITCOIN_RPCPASSWORD=
+
+<span class="hljs-comment"># Defaults</span>
+BITCOIN_DIR=<span class="hljs-variable">${DATA_DIR}</span>/bitcoin
+LND_DIR=<span class="hljs-variable">${DATA_DIR}</span>/lnd
+</code></pre>
+<p>You may <code>export</code> these in the shell before startup, or put them in a <code>.env</code> file at the root of the blackbox dir.</p>
+<h2><a class="anchor" aria-hidden="true" id="ports"></a><a href="#ports" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ports</h2>
+<p>See the <a href="https://docs.decred.org/faq/configuration/">Decred docs</a> for more information.</p>
+<h3><a class="anchor" aria-hidden="true" id="lnd"></a><a href="#lnd" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>lnd</h3>
+<blockquote>
+<p>LND ports are not mapped by default. This is because multiple LND instances can run on different chains.</p>
+</blockquote>
+<table>
+<thead>
+<tr><th></th><th>Network Agnostic?</th></tr>
+</thead>
+<tbody>
+<tr><td>Peer to Peer</td><td>9735</td></tr>
+<tr><td>gRPC</td><td>10009</td></tr>
+<tr><td>REST</td><td>8080</td></tr>
+</tbody>
+</table>
+<p>By default, these ports are not exposed. To open them, add the <code>ports</code> key to the config file.</p>
+<pre><code class="hljs css language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.7"</span>
+
+<span class="hljs-attr">services:</span>
+<span class="hljs-attr">  pivx:</span>
+<span class="hljs-attr">    ports:</span>
+<span class="hljs-bullet">      -</span> <span class="hljs-number">10009</span><span class="hljs-string">:10009</span>
+      <span class="hljs-string">...</span>
+</code></pre>
+<h3><a class="anchor" aria-hidden="true" id="bitcoin"></a><a href="#bitcoin" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a><code>bitcoin</code></h3>
+<table>
+<thead>
+<tr><th></th><th>Mainnet</th><th>Testnet</th><th>Regtest</th></tr>
+</thead>
+<tbody>
+<tr><td>Peer to Peer</td><td>8333</td><td>18333</td><td>18443</td></tr>
+<tr><td>JSON RPC Server</td><td>8332</td><td>18332</td><td>18442</td></tr>
+</tbody>
+</table>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/blackbox/docs/blackbox-os/access"><span class="arrow-prev">← </span><span>Access</span></a><a class="docs-next button" href="/blackbox/docs/services/pivx"><span>PIVX</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#usage">Usage</a></li><li><a href="#environment-variables">Environment Variables</a></li><li><a href="#ports">Ports</a><ul class="toc-headings"><li><a href="#lnd">lnd</a></li><li><a href="#bitcoin"><code>bitcoin</code></a></li></ul></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://crypdex.io" class="nav-home"><img src="/blackbox/img/logo-full-white.png" alt="Blackbox"/></a><div><h5>Community</h5><a href="https://discord.gg/TjmNPth">Discord</a><a href="https://www.instagram.com/crypdex_io/" target="_blank" rel="noreferrer noopener">Instagram</a></div><div><h5>More</h5><a href="https://medium.com/crypdex" target="_blank" rel="noreferrer noopener">Medium</a><a href="https://github.com/crypdex/blackbox">GitHub</a><a class="github-button" href="https://github.com/crypdex/blackbox" data-icon="octicon-star" data-count-href="/crypdex/blackbox/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Crypdex</section></footer></div></body></html>
