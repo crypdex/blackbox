@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+
+
+# docker exec -it -u ${USER} ${CONTAINER_NAME} ${COMMAND} $@
+docker exec -it -u bitcoin bitcoin bitcoin-cli -rpcuser=${BITCOIN_RPCUSER} -rpcpassword=${BITCOIN_RPCPASSWORD} $@
