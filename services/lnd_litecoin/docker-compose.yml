@@ -1,0 +1,70 @@
+#
+# A Bitcoin Lightning Node
+#
+# bitcoin.active, bitcoin.mainnet are defaults
+# We choose bitcoind (not btcd) for now
+
+# bitcoind required flags:
+#
+# -zmqpubrawblock=tcp://0.0.0.0:28333
+# -zmqpubrawtx=tcp://0.0.0.0:28334
+# -rpcallowip
+# -rpcallowip=0.0.0.0/0
+
+
+# DATA_DIR
+# BITCOIN_DIR
+# LND_DIR
+# BITCOIN_RPCUSER
+# BITCOIN_RPCPASSWORD
+
+# LND Ports are NOT exposed
+#    ports:
+#      - 9735:9735
+#      - 10009:10009 # expose the RPC so lncli can get in touch
+
+version: "3.7"
+
+services:
+
+  lnd_litecoin:
+    image: crypdex/lnd:0.6
+    restart: on-failure
+    container_name: lnd_litecoin
+    command:
+      --litecoin.active
+      --litecoin.mainnet
+      --litecoin.node=litecoind
+      --litecoind.rpchost=litecoin
+      --litecoind.rpcuser=${LITECOIN_RPCUSER:?LITECOIN_RPCUSER is required}
+      --litecoind.rpcpass=${LITECOIN_RPCPASSWORD:?LITECOIN_RPCPASSWORD is required}
+      --litecoind.zmqpubrawblock=tcp://litecoin:28333
+      --litecoind.zmqpubrawtx=tcp://litecoin:28334
+      --rpclisten=0.0.0.0:10009
+    depends_on:
+      - litecoin
+  #    ports:
+  #      - 9735:9735
+  #      - 10009:10009 # expose the RPC so lncli can get in touch
+    volumes:
+      - ${DATA_DIR}/${LND_DIR:-lnd}:/home/lnd/.lnd
+
+  litecoin:
+    image: crypdex/litecoin-core:${BITCOIN_VERSION:-0.17}
+    container_name: litecoin # Without this, lnd cannot reach the litecoin daemon
+    restart: on-failure
+    # -zmq* and -rpcallowip flags are necessary
+    command:
+      -rpcuser=${LITECOIN_RPCUSER:?LITECOIN_RPCUSER is required}
+      -rpcpassword=${LITECOIN_RPCPASSWORD:?LITECOIN_RPCPASSWORD is required}
+      -printtoconsole
+      -txindex
+      -rpcallowip=0.0.0.0/0
+      -zmqpubrawblock=tcp://0.0.0.0:28333
+      -zmqpubrawtx=tcp://0.0.0.0:28334
+    ports:
+      - 9332:9332 # RPC
+      - 9333:9333 # P2P
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/${LITECOIN_DIR:-litecoin}:/home/litecoin/.litecoin
+
