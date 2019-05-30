@@ -22,6 +22,6 @@ jobs:
     working_directory: /go/src/github.com/{{ORG_NAME}}/{{REPO_NAME}}
     steps:
       - checkout
-
+      - run: curl -sL https://git.io/goreleaser | bash
       # specify any bash command here prefixed with `run: `
       - run: make release-test
