@@ -160,7 +160,7 @@ release: require-tag
 	curl -F package=@dist/blackboxd_${TAG}_linux_x86_64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
 
 release-test:
-	goreleaser --snapshot --skip-publish --rm-dist --debug
+	goreleaser --snapshot --skip-publish --rm-dist
 
 # The Dockerfile uses the vendor dir to work around context issues.
 #release: require-tag
