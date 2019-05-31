@@ -80,13 +80,13 @@ They are particularly useful since LND requires a great deal of CLI-based intera
 ### Installation
 
 ```bash
-blackboxd install lncli
+blackboxd bin install lncli
 ``` 
 
 ### Removal
 
 ```bash
-blackboxd remove lncli
+blackboxd bin remove lncli
 ``` 
 
 The wrappers are installed to `/usr/local/bin` and are not compatible with Windows yet. Installation will not overwrite any existing binaries you may have, but removal will delete the file regardless of how it got there. 
