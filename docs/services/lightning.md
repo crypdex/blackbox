@@ -69,6 +69,28 @@ LND_DIR=${DATA_DIR}/lnd
 
 You may `export` these in the shell before startup, or put them in a `.env` file at the root of the blackbox dir.
 
+## Binary Wrappers
+
+> Binary wrappers are a relatively experimental feature but work great! If you have usage suggestions let us know.
+
+The LND stacks have binary wrappers for `lncli`. These are simply scripts that allow you to run `lncli` just as you would if LND was running natively and save you from `docker exec`ing into the LND container to run commands.
+
+They are particularly useful since LND requires a great deal of CLI-based interaction for the current workflow.  
+
+### Installation
+
+```bash
+blackboxd install lncli
+``` 
+
+### Removal
+
+```bash
+blackboxd remove lncli
+``` 
+
+The wrappers are installed to `/usr/local/bin` and are not compatible with Windows yet. Installation will not overwrite any existing binaries you may have, but removal will delete the file regardless of how it got there. 
+
 ## Ports
 
 ### `lnd`

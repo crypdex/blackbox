@@ -111,102 +111,90 @@ func (app *App) ForceSwarm() bool {
 	return app.config.GetBool("swarm") || app.config.GetBool("x-blackbox.swarm")
 }
 
-func (app *App) Install(serviceName string, force bool) error {
-	// Is the service valid?
-	_, ok := app.RegisteredServices[serviceName]
-	if !ok {
-		return fmt.Errorf("service %s is does not exist", serviceName)
-	}
-
+func (app *App) Install(bin string, force bool) error {
 	var binPath string
-	for _, p := range configPaths() {
-		binPath = path.Join(p, "services", serviceName, "bin")
 
-		info, err := os.Stat(binPath)
-		if os.IsNotExist(err) || !info.IsDir() {
-
-			continue
+	// Loop through all the services
+	for name := range app.Services() {
+		// Check for the service in each of the config paths ...
+		for _, p := range configPaths() {
+			// Does the bin exist here?
+			candidate := path.Join(p, "services", name, "bin", bin)
+			if _, err := os.Stat(candidate); os.IsNotExist(err) {
+				continue
+			}
+			// This will get overwritten for multi hits
+			binPath = candidate
 		}
-
+		// We have found our bin, we can stop looking
 		if binPath != "" {
 			break
 		}
 	}
 
 	if binPath == "" {
-		return fmt.Errorf("no bin found in %s", serviceName)
+		return fmt.Errorf("no bin found for %s", bin)
 	}
 
-	// List the binaries
-	files, err := ioutil.ReadDir(binPath)
-	if err != nil {
+	Trace("info", fmt.Sprintf("Found %s", bin))
+	Trace("info", fmt.Sprintf("Installing %s to /usr/local/bin", bin))
+
+	targetPath := path.Join("/usr/local/bin", bin)
+	// Does the file already exist?
+	_, err := os.Stat(targetPath)
+	if !os.IsNotExist(err) && !force {
+		return fmt.Errorf("%s exists -- use -f to force installation", bin)
+	}
+
+	// COPY THE FILE INTO PLACE
+	var input []byte
+	if input, err = ioutil.ReadFile(binPath); err != nil {
 		return err
 	}
 
-	for _, file := range files {
-		Trace("info", fmt.Sprintf("Found %s", file.Name()))
-		Trace("info", fmt.Sprintf("Installing %s to /usr/local/bin", file.Name()))
-
-		_, err := os.Stat(path.Join("/usr/local/bin", file.Name()))
-		if !os.IsNotExist(err) && !force {
-			return fmt.Errorf("%s exists -- use -f to force installation", file.Name())
-		}
-
-		input, err := ioutil.ReadFile(path.Join(binPath, file.Name()))
-		if err != nil {
-			return err
-		}
-
-		err = ioutil.WriteFile(path.Join("/usr/local/bin", file.Name()), input, 0777)
-		if err != nil {
-			return err
-		}
+	if err = ioutil.WriteFile(targetPath, input, 0777); err != nil {
+		return err
 	}
 
 	return nil
 }
 
-func (app *App) Remove(serviceName string) error {
-	// Is the service valid?
-	_, ok := app.RegisteredServices[serviceName]
-	if !ok {
-		return fmt.Errorf("service %s is does not exist", serviceName)
-	}
+func (app *App) Remove(bin string) error {
+	Trace("info", fmt.Sprintf("Removing %s", bin))
 
-	var binPath string
-	for _, p := range configPaths() {
-		binPath = path.Join(p, "services", serviceName, "bin")
-
-		info, err := os.Stat(binPath)
-		if os.IsNotExist(err) || !info.IsDir() {
-
-			continue
-		}
-
-		if binPath != "" {
-			break
-		}
-	}
-
-	if binPath == "" {
-		return fmt.Errorf("no bin found in %s", serviceName)
-	}
-
-	// List the binaries
-	files, err := ioutil.ReadDir(binPath)
-	if err != nil {
+	if err := os.Remove(path.Join("/usr/local/bin", bin)); err != nil {
 		return err
 	}
 
-	for _, file := range files {
-		Trace("info", fmt.Sprintf("Removing %s", file.Name()))
+	return nil
+}
 
-		if err := os.Remove(path.Join("/usr/local/bin", file.Name())); err != nil {
-			return err
+func (app *App) ListBinaryWrappers() (map[string][]string, error) {
+	cache := make(map[string][]string)
+	// Loop through all the registered services
+	for name := range app.Services() {
+		cache[name] = make([]string, 0)
+
+		// Check for the service in each of the config paths ...
+		for _, p := range configPaths() {
+			// Does the bin exist here?
+			dir := path.Join(p, "services", name, "bin")
+			if _, err := os.Stat(dir); os.IsNotExist(err) {
+				continue
+			}
+
+			files, err := ioutil.ReadDir(dir)
+			if err != nil {
+				return nil, err
+			}
+
+			for _, file := range files {
+				cache[name] = append(cache[name], file.Name())
+			}
 		}
 	}
 
-	return nil
+	return cache, nil
 }
 
 func (app *App) EnvVars() map[string]string {
