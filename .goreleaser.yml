@@ -33,8 +33,10 @@ archive:
     arm64: arm64v8
 checksum:
   name_template: 'checksums.txt'
+
 snapshot:
-  name_template: '{{ .Tag }}-snapshot'
+  name_template: 'snapshot'
+
 changelog:
   sort: asc
   filters:
