@@ -99,3 +99,12 @@ These ports are exposed
 | --------------- | ------- | ------- | ------- |
 | Peer to Peer    | 8333    | 18333   | 18443   |
 | JSON RPC Server | 8332    | 18332   | 18442   |
+
+### `litecoin`
+
+These ports are exposed
+
+|                 | Mainnet | Testnet | 
+| --------------- | ------- | ------- | 
+| Peer to Peer    | 9333    | 19333   | 
+| JSON RPC Server | 9332    | 19332   | 
