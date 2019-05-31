@@ -2,6 +2,7 @@ package blackbox
 
 import (
 	"fmt"
+	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
@@ -22,6 +23,9 @@ type App struct {
 
 // NewApp ...
 // Overriding the configfile used should be done from outside this func
+//
+// This constructor does the following
+// - "registers" services
 func NewApp(debug bool, configFile string) *App {
 	// Loads from .env files and assures we have the env vars
 	loadEnv()
@@ -99,9 +103,7 @@ func (app *App) Services() map[string]*Service {
 		envvars := app.config.GetStringMap(fmt.Sprintf("services.%s.x-env", key))
 		service.Env = envvars
 	}
-
 	// Trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
-
 	return services
 }
 
@@ -109,7 +111,103 @@ func (app *App) ForceSwarm() bool {
 	return app.config.GetBool("swarm") || app.config.GetBool("x-blackbox.swarm")
 }
 
+func (app *App) Install(serviceName string, force bool) error {
+	// Is the service valid?
+	_, ok := app.RegisteredServices[serviceName]
+	if !ok {
+		return fmt.Errorf("service %s is does not exist", serviceName)
+	}
 
+	var binPath string
+	for _, p := range configPaths() {
+		binPath = path.Join(p, "services", serviceName, "bin")
+
+		info, err := os.Stat(binPath)
+		if os.IsNotExist(err) || !info.IsDir() {
+
+			continue
+		}
+
+		if binPath != "" {
+			break
+		}
+	}
+
+	if binPath == "" {
+		return fmt.Errorf("no bin found in %s", serviceName)
+	}
+
+	// List the binaries
+	files, err := ioutil.ReadDir(binPath)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range files {
+		Trace("info", fmt.Sprintf("Found %s", file.Name()))
+		Trace("info", fmt.Sprintf("Installing %s to /usr/local/bin", file.Name()))
+
+		_, err := os.Stat(path.Join("/usr/local/bin", file.Name()))
+		if !os.IsNotExist(err) && !force {
+			return fmt.Errorf("%s exists -- use -f to force installation", file.Name())
+		}
+
+		input, err := ioutil.ReadFile(path.Join(binPath, file.Name()))
+		if err != nil {
+			return err
+		}
+
+		err = ioutil.WriteFile(path.Join("/usr/local/bin", file.Name()), input, 0777)
+		if err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
+
+func (app *App) Remove(serviceName string) error {
+	// Is the service valid?
+	_, ok := app.RegisteredServices[serviceName]
+	if !ok {
+		return fmt.Errorf("service %s is does not exist", serviceName)
+	}
+
+	var binPath string
+	for _, p := range configPaths() {
+		binPath = path.Join(p, "services", serviceName, "bin")
+
+		info, err := os.Stat(binPath)
+		if os.IsNotExist(err) || !info.IsDir() {
+
+			continue
+		}
+
+		if binPath != "" {
+			break
+		}
+	}
+
+	if binPath == "" {
+		return fmt.Errorf("no bin found in %s", serviceName)
+	}
+
+	// List the binaries
+	files, err := ioutil.ReadDir(binPath)
+	if err != nil {
+		return err
+	}
+
+	for _, file := range files {
+		Trace("info", fmt.Sprintf("Removing %s", file.Name()))
+
+		if err := os.Remove(path.Join("/usr/local/bin", file.Name())); err != nil {
+			return err
+		}
+	}
+
+	return nil
+}
 
 func (app *App) EnvVars() map[string]string {
 

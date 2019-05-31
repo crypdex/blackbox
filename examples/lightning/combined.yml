@@ -1,0 +1,5 @@
+version: "3.7"
+
+services:
+  lnd_bitcoin:
+  lnd_litecoin:

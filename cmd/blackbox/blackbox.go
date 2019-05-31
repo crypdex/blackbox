@@ -43,7 +43,7 @@ func loadDefault() *viper.Viper {
 	}
 
 	if err := v.ReadInConfig(); err == nil {
-		Trace("info", fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
+		// Trace("info", fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
 	} else {
 		Trace("error", "No blackbox config file found", err.Error())
 	}
