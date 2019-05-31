@@ -1,0 +1,70 @@
+#
+# A Bitcoin Lightning Node
+#
+# bitcoin.active, bitcoin.mainnet are defaults
+# We choose bitcoind (not btcd) for now
+
+# bitcoind required flags:
+#
+# -zmqpubrawblock=tcp://0.0.0.0:28333
+# -zmqpubrawtx=tcp://0.0.0.0:28334
+# -rpcallowip
+# -rpcallowip=0.0.0.0/0
+
+
+# DATA_DIR
+# BITCOIN_DIR
+# LND_DIR
+# BITCOIN_RPCUSER
+# BITCOIN_RPCPASSWORD
+
+# LND Ports are NOT exposed
+#    ports:
+#      - 9735:9735
+#      - 10009:10009 # expose the RPC so lncli can get in touch
+
+version: "3.7"
+
+services:
+
+  lnd_bitcoin:
+    image: crypdex/lnd:0.6
+    container_name: lnd_bitcoin
+    restart: on-failure
+    depends_on:
+      - bitcoin
+    command:
+      --bitcoin.active
+      --bitcoin.mainnet
+      --bitcoin.node=bitcoind
+      --bitcoind.rpchost=bitcoin
+      --bitcoind.rpcuser=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
+      --bitcoind.rpcpass=${BITCOIN_RPCPASSWORD:?BITCOIN_RPCPASSWORD is required}
+      --bitcoind.zmqpubrawblock=tcp://bitcoin:28333
+      --bitcoind.zmqpubrawtx=tcp://bitcoin:28334
+      --rpclisten=0.0.0.0:10009
+    volumes:
+      - ${DATA_DIR}/${LND_DIR:-lnd}:/home/lnd/.lnd
+
+  bitcoin:
+    image: crypdex/bitcoin-core:${BITCOIN_VERSION:-0.17}
+    container_name: bitcoin
+    restart: on-failure
+    ports:
+      - 8332:8332
+      - 8333:8333
+      - 18332:18332
+      - 18333:18333
+      - 18443:18443
+      - 18444:18444
+    volumes:
+      - ${DATA_DIR:?DATA_DIR required}/${BITCOIN_DIR:-bitcoin}:/home/bitcoin/.bitcoin
+    command:
+      -rpcuser=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
+      -rpcpassword=${BITCOIN_RPCPASSWORD:?BITCOIN_RPCPASSWORD is required}
+      -rpcallowip=0.0.0.0/0
+      -zmqpubrawblock=tcp://0.0.0.0:28333
+      -zmqpubrawtx=tcp://0.0.0.0:28334
+      -printtoconsole
+      -txindex
+

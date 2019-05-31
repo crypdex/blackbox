@@ -3,7 +3,7 @@ title: Decred
 sidebar_label: Decred
 ---
 
-![alt-text](assets/dcr.svg)
+<img src="/blackbox/docs/assets/dcr.svg" style="width:60%;"/>
 
 From the Decred [docs](https://docs.decred.org/)
 

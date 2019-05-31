@@ -10,7 +10,7 @@
       "blackbox-os/conventions",
       "blackbox-os/access"
     ],
-    "Services": ["services/pivx","services/decred"],
+    "Services": ["services/lightning","services/pivx","services/decred"],
     "Blackbox Devices": ["pivx-staking-node/getting-started"]
   },
   "docs-other": {}
