@@ -173,8 +173,6 @@ func (app *App) ListBinaryWrappers() (map[string][]string, error) {
 	cache := make(map[string][]string)
 	// Loop through all the registered services
 	for name := range app.Services() {
-		cache[name] = make([]string, 0)
-
 		// Check for the service in each of the config paths ...
 		for _, p := range configPaths() {
 			// Does the bin exist here?
@@ -189,6 +187,10 @@ func (app *App) ListBinaryWrappers() (map[string][]string, error) {
 			}
 
 			for _, file := range files {
+				if cache[name] == nil {
+					cache[name] = make([]string, 0)
+				}
+
 				cache[name] = append(cache[name], file.Name())
 			}
 		}
