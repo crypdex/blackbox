@@ -45,6 +45,8 @@ See the [Decred docs](https://docs.decred.org/faq/configuration/) for more infor
 
 ### dcrd
 
+https://docs.decred.org/wallets/cli/dcrd-and-dcrwallet-cli-arguments/
+
 |              | Mainnet | Testnet | Simnet |
 | ------------ | ------- | ------- | ------ |
 | Peer to Peer | 9108    | 19108   | 18555  |

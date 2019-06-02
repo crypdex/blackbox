@@ -1,0 +1,33 @@
+version: '3.7'
+
+# IMPORTANT
+# Default data directory maps to ~/.blackbox/data.
+# Create a .env file with DATA_DIR= to change this.
+
+services:
+  decred:
+  dcrwallet:
+    # This replaces/overrides the command in the core recipe
+    command: dcrwallet
+      --rpclisten=0.0.0.0
+      --rpcconnect=dcrd:9109
+      --username=${DECRED_RPCUSER:-alice}
+      --password=${DECRED_RPCPASSWORD:-bob}
+      --rpccert=/home/decred/.dcrwallet/dcrw.cert
+      --rpckey=/home/decred/.dcrwallet/dcrw.key
+      --cafile=/home/decred/.dcrd/dcrd.cert
+      --pass=${DECRED_DCRWALLET_PASSWORD}
+      --enablevoting
+      --enableticketbuyer
+      --ticketbuyer.votingaddress=${DECRED_VOTING_ADDRESS:?DECRED_VOTING_ADDRESS is required}
+      ${DECRED_DCRWALLET_FLAGS:-}
+  dcrd:
+    # This replaces/overrides the command in the core recipe
+    command:
+      --rpclisten=0.0.0.0
+      --rpcuser=${DECRED_RPCUSER:-alice}
+      --rpcpass=${DECRED_RPCPASSWORD:-bob}
+      --rpccert=/home/decred/.dcrd/dcrd.cert
+      --rpckey=/home/decred/.dcrd/dcrd.key
+      --externalip=${DECRED_EXTERNAL_IP}
+      ${DECRED_DCRD_FLAGS:-}

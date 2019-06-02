@@ -1,3 +1,7 @@
 #!/usr/bin/env bash
 
+#  Source whatever variables you may have defined
+source "~/.blackbox/.env" 2>/dev/null
+source "./.env" 2>/dev/null
+
 docker exec -it -u decred dcrwallet dcrwallet $@
