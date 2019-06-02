@@ -76,14 +76,18 @@ blackboxd start
 <ol>
 <li>Generate a voting address</li>
 </ol>
-<pre><code class="hljs css language-yaml"><span class="hljs-string">dcrctl</span> <span class="hljs-bullet">--wallet</span> <span class="hljs-string">getnewaddress</span>
+<pre><code class="hljs css language-shell">dcrctl --wallet getnewaddress
 </code></pre>
 <ol>
 <li>Add the following environment variables to <code>.env</code></li>
 </ol>
-<pre><code class="hljs css language-.env"><span class="hljs-attribute">DATA_DIR</span>=&lt;~/.blackbox/data is default&gt;
-<span class="hljs-attribute">DECRED_WALLET_PASSWORD</span>=&lt;supplied during setup&gt;
-<span class="hljs-attribute">DECRED_VOTING_ADDRESS</span>=&lt;generated <span class="hljs-keyword">in</span> previous <span class="hljs-keyword">step</span>&gt;
+<pre><code class="hljs css language-.env"><span class="hljs-attr">DATA_DIR</span>=
+<span class="hljs-attr">DECRED_WALLET_PASSWORD</span>=
+<span class="hljs-attr">DECRED_VOTING_ADDRESS</span>=
+</code></pre>
+<pre><code class="hljs">* `DATA_DIR` defaults to `~/.blackbox/data`. Change this to suit.
+* `DECRED_WALLET_PASSWORD` is the password given during setup
+* `DECRED_VOTING_ADDRESS` is the address generated in the previous step
 </code></pre>
 <ol>
 <li>Finally, restart the service stack</li>
