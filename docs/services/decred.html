@@ -55,7 +55,45 @@
 <blockquote>
 <p>Decred (/ˈdi:ˈkred/, /dɪˈkred/, dee-cred) is a blockchain-based cryptocurrency with a strong focus on community input, open governance, and sustainable funding for development. It utilizes a hybrid Proof-of-Work (PoW) and Proof-of-Stake (PoS) mining system to ensure that a small group cannot dominate the flow of transactions or make changes to Decred without the input of the community. A unit of the currency is called a decred (DCR).</p>
 </blockquote>
-<h2><a class="anchor" aria-hidden="true" id="usage"></a><a href="#usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Usage</h2>
+<h2><a class="anchor" aria-hidden="true" id="recipe-solo-voting"></a><a href="#recipe-solo-voting" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Recipe: Solo Voting</h2>
+<blockquote>
+<p>This service requires manual setup</p>
+</blockquote>
+<ol>
+<li>Add the following config to your <code>blackbox.yml</code></li>
+</ol>
+<pre><code class="hljs css language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.7"</span>
+
+<span class="hljs-attr">x-blackbox:</span> 
+<span class="hljs-attr">  recipe:</span> <span class="hljs-string">decred-solo-voting</span>
+</code></pre>
+<ol>
+<li>Install the binary wrappers and start the service stack, following the prompts to manually create a wallet (if absent)</li>
+</ol>
+<pre><code class="hljs css language-shell">blackboxd bin install dcrctl &amp;&amp; \
+blackboxd start 
+</code></pre>
+<ol>
+<li>Generate a voting address</li>
+</ol>
+<pre><code class="hljs css language-yaml"><span class="hljs-string">dcrctl</span> <span class="hljs-bullet">--wallet</span> <span class="hljs-string">getnewaddress</span>
+</code></pre>
+<ol>
+<li>Add the following environment variables to <code>.env</code></li>
+</ol>
+<pre><code class="hljs css language-.env"><span class="hljs-attribute">DATA_DIR</span>=&lt;~/.blackbox/data is default&gt;
+<span class="hljs-attribute">DECRED_WALLET_PASSWORD</span>=&lt;supplied during setup&gt;
+<span class="hljs-attribute">DECRED_VOTING_ADDRESS</span>=&lt;generated <span class="hljs-keyword">in</span> previous <span class="hljs-keyword">step</span>&gt;
+</code></pre>
+<ol>
+<li>Finally, restart the service stack</li>
+</ol>
+<pre><code class="hljs css language-shell">blackboxd start 
+</code></pre>
+<h2><a class="anchor" aria-hidden="true" id="general-usage"></a><a href="#general-usage" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>General Usage</h2>
+<blockquote>
+<p>This service requires manual setup</p>
+</blockquote>
 <p>The <code>decred</code> service is composed of 2 individual services: <code>dcrd</code> and <code>dcrwallet</code>. These sub-services are not currently separable from the main <code>decred</code> service since they function together.</p>
 <p>To use the recipe, configure your <code>blackbox.yml</code> file as follows:</p>
 <pre><code class="hljs css language-yaml"><span class="hljs-attr">version:</span> <span class="hljs-string">"3.7"</span>
@@ -63,21 +101,21 @@
 <span class="hljs-attr">services:</span> 
 <span class="hljs-attr">  decred:</span>
 </code></pre>
-<blockquote>
-<p>This service requires manual setup</p>
-</blockquote>
 <p>Once you have specified the <code>decred</code> recipe, run <code>blackboxd start</code> and follow the prompts to initialize your wallet.
 After this is done, you should be able to reliably boot <code>blackboxd</code> unattended.</p>
 <h2><a class="anchor" aria-hidden="true" id="environment-variables"></a><a href="#environment-variables" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Environment Variables</h2>
 <p>When using the service, these environment variables are generated by <code>blackboxd</code> with reasonable defaults. You may override them in your shell or <code>.env</code> file.</p>
-<pre><code class="hljs css language-.env"><span class="hljs-attr">DECRED_DATA_DIR</span>=<span class="hljs-variable">${DATA_DIR}</span>/decred
-<span class="hljs-comment"># The following environment variable should be set for unattended operation.</span>
-<span class="hljs-attr">DECRED_WALLET_PASSWORD</span>=youshouldsetthis
+<pre><code class="hljs css language-.env">
+<span class="hljs-comment"># Once you setup the wallet by starting the system, the following should be set for unattended operation.</span>
+<span class="hljs-attr">DECRED_WALLET_PASSWORD</span>=
+<span class="hljs-attr">DECRED_VOTING_ADDRESS</span>=
+<span class="hljs-attr">DECRED_EXTERNAL_IP</span>=
 </code></pre>
 <p>You may <code>export</code> these in the shell before startup, or put them in a <code>.env</code> file at the root of the blackbox dir.</p>
 <h2><a class="anchor" aria-hidden="true" id="ports"></a><a href="#ports" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>Ports</h2>
 <p>See the <a href="https://docs.decred.org/faq/configuration/">Decred docs</a> for more information.</p>
 <h3><a class="anchor" aria-hidden="true" id="dcrd"></a><a href="#dcrd" aria-hidden="true" class="hash-link"><svg class="hash-link-icon" aria-hidden="true" height="16" version="1.1" viewBox="0 0 16 16" width="16"><path fill-rule="evenodd" d="M4 9h1v1H4c-1.5 0-3-1.69-3-3.5S2.55 3 4 3h4c1.45 0 3 1.69 3 3.5 0 1.41-.91 2.72-2 3.25V8.59c.58-.45 1-1.27 1-2.09C10 5.22 8.98 4 8 4H4c-.98 0-2 1.22-2 2.5S3 9 4 9zm9-3h-1v1h1c1 0 2 1.22 2 2.5S13.98 12 13 12H9c-.98 0-2-1.22-2-2.5 0-.83.42-1.64 1-2.09V6.25c-1.09.53-2 1.84-2 3.25C6 11.31 7.55 13 9 13h4c1.45 0 3-1.69 3-3.5S14.5 6 13 6z"></path></svg></a>dcrd</h3>
+<p><a href="https://docs.decred.org/wallets/cli/dcrd-and-dcrwallet-cli-arguments/">https://docs.decred.org/wallets/cli/dcrd-and-dcrwallet-cli-arguments/</a></p>
 <table>
 <thead>
 <tr><th></th><th>Mainnet</th><th>Testnet</th><th>Simnet</th></tr>
@@ -110,4 +148,4 @@ After this is done, you should be able to reliably boot <code>blackboxd</code> u
 <p>Decred is pretty serious about security and verification in its communications. As such, it uses TLS certs for its RPC connections. The daemons generate their own certs if left alone, but the daemon generated certs are not compatible with this Docker network. This is due to the way that the domains are registered in the cert.</p>
 <p>This project generates certs that can be used to get Decred working in its default case. This happens at service boot (see the prestart script). If you would like to heighten your own security, you may generate new certs manually.</p>
 <p><a href="https://stakey.club/en/digital-certificates-for-rpc-connections/">This article</a> gives a nice tutorial.</p>
-</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/blackbox/docs/services/pivx"><span class="arrow-prev">← </span><span>PIVX</span></a><a class="docs-next button" href="/blackbox/docs/pivx-staking-node/getting-started"><span>PIVX Staking Node</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#usage">Usage</a></li><li><a href="#environment-variables">Environment Variables</a></li><li><a href="#ports">Ports</a><ul class="toc-headings"><li><a href="#dcrd">dcrd</a></li><li><a href="#dcrwallet">dcrwallet</a></li></ul></li><li><a href="#tls-certs">TLS Certs</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://crypdex.io" class="nav-home"><img src="/blackbox/img/logo-full-white.png" alt="BLACKBOX"/></a><div><h5>Community</h5><a href="https://discord.gg/TjmNPth">Discord</a><a href="https://www.instagram.com/crypdex_io/" target="_blank" rel="noreferrer noopener">Instagram</a></div><div><h5>More</h5><a href="https://medium.com/crypdex" target="_blank" rel="noreferrer noopener">Medium</a><a href="https://github.com/crypdex/blackbox">GitHub</a><a class="github-button" href="https://github.com/crypdex/blackbox" data-icon="octicon-star" data-count-href="/crypdex/blackbox/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Crypdex</section></footer></div></body></html>
+</span></div></article></div><div class="docs-prevnext"><a class="docs-prev button" href="/blackbox/docs/services/pivx"><span class="arrow-prev">← </span><span>PIVX</span></a><a class="docs-next button" href="/blackbox/docs/pivx-staking-node/getting-started"><span>PIVX Staking Node</span><span class="arrow-next"> →</span></a></div></div></div><nav class="onPageNav"><ul class="toc-headings"><li><a href="#recipe-solo-voting">Recipe: Solo Voting</a></li><li><a href="#general-usage">General Usage</a></li><li><a href="#environment-variables">Environment Variables</a></li><li><a href="#ports">Ports</a><ul class="toc-headings"><li><a href="#dcrd">dcrd</a></li><li><a href="#dcrwallet">dcrwallet</a></li></ul></li><li><a href="#tls-certs">TLS Certs</a></li></ul></nav></div><footer class="nav-footer" id="footer"><section class="sitemap"><a href="https://crypdex.io" class="nav-home"><img src="/blackbox/img/logo-full-white.png" alt="BLACKBOX"/></a><div><h5>Community</h5><a href="https://discord.gg/TjmNPth">Discord</a><a href="https://www.instagram.com/crypdex_io/" target="_blank" rel="noreferrer noopener">Instagram</a></div><div><h5>More</h5><a href="https://medium.com/crypdex" target="_blank" rel="noreferrer noopener">Medium</a><a href="https://github.com/crypdex/blackbox">GitHub</a><a class="github-button" href="https://github.com/crypdex/blackbox" data-icon="octicon-star" data-count-href="/crypdex/blackbox/stargazers" data-show-count="true" data-count-aria-label="# stargazers on GitHub" aria-label="Star this project on GitHub">Star</a></div></section><section class="copyright">Copyright © 2019 Crypdex</section></footer></div></body></html>
