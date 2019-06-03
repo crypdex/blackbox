@@ -39,7 +39,7 @@ if [[ -z "${DECRED_DATA_DIR}" ]]; then
   exit 1
 fi
 
-dirs="${DECRED_DATA_DIR} ${DECRED_DATA_DIR}/dcrd/logs ${DECRED_DATA_DIR}/dcrwallet/logs"
+dirs="${DECRED_DATA_DIR} ${DECRED_DATA_DIR}/dcrd ${DECRED_DATA_DIR}/dcrwallet"
 for dir in ${dirs}; do
   if [[ -d "${dir}" ]]; then
     print "✓ Directory ${dir} exists."
@@ -126,7 +126,7 @@ else
     print "${YELLOW}ATTENTION: Your decred wallet has been successfully initialized!${NC}"
     print "${YELLOW}ATTENTION: Add your wallet password to env var DECRED_WALLET_PASSWORD and restart.${NC}"
     # We exit with a non-zero code to keep blackboxd from continuing.
-    exit 2
+    exit 0
   fi
 
   # echo
