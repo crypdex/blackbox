@@ -39,13 +39,13 @@ if [[ -z "${DECRED_DATA_DIR}" ]]; then
   exit 1
 fi
 
-dirs="${DECRED_DATA_DIR} ${DECRED_DATA_DIR}/dcrd ${DECRED_DATA_DIR}/dcrwallet"
+dirs="${DECRED_DATA_DIR} ${DECRED_DATA_DIR}/dcrd/logs ${DECRED_DATA_DIR}/dcrwallet/logs"
 for dir in ${dirs}; do
   if [[ -d "${dir}" ]]; then
     print "✓ Directory ${dir} exists."
   else
     print "Creating directory: ${dir}"
-    mkdir -p ${dir}
+    mkdir -p ${dir} && chmod 0777 ${dir}
   fi
 done
 
@@ -108,13 +108,9 @@ done
 # Check for a wallet: MAINNET ONLY RIGHT NOW
 #####################
 
-
-
+DECRED_WALLET_PASSWORD=${DECRED_WALLET_PASSWORD:-}
 DECRED_NETWORK=${DECRED_NETWORK:-mainnet}
 WALLET_FILE=${DECRED_DATA_DIR}/dcrwallet/${DECRED_NETWORK}/wallet.db
-
-
-
 
 if [[  -f "$WALLET_FILE" ]]; then
   print "✓ Wallet exists"

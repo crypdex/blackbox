@@ -29,16 +29,20 @@ From the Decred [docs](https://docs.decred.org/)
   ```
 1. Generate a voting address  
 
-  ```yaml
+  ```shell
   dcrctl --wallet getnewaddress
   ```
 1. Add the following environment variables to `.env`
 
   ```.env
-  DATA_DIR=<~/.blackbox/data is default>
-  DECRED_WALLET_PASSWORD=<supplied during setup>
-  DECRED_VOTING_ADDRESS=<generated in previous step>
+  DATA_DIR=
+  DECRED_WALLET_PASSWORD=
+  DECRED_VOTING_ADDRESS=
   ```
+  
+  * `DATA_DIR` defaults to `~/.blackbox/data`. Change this to suit.
+  * `DECRED_WALLET_PASSWORD` is the password given during setup
+  * `DECRED_VOTING_ADDRESS` is the address generated in the previous step
 1. Finally, restart the service stack
 
   ```shell
