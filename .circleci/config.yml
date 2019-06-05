@@ -5,35 +5,6 @@
 
 version: 2
 jobs:
-  release-docker-images:
-    docker:
-      - image: golang:1.12
-    steps:
-      - checkout
-      - setup_remote_docker:   # (2)
-          docker_layer_caching: true # (3)
-          version: 18.06.0-ce
-      # use a primary image that already has Docker (recommended)
-      # or install it during a build like we do here
-      - run:
-          name: Install Docker client
-          command: |
-            set -x
-            VER="18.06.0-ce"
-            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
-            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
-            mv /tmp/docker/* /usr/bin
-            mkdir -p /etc/docker
-            echo "{\"experimental\": true}" > /etc/docker/daemon.json
-            mkdir -p $HOME/.docker
-            echo "{\"experimental\": \"enabled\"}" > $HOME/.docker/config.json
-      # build and push Docker image
-      - run:
-          name: Build all Docker images
-          command: |
-            docker login -u $DOCKER_USER -p $DOCKER_PASS
-            bash scripts/docker-release-all.sh
-
   deploy-website:
     docker:
       # specify the version you desire here
@@ -69,14 +40,41 @@ jobs:
             curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
             curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_x86_64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
 
+# AT THE MOMENT, CIRCLE CI DOES NOT SUPPORT ARM RELEASES
+# SO THIS SHOULD BE DONE LOCALLY.
+#  release-docker-images:
+#    docker:
+#      - image: golang:1.12
+#    steps:
+#      - checkout
+#      - setup_remote_docker:   # (2)
+#          docker_layer_caching: true # (3)
+#          version: 18.06.0-ce
+#      # use a primary image that already has Docker (recommended)
+#      # or install it during a build like we do here
+#      - run:
+#          name: Install Docker client
+#          command: |
+#            set -x
+#            VER="18.06.0-ce"
+#            curl -L -o /tmp/docker-$VER.tgz https://download.docker.com/linux/static/stable/x86_64/docker-$VER.tgz
+#            tar -xz -C /tmp -f /tmp/docker-$VER.tgz
+#            mv /tmp/docker/* /usr/bin
+#            mkdir -p /etc/docker
+#            echo "{\"experimental\": true}" > /etc/docker/daemon.json
+#            mkdir -p $HOME/.docker
+#            echo "{\"experimental\": \"enabled\"}" > $HOME/.docker/config.json
+#      # build and push Docker image
+#      - run:
+#          name: Build all Docker images
+#          command: |
+#            docker login -u $DOCKER_USER -p $DOCKER_PASS
+#            bash scripts/docker-release-all.sh
+
 workflows:
   version: 2
   release:
     jobs:
-      - release-docker-images:
-          filters:
-            branches:
-              only: master
       - release:
           filters:
             branches:
