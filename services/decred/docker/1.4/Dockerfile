@@ -59,7 +59,6 @@ RUN adduser --disabled-password --gecos '' $USER && \
     mv $DCR_RELEASE_NAME/dcrwallet /usr/local/bin && \
     mv $DCR_RELEASE_NAME/dcrctl /usr/local/bin && \
     mv $DCR_RELEASE_NAME/promptsecret /usr/local/bin && \
-    mv $DCR_RELEASE_NAME/gencerts /usr/local/bin && \
 
     mkdir -p $DOTDCRD && \
     chown -R $USER.$USER $HOME && \
