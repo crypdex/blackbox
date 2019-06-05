@@ -1,3 +1,5 @@
+# The GPG key created for this requires no password to sign
+
 version: 2
 jobs:
   release:
@@ -11,7 +13,7 @@ jobs:
       - run:
           command: |
             curl -sL https://git.io/goreleaser |  \
-            bash -s -- --snapshot --skip-publish --rm-dist --release-notes=docs/release-notes/template.md
+            bash -s -- --snapshot --skip-publish --rm-dist --release-notes=docs/release-notes/latest.md
             ls dist/ | grep -i '.*[.]deb'
 
 workflows:
