@@ -2,7 +2,7 @@
 
 # BlackboxOS
 
-
+[![CircleCI](https://circleci.com/gh/crypdex/blackbox/tree/master.svg?style=svg)](https://circleci.com/gh/crypdex/blackbox/tree/master)
 
 The BlackboxOS is an ARM-first pluggable platform for deploying multi-chain applications. It is used as the basis for all [Crypdex's](https://crypdex.io) Blackbox devices. Basic info and getting started stuff is on this page. 
 
