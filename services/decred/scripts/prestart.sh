@@ -45,7 +45,7 @@ for dir in ${dirs}; do
     print "✓ Directory ${dir} exists."
   else
     print "Creating directory: ${dir}"
-    mkdir -p ${dir}
+    mkdir -p ${dir} && chmod 0777 ${dir}
   fi
 done
 
@@ -108,29 +108,26 @@ done
 # Check for a wallet: MAINNET ONLY RIGHT NOW
 #####################
 
-
-
+DECRED_WALLET_PASSWORD=${DECRED_WALLET_PASSWORD:-}
 DECRED_NETWORK=${DECRED_NETWORK:-mainnet}
 WALLET_FILE=${DECRED_DATA_DIR}/dcrwallet/${DECRED_NETWORK}/wallet.db
 
-
-
-
 if [[  -f "$WALLET_FILE" ]]; then
   print "✓ Wallet exists"
-  if [[ -z "${DECRED_DCRWALLET_PASSWORD}" ]]; then
-  fatal "You have to set DECRED_WALLET_PASSWORD in the .env or blackboxd will hang. Please make sure its right. Sorry homie."
+  if [[ -z "${DECRED_WALLET_PASSWORD}" ]]; then
+    fatal "You have to set DECRED_DCRWALLET_PASSWORD in the .env or blackboxd will hang. Please make sure its right. Sorry homie."
   exit 1
 fi
 else
   print "${YELLOW}ATTENTION: You need to create a wallet ...${NC}\n"
   source ${__dir}/dcrwallet-create.sh
 
-
-  print "${YELLOW}ATTENTION: Your decred wallet has been successfully initialized!${NC}"
-  print "${YELLOW}ATTENTION: Add your wallet password to env var DECRED_WALLET_PASSWORD and restart.${NC}"
-  # We exit with a non-zero code to keep blackboxd from continuing.
-  exit 2
+  if [[ -z "${DECRED_WALLET_PASSWORD}" ]]; then
+    print "${YELLOW}ATTENTION: Your decred wallet has been successfully initialized!${NC}"
+    print "${YELLOW}ATTENTION: Add your wallet password to env var DECRED_WALLET_PASSWORD and restart.${NC}"
+    # We exit with a non-zero code to keep blackboxd from continuing.
+    exit 0
+  fi
 
   # echo
   # echo "GENERATE YOUR WALLET WITH THIS COMMAND:"

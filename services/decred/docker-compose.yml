@@ -28,7 +28,7 @@ services:
       ${DECRED_DCRD_FLAGS:-}
 
   dcrwallet:
-    image: 'crypdex/decred:1.4-x86_64'
+    image: crypdex/decred:1.4
     restart: on-failure
     container_name: dcrwallet
     volumes:
@@ -43,5 +43,5 @@ services:
       --rpccert=/home/decred/.dcrwallet/dcrw.cert
       --rpckey=/home/decred/.dcrwallet/dcrw.key
       --cafile=/home/decred/.dcrd/dcrd.cert
-      --pass=${DECRED_DCRWALLET_PASSWORD}
+      --pass=${DECRED_WALLET_PASSWORD}
       ${DECRED_DCRWALLET_FLAGS:-}

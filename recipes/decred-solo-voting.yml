@@ -16,10 +16,10 @@ services:
       --rpccert=/home/decred/.dcrwallet/dcrw.cert
       --rpckey=/home/decred/.dcrwallet/dcrw.key
       --cafile=/home/decred/.dcrd/dcrd.cert
-      --pass=${DECRED_DCRWALLET_PASSWORD}
+      --pass=${DECRED_WALLET_PASSWORD}
       --enablevoting
       --enableticketbuyer
-      --ticketbuyer.votingaddress=${DECRED_VOTING_ADDRESS:?DECRED_VOTING_ADDRESS is required}
+      --ticketbuyer.votingaddress=${DECRED_VOTING_ADDRESS}
       ${DECRED_DCRWALLET_FLAGS:-}
   dcrd:
     # This replaces/overrides the command in the core recipe
