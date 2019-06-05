@@ -67,7 +67,7 @@ jobs:
           name: Push .deb packages to Gemfury
           command: |
             curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
-            curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_amd64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
+            curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_x86_64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
 
 workflows:
   version: 2
