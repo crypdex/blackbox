@@ -5,6 +5,16 @@
 
 version: 2
 jobs:
+  release-docker-images:
+    docker:
+      - image: golang:1.12
+    steps:
+      - checkout
+      - setup_remote_docker:   # (2)
+          docker_layer_caching: true # (3)
+      # build and push Docker image
+      - run: cd services/decred && bash /build.sh
+
   deploy-website:
     docker:
       # specify the version you desire here
@@ -38,16 +48,16 @@ jobs:
           name: Push .deb packages to Gemfury
           command: |
             curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
-            curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
+            curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_amd64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
 
 workflows:
   version: 2
   release:
     jobs:
-#      - deploy-website:
-#          filters:
-#            branches:
-#              only: master
+      - release-docker-images:
+          filters:
+            branches:
+              only: master
       - release:
           filters:
             branches:
