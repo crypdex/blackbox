@@ -29,7 +29,7 @@ jobs:
           name: Import GPG key
           command: echo -e "$GPG_KEY" | gpg --import
       - run:
-          name: Build
+          name: Build and Release
           command: |
             curl -sL https://git.io/goreleaser |  \
             bash -s -- --snapshot --rm-dist --release-notes=docs/release-notes/latest.md
@@ -43,14 +43,14 @@ workflows:
   version: 2
   release:
     jobs:
-      - deploy-website:
-          filters:
-            branches:
-              only: master
+#      - deploy-website:
+#          filters:
+#            branches:
+#              only: master
       - release:
           filters:
             branches:
-              only: master
+#              only: master
 #              ignore: gh-pages
-#            tags:
-#              only: /[0-9]+(\.[0-9]+)*(-.*)*/
+            tags:
+              only: /[0-9]+(\.[0-9]+)*(-.*)*/
