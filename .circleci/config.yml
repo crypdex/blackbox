@@ -33,6 +33,7 @@ jobs:
           command: |
             curl -sL https://git.io/goreleaser |  \
             bash -s -- --release-notes=docs/release-notes/latest.md
+            ls dist/ | grep -i '.*[.]deb'
       - run:
           name: Push .deb packages to Gemfury
           command: |
