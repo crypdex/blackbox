@@ -25,6 +25,8 @@ jobs:
             mv /tmp/docker/* /usr/bin
             mkdir -p /etc/docker
             echo "{\"experimental\": true}" > /etc/docker/daemon.json
+            mkdir -p $HOME/.docker
+            echo "{\"experimental\": \"enabled\"}" > $HOME/.docker/config.json
       # build and push Docker image
       - run: cd services/decred/docker && bash ./build.sh
 
