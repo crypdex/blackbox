@@ -13,7 +13,7 @@ jobs:
       - setup_remote_docker:   # (2)
           docker_layer_caching: true # (3)
       # build and push Docker image
-      - run: cd services/decred && bash /build.sh
+      - run: cd services/decred && bash ./build.sh
 
   deploy-website:
     docker:
