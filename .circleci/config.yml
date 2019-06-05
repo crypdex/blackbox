@@ -32,7 +32,7 @@ jobs:
           name: Build and Release
           command: |
             curl -sL https://git.io/goreleaser |  \
-            bash -s -- --snapshot --rm-dist --release-notes=docs/release-notes/latest.md
+            bash -s -- --release-notes=docs/release-notes/latest.md
       - run:
           name: Push .deb packages to Gemfury
           command: |
