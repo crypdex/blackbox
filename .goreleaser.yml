@@ -3,18 +3,33 @@
 
 project_name: blackboxd
 
+# Sign the checksums.txt with CRYPDEX pgp key
+sign:
+  artifacts: checksum
+  args:
+    [
+      "-u",
+      "E8359963",
+      "--output",
+      "${signature}",
+      "--detach-sign",
+      "${artifact}",
+    ]
+
 before:
   hooks:
     # you may remove this if you don't use vgo
     - go mod download
     # you may remove this if you don't need go generate
     - go generate ./...
+
 builds:
   - binary: blackboxd
     env:
       - CGO_ENABLED=0
     goos:
       - linux
+      - darwin
     goarch:
       - amd64
       - arm64
@@ -26,101 +41,95 @@ builds:
       - amd64
       - arm64
 
-archive:
-  replacements:
-    darwin: macOS
-    amd64: x86_64
-    arm64: arm64v8
 checksum:
-  name_template: 'checksums.txt'
+  name_template: "checksums.txt"
 
 snapshot:
-  name_template: 'snapshot'
+  name_template: "snapshot"
 
 changelog:
+  skip: true
   sort: asc
   filters:
     exclude:
-      - '^docs:'
-      - '^test:'
+      - "^docs:"
+      - "^test:"
 
-# .goreleaser.yml
-nfpm:
+nfpms:
+  - # You can change the name of the package.
+    # Default: `{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}`
+    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
 
-  # You can change the name of the package.
-  # Default: `{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}`
-  name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
+    # Replacements for GOOS and GOARCH in the package name.
+    # Keys should be valid GOOSs or GOARCHs.
+    # Values are the respective replacements.
+    # Default is empty.
+    replacements:
+      arm64: arm64v8
+      amd64: x86_64
+      darwin: macOS
 
-  # Replacements for GOOS and GOARCH in the package name.
-  # Keys should be valid GOOSs or GOARCHs.
-  # Values are the respective replacements.
-  # Default is empty.
-  replacements:
-    arm64: arm64v8
-    amd64: x86_64
-    darwin: macOS
+    # Your app's vendor.
+    # Default is empty.
+    vendor: CRYPDEX
+    # Your app's homepage.
+    # Default is empty.
+    homepage: https://crypdex.io/
 
-  # Your app's vendor.
-  # Default is empty.
-  vendor: CRYPDEX
-  # Your app's homepage.
-  # Default is empty.
-  homepage: https://crypdex.io/
+    # Your app's maintainer (probably you).
+    # Default is empty.
+    maintainer: CRYPDEX <contact@crypdex.io>
 
-  # Your app's maintainer (probably you).
-  # Default is empty.
-  maintainer: CRYPDEX <contact@crypdex.io>
+    # Your app's description.
+    # Default is empty.
+    description: A pluggable platform for multi-chain deployments.
 
-  # Your app's description.
-  # Default is empty.
-  description: A pluggable platform for multi-chain deployments.
+    # Formats to be generated.
+    formats:
+      - deb
 
-  # Formats to be generated.
-  formats:
-    - deb
+    # Packages your package depends on.
+    dependencies:
+      - bash
+      # - docker
 
-  # Packages your package depends on.
-  dependencies:
-    - bash
-    # - docker
+    # Packages your package recommends installing.
+    recommends:
+    # Packages your package suggests installing.
+    suggests:
+    # Packages that conflict with your package.
+    conflicts:
 
-  # Packages your package recommends installing.
-  recommends:
-  # Packages your package suggests installing.
-  suggests:
-  # Packages that conflict with your package.
-  conflicts:
+    # Empty folders that should be created and managed by the packager
+    # implementation.
+    # Default is empty.
+    empty_folders:
+    #   - /var/log/foobar
 
-  # Empty folders that should be created and managed by the packager
-  # implementation.
-  # Default is empty.
-  empty_folders:
-  #   - /var/log/foobar
+    # Files or directories to add to your package (beyond the binary).
+    # Keys are source paths/globs to get the files from.
+    # Values are the destination locations of the files in the package.
+    files:
+      "services/**/*": "/var/lib/blackbox/services"
+      "recipes/**/*": "/var/lib/blackbox/recipes"
+      "scripts/blackbox.service": "/etc/systemd/system/blackbox.service"
+      "scripts/blackbox-admin.service": "/etc/systemd/system/blackbox-admin.service"
+      "scripts/blackbox-logs.sh": "/usr/local/bin/blackbox-logs"
+      # "path/**/glob": "/var/foo/glob"
 
-  # Files or directories to add to your package (beyond the binary).
-  # Keys are source paths/globs to get the files from.
-  # Values are the destination locations of the files in the package.
-  files:
-    'services/**/*': '/var/lib/blackbox/services'
-    'recipes/**/*': '/var/lib/blackbox/recipes'
-    'scripts/blackbox.service': '/etc/systemd/system/blackbox.service'
-    'scripts/blackbox-admin.service': '/etc/systemd/system/blackbox-admin.service'
-    'scripts/blackbox-logs.sh': '/usr/local/bin/blackbox-logs'
-    # "path/**/glob": "/var/foo/glob"
+    # Config files to add to your package. They are about the same as
+    # the files keyword, except package managers treat them differently (while
+    # uninstalling, mostly).
+    # Keys are source paths/globs to get the files from.
+    # Values are the destination locations of the files in the package.
+    config_files:
+    #  "tmp/app_generated.conf": "/etc/app.conf"
+    #  "conf/*.conf": "/etc/foo/"
 
-  # Config files to add to your package. They are about the same as
-  # the files keyword, except package managers treat them differently (while
-  # uninstalling, mostly).
-  # Keys are source paths/globs to get the files from.
-  # Values are the destination locations of the files in the package.
-  config_files:
-  #  "tmp/app_generated.conf": "/etc/app.conf"
-  #  "conf/*.conf": "/etc/foo/"
-
-  # Scripts to execute during the installation of the package.
-  # Keys are the possible targets during the installation process
-  # Values are the paths to the scripts which will be executed
-  scripts:
-#    preinstall: "scripts/preinstall.sh"
-    postinstall: "scripts/postinstall.sh"
-#    postremove: "scripts/postremove.sh"
+    # Scripts to execute during the installation of the package.
+    # Keys are the possible targets during the installation process
+    # Values are the paths to the scripts which will be executed
+    scripts:
+      #    preinstall: "scripts/preinstall.sh"
+      postinstall: "scripts/postinstall.sh"
+  #    postremove: "scripts/postremove.sh"

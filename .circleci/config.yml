@@ -6,14 +6,13 @@ jobs:
     steps:
       - checkout
       - run:
+          name: Import GPG key
+          command: echo -e "$GPG_KEY" | gpg --import
+      - run:
           command: |
             curl -sL https://git.io/goreleaser |  \
-            bash -s -- --snapshot --skip-publish --rm-dist
+            bash -s -- --snapshot --skip-publish --rm-dist --release-notes=docs/release-notes/template.md
             ls dist/ | grep -i '.*[.]deb'
-      - store_artifacts:
-          path: dist/blackboxd_snapshot_linux_arm64v8.deb
-      - store_artifacts:
-          path: dist/blackboxd_snapshot_linux_x86_64.deb
 
 workflows:
   version: 2
