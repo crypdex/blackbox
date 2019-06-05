@@ -23,7 +23,7 @@ for arch in ${ARCH}; do
   echo "=> Building Decred {arch: ${arch}, image: ${IMAGE}, decred-arch: ${DECRED_ARCH}}"
 
 
-  docker build -f Dockerfile -t ${ORG}/${SERVICE}:${VERSION}-${arch} --build-arg DECRED_ARCH=${DECRED_ARCH} --build-arg IMAGE=${IMAGE} ${VERSION}/.
+  docker build -f ${VERSION}/Dockerfile -t ${ORG}/${SERVICE}:${VERSION}-${arch} --build-arg DECRED_ARCH=${DECRED_ARCH} --build-arg IMAGE=${IMAGE} ${VERSION}/.
   docker push ${ORG}/${SERVICE}:${VERSION}-${arch}
 done
 
