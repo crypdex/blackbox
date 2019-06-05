@@ -29,12 +29,15 @@ jobs:
           name: Import GPG key
           command: echo -e "$GPG_KEY" | gpg --import
       - run:
+          name: Build
           command: |
             curl -sL https://git.io/goreleaser |  \
             bash -s -- --snapshot --rm-dist --release-notes=docs/release-notes/latest.md
       - run:
+          name: Push .deb packages to Gemfury
           command: |
-            curl -F package=@dist/blackboxd_snapshot_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
+            curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
+            curl -F package=@dist/blackboxd_${CIRCLE_TAG}_snapshot_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
 
 workflows:
   version: 2
