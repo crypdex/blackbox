@@ -1,5 +1,8 @@
 # The GPG key created for this requires no password to sign
 
+# TODO
+# - replace latest.md with the release
+
 version: 2
 jobs:
   deploy-website:
@@ -28,8 +31,10 @@ jobs:
       - run:
           command: |
             curl -sL https://git.io/goreleaser |  \
-            bash -s -- --snapshot --skip-publish --rm-dist --release-notes=docs/release-notes/latest.md
-            ls dist/ | grep -i '.*[.]deb'
+            bash -s -- --snapshot --rm-dist --release-notes=docs/release-notes/latest.md
+      - run:
+          command: |
+            curl -F package=@dist/blackboxd_snapshot_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
 
 workflows:
   version: 2
