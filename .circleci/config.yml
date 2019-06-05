@@ -2,6 +2,21 @@
 
 version: 2
 jobs:
+  deploy-website:
+    docker:
+      # specify the version you desire here
+      - image: circleci/node:8.11.1
+
+    steps:
+      - checkout
+      - run:
+          name: Deploying to GitHub Pages
+          command: |
+            git config --global user.email "crypdex@users.noreply.github.com"
+            git config --global user.name "CRYPDEX"
+            echo "machine github.com login dmichael password $GITHUB_TOKEN" > ~/.netrc
+            cd website && yarn install && GIT_USER=dmichael yarn run publish-gh-pages
+
   release:
     docker:
       - image: circleci/golang:1.12
@@ -16,10 +31,19 @@ jobs:
             bash -s -- --snapshot --skip-publish --rm-dist --release-notes=docs/release-notes/latest.md
             ls dist/ | grep -i '.*[.]deb'
 
+      - run:
+          name: Publish docs
+          command: |
+            cd website && USE_SSH=true yarn publish-gh-pages
+
 workflows:
   version: 2
   release:
     jobs:
+      - deploy-website:
+          filters:
+            branches:
+              only: master
       - release:
           filters:
             branches:
