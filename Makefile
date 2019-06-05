@@ -181,3 +181,12 @@ test-dist:
 
 publish-docs:
 	cd website && USE_SSH=true yarn publish-gh-pages
+
+
+
+##################
+## CIRCLE CI
+##################
+
+release-docker-images:
+	@bash scripts/release-docker-images.sh

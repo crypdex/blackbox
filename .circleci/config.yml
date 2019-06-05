@@ -29,10 +29,10 @@ jobs:
             echo "{\"experimental\": \"enabled\"}" > $HOME/.docker/config.json
       # build and push Docker image
       - run:
-          name: Build Docker images
+          name: Build all Docker images
           command: |
             docker login -u $DOCKER_USER -p $DOCKER_PASS
-            cd services/decred/docker && bash ./build.sh
+            bash scripts/docker-release-all.sh
 
   deploy-website:
     docker:

@@ -6,15 +6,15 @@ LABEL description="Decred Daemon"
 LABEL maintainer="contact@crypdex.io"
 
 # Not sure why this needs to be declared after the IMAGE
-ARG DECRED_ARCH
-ENV DCR_RELEASE=1.4.0
-
-
+ARG ARCH
+RUN test -n "$ARCH"
+ARG VERSION=$VERSION
+RUN test -n "$VERSION"
 
 #https://github.com/decred/decred-binaries/releases/download/v1.4.0/decred-linux-amd64-v1.4.0.tar.gz
-ENV DCR_RELEASE_URL="https://github.com/decred/decred-binaries/releases/download/v$DCR_RELEASE"
-ENV DCR_MANIFEST_FILE="manifest-$DCR_RELEASE.txt"
-ENV DCR_RELEASE_NAME="decred-linux-$DECRED_ARCH-v$DCR_RELEASE"
+ENV DCR_RELEASE_URL="https://github.com/decred/decred-binaries/releases/download/v$VERSION"
+ENV DCR_MANIFEST_FILE="manifest-$VERSION.txt"
+ENV DCR_RELEASE_NAME="decred-linux-$ARCH-v$VERSION"
 ENV DCR_RELEASE_FILE="$DCR_RELEASE_NAME.tar.gz"
 
 ENV USER decred

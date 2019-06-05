@@ -3,19 +3,24 @@
 # Get the location of this script
 # and make sure we are executing this from the correct location
 __dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
-cd ${__dir}
-
-
-SERVICE="decred"
-VERSION_DIR='1.4'
-VERSION='1.4.0'
-ORG="crypdex"
-
-failed=0
+cd ${__dir}/../services/${SERVICE}/docker
 
 COMMON_ARCHS=(arm64v8 x86_64)
 ARCHS=(arm64 amd64)
 BASE_IMAGES=(arm64v8/debian:stable-slim debian:stable-slim)
+
+source "buildvars.sh"
+pwd
+
+ORG="crypdex"
+SERVICE=${SERVICE}
+VERSION_DIR=${VERSION_DIR}
+VERSION=${VERSION}
+
+
+failed=0
+
+
 
 
 for i in "${!ARCHS[@]}"; do
