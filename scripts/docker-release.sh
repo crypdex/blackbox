@@ -21,8 +21,6 @@ VERSION=${VERSION}
 failed=0
 
 
-
-
 for i in "${!ARCHS[@]}"; do
   common_arch=${COMMON_ARCHS[$i]}
   arch=${ARCHS[$i]}

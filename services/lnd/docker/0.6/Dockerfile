@@ -31,6 +31,7 @@ RUN curl -SLO https://github.com/lightningnetwork/lnd/releases/download/v${VERSI
   && rm *.tar.gz
 
 COPY entrypoint.sh /entrypoint.sh
+RUN chmod u+x /entrypoint.sh
 
 # This volume is to be mounted
 VOLUME ["/home/lnd/.lnd"]

@@ -1,13 +1,26 @@
-#!/bin/sh
+#!/usr/bin/env bash
+
 set -e
 
-if [ $(echo "$1" | cut -c1) = "-" ]; then
-  echo "$0: assuming arguments for bitcoind"
+args=()
 
-  set -- bitcoind "$@"
+BITCOIN_NETWORK=${BITCOIN_NETWORK:-mainnet}
+
+if [[ ${BITCOIN_NETWORK} == "regtest" ]]; then
+  args+=("-regtest")
 fi
 
-if [ $(echo "$1" | cut -c1) = "-" ] || [ "$1" = "bitcoind" ]; then
+if [[ ${BITCOIN_NETWORK} == "testnet" ]]; then
+  args+=("-testnet")
+fi
+
+if [[ $(echo "$1" | cut -c1) = "-" ]]; then
+  echo "$0: assuming arguments for bitcoind"
+
+  set -- bitcoind ${args[@]} "$@"
+fi
+
+if [[ $(echo "$1" | cut -c1) = "-" ]] || [[ "$1" = "bitcoind" ]]; then
   mkdir -p "$BITCOIN_DATA"
   chmod 700 "$BITCOIN_DATA"
   chown -R bitcoin "$BITCOIN_DATA"
@@ -17,10 +30,9 @@ if [ $(echo "$1" | cut -c1) = "-" ] || [ "$1" = "bitcoind" ]; then
   set -- "$@" -datadir="$BITCOIN_DATA"
 fi
 
-if [ "$1" = "bitcoind" ] || [ "$1" = "bitcoin-cli" ] || [ "$1" = "bitcoin-tx" ]; then
-  echo
+if [[ "$1" = "bitcoind" ]] || [[ "$1" = "bitcoin-cli" ]] || [[ "$1" = "bitcoin-tx" ]]; then
+  echo su-exec bitcoin "$@"
   exec su-exec bitcoin "$@"
 fi
 
-echo
 exec "$@"

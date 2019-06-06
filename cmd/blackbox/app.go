@@ -115,7 +115,8 @@ func (app *App) Install(bin string, force bool) error {
 	var binPath string
 
 	// Loop through all the services
-	for name := range app.Services() {
+	for name, _ := range app.RegisteredServices { // range app.Services() {
+		fmt.Println(name)
 		// Check for the service in each of the config paths ...
 		for _, p := range configPaths() {
 			// Does the bin exist here?
