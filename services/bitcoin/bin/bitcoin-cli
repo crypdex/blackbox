@@ -7,16 +7,20 @@ source "./.env" 2>/dev/null
 BITCOIN_RPCUSER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
 BITCOIN_RPCPASS=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}
 
-BITCOIN_RPCPORT=8332
+if [[ "${BITCOIN_RPCPORT}" == "" ]]; then
+  BITCOIN_RPCPORT=8332
 
-BITCOIN_NETWORK=${BITCOIN_NETWORK:-mainnet}
-if [[ ${BITCOIN_NETWORK} == "testnet" ]]; then
-  BITCOIN_RPCPORT=18332
+  BITCOIN_NETWORK=${BITCOIN_NETWORK:-mainnet}
+  if [[ ${BITCOIN_NETWORK} == "testnet" ]]; then
+    BITCOIN_RPCPORT=18332
+  fi
+
+  if [[ ${BITCOIN_NETWORK} == "regtest" ]]; then
+    BITCOIN_RPCPORT=18443
+  fi
 fi
 
-if [[ ${BITCOIN_NETWORK} == "regtest" ]]; then
-  BITCOIN_RPCPORT=18443
-fi
+
 
 # docker exec -it -u ${USER} ${CONTAINER_NAME} ${COMMAND} $@
 docker exec -it -u bitcoin bitcoind bitcoin-cli -rpcuser=${BITCOIN_RPCUSER} -rpcpassword=${BITCOIN_RPCPASS} -rpcport=${BITCOIN_RPCPORT} $@
