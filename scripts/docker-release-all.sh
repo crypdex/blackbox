@@ -43,6 +43,11 @@ if [[ $# -eq 1 ]] ; then
     exit 1
   fi
 
+  echo -e "${GREEN}Building and releasing ${SERVICE} ...${NC}"
+
+  cmd="SERVICE=${1} bash ${__dir}/docker-release.sh"
+  eval ${cmd}
+
   exit 0
 fi
 
