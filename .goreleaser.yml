@@ -3,6 +3,17 @@
 
 project_name: blackboxd
 
+brew:
+  # Repository to push the tap to.
+  github:
+    owner: crypdex
+    name: blackbox-tap
+
+  homepage: "https://crypdex.io/"
+
+  description: "A pluggable platform for multi-chain deployments."
+
+
 # Sign the checksums.txt with CRYPDEX pgp key
 sign:
   artifacts: checksum

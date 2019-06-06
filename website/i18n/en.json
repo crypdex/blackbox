@@ -63,6 +63,9 @@
       "pivx-staking-node/troubleshooting": {
         "title": "pivx-staking-node/troubleshooting"
       },
+      "release-notes/latest": {
+        "title": "release-notes/latest"
+      },
       "services/decred": {
         "title": "Decred",
         "sidebar_label": "Decred"

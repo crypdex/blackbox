@@ -4,5 +4,8 @@
 source "~/.blackbox/.env" 2>/dev/null
 source "./.env" 2>/dev/null
 
+BITCOIN_RPCUSER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
+BITCOIN_RPCPASS=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}
+
 # docker exec -it -u ${USER} ${CONTAINER_NAME} ${COMMAND} $@
-docker exec -it -u bitcoin bitcoind bitcoin-cli -rpcuser=${BITCOIN_RPCUSER} -rpcpassword=${BITCOIN_RPCPASSWORD} $@
+docker exec -it -u bitcoin bitcoind bitcoin-cli -rpcuser=${BITCOIN_RPCUSER} -rpcpassword=${BITCOIN_RPCPASS} $@
