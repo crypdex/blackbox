@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <feed xmlns="http://www.w3.org/2005/Atom">
     <id>https://crypdex.io/blackbox/blog</id>
-    <title>BLACKBOX Blog</title>
+    <title>Blackbox Blog</title>
     <updated>2017-10-24T06:00:00Z</updated>
     <generator>Feed for Node.js</generator>
     <link rel="alternate" href="https://crypdex.io/blackbox/blog"/>
-    <subtitle>The best place to stay up-to-date with the latest BLACKBOX news and events.</subtitle>
+    <subtitle>The best place to stay up-to-date with the latest Blackbox news and events.</subtitle>
     <logo>https://crypdex.io/blackbox/img/logo.svg</logo>
     <rights>Copyright © 2019 Crypdex</rights>
     <entry>
