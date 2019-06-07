@@ -51,6 +51,7 @@ func loadDefault() *viper.Viper {
 	return v
 }
 
+// loadEnv loads a .env file. This should be modified to only current working directory/
 func loadEnv() map[string]string {
 
 	// Add search paths

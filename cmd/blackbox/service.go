@@ -2,14 +2,12 @@ package blackbox
 
 import (
 	"fmt"
-	"strconv"
-	"strings"
 )
 
 type Service struct {
 	Name      string
 	FilePaths []string
-	Env       map[string]interface{}
+	Env       map[string]string
 }
 
 func (service *Service) DockerComposePaths() []string {
@@ -20,23 +18,23 @@ func (service *Service) DockerComposePaths() []string {
 	return paths
 }
 
-func (service *Service) EnvVars() map[string]string {
-	// This is a map so that we can override
-	output := make(map[string]string)
-	// Add defined environment variables
-	for k, v := range service.Env {
-		var value string
-		switch i := v.(type) {
-		case string:
-			value = i
-		case int:
-			value = strconv.Itoa(i)
-		case bool:
-			value = strconv.FormatBool(i)
-		default:
-			fmt.Printf("I don't know about type %T!\n", v)
-		}
-		output[strings.ToUpper(service.Name)+"_"+strings.ToUpper(k)] = value
-	}
-	return output
-}
+// func (service *Service) EnvVars() map[string]string {
+// 	// This is a map so that we can override
+// 	output := make(map[string]string)
+// 	// Add defined environment variables
+// 	for k, v := range service.Env {
+// 		var value string
+// 		switch i := v.(type) {
+// 		case string:
+// 			value = i
+// 		case int:
+// 			value = strconv.Itoa(i)
+// 		case bool:
+// 			value = strconv.FormatBool(i)
+// 		default:
+// 			fmt.Printf("I don't know about type %T!\n", v)
+// 		}
+// 		output[strings.ToUpper(service.Name)+"_"+strings.ToUpper(k)] = value
+// 	}
+// 	return output
+// }

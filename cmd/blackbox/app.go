@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	. "github.com/logrusorgru/aurora"
-	homedir "github.com/mitchellh/go-homedir"
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
 
@@ -100,15 +100,24 @@ func (app *App) Services() map[string]*Service {
 		}
 		services[key] = service
 
-		envvars := app.config.GetStringMap(fmt.Sprintf("services.%s.x-env", key))
-		service.Env = envvars
+		// This is likely unnecessary
+		// envvars := parseEnVars(app.config.GetStringSlice(fmt.Sprintf("services.%s.environment", key)))
+		//
+		// service.Env = envvars
+
+		// env_file
+		// envFiles := app.config.GetStringSlice(fmt.Sprintf("services.%s.env_file", key))
+		//
+		// env, err := godotenv.Read(envFiles...)
+		// if err != nil {
+		// 	fmt.Println(err)
+		// }
+		// for k, v := range env {
+		// 	service.Env[k] = v
+		// }
 	}
 	// Trace(fmt.Sprintf("configured services: %s", funk.Keys(services)))
 	return services
-}
-
-func (app *App) ForceSwarm() bool {
-	return app.config.GetBool("swarm") || app.config.GetBool("x-blackbox.swarm")
 }
 
 func (app *App) Install(bin string, force bool) error {
@@ -199,27 +208,49 @@ func (app *App) ListBinaryWrappers() (map[string][]string, error) {
 	return cache, nil
 }
 
+// EnvVars extends the native orchestration methods of loading environment
+// variables. One advantage is that this allows for both variable substitution
+// in docker-compose.yml files as well as in service lifecycle scripts.
+
+// Order of precedence for values:
+// - .env
+// -	'services: service: environment:'
+// - 'x-blackbox: environment:'
 func (app *App) EnvVars() map[string]string {
 
-	datadir, _ := app.DataDir()
-	output := map[string]string{
-		"DATA_DIR": datadir,
-	}
+	output := parseEnVars(app.config.GetStringSlice("x-blackbox.environment"))
+
+	// datadir, _ := app.DataDir()
+	// output["DATA_DIR"] = datadir
 
 	for _, service := range app.Services() {
+
 		for k, v := range app.ServiceEnvVars(service) {
 			output[k] = v
 		}
 	}
 
-	// Add environment variables from .env files
-	// This should overrride variables set by the service definitions
-	// as well as variables set by the main "recipe"
+	// While Docker Compose loads .env by default,
+	// we want to make the vars available to the scripts
 	for k, v := range loadEnv() {
 		output[k] = v
 	}
 
 	// app.log("debug", fmt.Sprintf("%#v", output))
+	return output
+}
+
+func parseEnVars(vars []string) map[string]string {
+	output := map[string]string{}
+	if len(vars) == 0 {
+		return output
+	}
+
+	for _, assignment := range vars {
+		fmt.Println(assignment)
+		pair := strings.Split(assignment, "=")
+		output[pair[0]] = pair[1]
+	}
 	return output
 }
 
@@ -233,7 +264,7 @@ func (app *App) ServiceEnvVars(service *Service) map[string]string {
 	datadir, _ := app.DataDir()
 
 	output[strings.ToUpper(service.Name)+"_DATA_DIR"] = filepath.Join(datadir, service.Name)
-	for k, v := range service.EnvVars() {
+	for k, v := range service.Env {
 		output[k] = v
 	}
 
@@ -277,7 +308,7 @@ func (app *App) runScript(service *Service, name string) error {
 			continue
 		}
 
-		err := RunSync(scriptpath, []string{}, app.ServiceEnvVars(service), app.Debug)
+		err := RunSync(scriptpath, []string{}, app.EnvVars(), app.Debug)
 		if err != nil {
 			return err
 		}

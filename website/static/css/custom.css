@@ -1,5 +1,55 @@
 /* your custom css */
 
+@font-face {
+  font-family: "Messina";
+  src: url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Regular.eot"); /* IE9 Compat Modes */
+  src: url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Regular.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */
+      url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Regular.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Regular.woff")
+      format("woff"),
+    /* Pretty Modern Browsers */
+      url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Regular.ttf")
+      format("truetype"); /* Safari, Android, iOS */
+}
+
+@font-face {
+  font-family: "MessinaLight";
+  src: url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Light.eot"); /* IE9 Compat Modes */
+  src: url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Light.eot?#iefix")
+      format("embedded-opentype"),
+    /* IE6-IE8 */
+      url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Light.woff2")
+      format("woff2"),
+    /* Super Modern Browsers */
+      url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Light.woff")
+      format("woff"),
+    /* Pretty Modern Browsers */
+      url("https://lumi-assets.s3.amazonaws.com/fonts/MessinaSansLumi-Light.ttf")
+      format("truetype"); /* Safari, Android, iOS */
+}
+
+body {
+  font-family: "Messina", Helvetica;
+}
+
+.fixedHeaderContainer header .headerTitleWithLogo {
+    font-family: "MessinaLight", Helvetica;
+    /*font-size: 25px;*/
+    text-transform: uppercase;
+}
+
+.superduper {
+  padding: 0;
+  margin-top: -35px;
+  margin-left: -7px;
+  font-family: "MessinaLight", Helvetica;
+  font-size: 100px;
+}
+
 @media only screen and (min-device-width: 360px) and (max-device-width: 736px) {
 }
 
@@ -7,6 +57,9 @@
 }
 
 @media only screen and (max-width: 1023px) {
+  .superduper {
+    font-size: 70px;
+  }
 }
 
 @media only screen and (min-width: 1400px) {

@@ -13,7 +13,7 @@ services:
       - "18443:18443"
       - "18444:18444"
     environment:
-      - BITCOIN_NETWORK=${BITCOIN_NETWORK-mainnet}
+      - NETWORK=${BITCOIN_NETWORK-mainnet}
     volumes:
       - ${BITCOIN_DATA_DIR:?BITCOIN_DATA_DIR required}:/home/bitcoin/.bitcoin
     # Command-line options override values set in the configuration file.

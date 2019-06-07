@@ -1,6 +1,6 @@
 ---
-title: Installation
-sidebar_label: Installation
+title: Getting Started
+sidebar_label: Getting Started
 ---
 
 Getting BlackboxOS setup is fairly straightforward, but does require some [preparation](device-preparation).

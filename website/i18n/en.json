@@ -25,10 +25,6 @@
         "title": "Hardware Requirements",
         "sidebar_label": "Hardware"
       },
-      "blackbox-os/installation": {
-        "title": "Installation",
-        "sidebar_label": "Installation"
-      },
       "blackbox-os/nanopc-t4": {
         "title": "blackbox-os/nanopc-t4"
       },
@@ -52,8 +48,12 @@
       "doc5": {
         "title": "Fifth Document"
       },
+      "getting-started": {
+        "title": "Getting Started",
+        "sidebar_label": "Getting Started"
+      },
       "intro": {
-        "title": "Introduction",
+        "title": "An introduction to",
         "sidebar_label": "Intro"
       },
       "pivx-staking-node/getting-started": {
@@ -83,8 +83,7 @@
       "Docs": "Docs"
     },
     "categories": {
-      "Introduction": "Introduction",
-      "BlackboxOS": "BlackboxOS",
+      "Blackbox": "Blackbox",
       "Services": "Services",
       "Blackbox Devices": "Blackbox Devices"
     }

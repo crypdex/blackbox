@@ -8,17 +8,20 @@ services:
     restart: on-failure
     depends_on:
       - bitcoin
+    # Overriding environment variables can be unpredictable.
     environment:
       - CHAIN=bitcoin
-      - BACKEND=${LND_BITCOIN_BACKEND:-bitcoind}
+      - BACKEND=bitcoind
       - NETWORK=${BITCOIN_NETWORK:-mainnet}
-      - BITCOIN_RPCUSER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
-      - BITCOIN_RPCPASS=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}
+      - RPCUSER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
+      - RPCPASS=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}
     command:
       --rpclisten=0.0.0.0:10009
     volumes:
       - ${DATA_DIR}/${LND_DIR:-lnd}:/home/lnd/.lnd
 
+  # Be aware that the service name is 'bitcoin',
+  # but the container_name is bitcoind
   bitcoin:
     image: crypdex/bitcoin:${BITCOIN_VERSION:-0.17}
     container_name: bitcoind
@@ -26,7 +29,7 @@ services:
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/${BITCOIN_DIR:-bitcoin}:/home/bitcoin/.bitcoin
     environment:
-      - BITCOIN_NETWORK=${BITCOIN_NETWORK-mainnet}
+      - NETWORK=${BITCOIN_NETWORK-mainnet}
     ports:
       - 8332:8332
       - 8333:8333
@@ -35,8 +38,8 @@ services:
       - 18443:18443
       - 18444:18444
     command:
-      -rpcuser=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
-      -rpcpassword=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}
+      -rpcuser=${BITCOIN_RPCUSER}
+      -rpcpassword=${BITCOIN_RPCPASS}
       -rpcallowip=0.0.0.0/0
       -zmqpubrawblock=tcp://0.0.0.0:28333
       -zmqpubrawtx=tcp://0.0.0.0:28334

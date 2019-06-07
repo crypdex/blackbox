@@ -4,13 +4,13 @@ set -e
 
 args=()
 
-BITCOIN_NETWORK=${BITCOIN_NETWORK:-mainnet}
+NETWORK=${NETWORK:-mainnet}
 
-if [[ ${BITCOIN_NETWORK} == "regtest" ]]; then
+if [[ ${NETWORK} == "regtest" ]]; then
   args+=("-regtest")
 fi
 
-if [[ ${BITCOIN_NETWORK} == "testnet" ]]; then
+if [[ ${NETWORK} == "testnet" ]]; then
   args+=("-testnet")
 fi
 

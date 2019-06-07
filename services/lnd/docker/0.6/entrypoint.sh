@@ -25,19 +25,9 @@ args=(
   "--$BACKEND.rpchost"=${BACKEND}
   "--$BACKEND.zmqpubrawblock=tcp://$BACKEND:28333"
   "--$BACKEND.zmqpubrawtx=tcp://$BACKEND:28334"
+  "--$BACKEND.rpcuser=${RPCUSER:?RPCUSER is required}"
+  "--$BACKEND.rpcpass=${RPCPASS:?RPCPASS is required}"
 )
-
-
-if [[ ${CHAIN} == "bitcoin" ]]; then
-  args+=()
-  args+=("--$BACKEND.rpcuser=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}")
-  args+=("--$BACKEND.rpcpass=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}")
-fi
-
-if [[ ${CHAIN} == "litecoin" ]]; then
-  args+=("--$BACKEND.rpcuser=${LITECOIN_RPCUSER:?LITECOIN_RPCUSER is required}")
-  args+=("--$BACKEND.rpcpass=${LITECOIN_RPCPASS:?LITECOIN_RPCPASS is required}")
-fi
 
 #  if [[ ${BACKEND} == "btcd" ]]; then
 #    args+=("--$BACKEND.rpccert=/home/btcd/.btcd/rpc.cert")

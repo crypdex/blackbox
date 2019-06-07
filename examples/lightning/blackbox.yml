@@ -1,4 +1,20 @@
 version: "3.7"
 
+# - env_file:
+# - .env (in current working directory)
+# environment: -KEY=VALUE
+
+
+# NOTES:
+# lnd_bitcoin is actually a composite of 2 services "lnd_bitcoin" and "bitcoin" and are maintained together to assure compatibility of the stack
+
 services:
   lnd_bitcoin:
+#    env_file:
+#      - /Users/dmichael/projects/crypdex/blackbox/.lnd-development.env
+#    environment:
+#      - NETWORK=regtest
+#      - RPCUSER=crypdex
+#      - RPCPASS=666
+
+

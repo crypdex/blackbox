@@ -11,34 +11,34 @@
 // List of projects/orgs using your project for the users page.
 const users = [
   {
-    caption: 'User1',
+    caption: "User1",
     // You will need to prepend the image path with your baseUrl
     // if it is not '/', like: '/test-site/img/docusaurus.svg'.
-    image: '/img/docusaurus.svg',
-    infoLink: 'https://www.facebook.com',
+    image: "/img/docusaurus.svg",
+    infoLink: "https://www.facebook.com",
     pinned: true
   }
-]
+];
 
 const siteConfig = {
-  title: 'BLACKBOX', // Title for your website.
-  tagline: 'An ARM-first, pluggable framework for multi-chain deployments.',
-  url: 'https://crypdex.io', // Your website URL
-  baseUrl: '/blackbox/', // Base URL for your project */
+  title: "Blackbox", // Title for your website.
+  tagline: "An ARM-first, pluggable framework for multi-chain deployments.",
+  url: "https://crypdex.io", // Your website URL
+  baseUrl: "/blackbox/", // Base URL for your project */
   // For github.io type URLs, you would set the url and baseUrl like:
   //   url: 'https://facebook.github.io',
   //   baseUrl: '/test-site/',
 
   // Used for publishing and more
-  projectName: 'blackbox',
-  organizationName: 'crypdex',
+  projectName: "blackbox",
+  organizationName: "crypdex",
   // For top-level user or org sites, the organization is still the same.
   // e.g., for the https://JoelMarcey.github.io site, it would be set like...
   //   organizationName: 'JoelMarcey'
 
   // For no header links in the top nav bar -> headerLinks: [],
   headerLinks: [
-    { doc: 'intro', label: 'Docs' }
+    { doc: "intro", label: "Docs" }
     // { doc: 'doc4', label: 'API' },
     // { page: 'help', label: 'Help' },
     // { blog: false, label: 'Blog' }
@@ -48,14 +48,14 @@ const siteConfig = {
   users,
 
   /* path to images for header/footer */
-  headerIcon: 'img/logo.svg',
-  footerIcon: 'img/logo-full-white.png',
-  favicon: 'img/favicon.png',
+  headerIcon: "img/logo.svg",
+  footerIcon: "img/logo-full-white.png",
+  favicon: "img/favicon.png",
 
   /* Colors for website */
   colors: {
-    primaryColor: '#24292e',
-    secondaryColor: '#989898'
+    primaryColor: "#24292e",
+    secondaryColor: "#989898"
   },
 
   /* Custom fonts for website */
@@ -77,20 +77,20 @@ const siteConfig = {
 
   highlight: {
     // Highlight.js theme to use for syntax highlighting in code blocks.
-    theme: 'atom-one-dark'
+    theme: "atom-one-dark"
   },
 
   // Add custom scripts here that would be placed in <script> tags.
-  scripts: ['https://buttons.github.io/buttons.js'],
+  scripts: ["https://buttons.github.io/buttons.js"],
 
   // On page navigation for the current documentation page.
-  onPageNav: 'separate',
+  onPageNav: "separate",
   // No .html extensions for paths.
   cleanUrl: true,
 
   // Open Graph and Twitter card images.
-  ogImage: 'img/docusaurus.png',
-  twitterImage: 'img/docusaurus.png',
+  ogImage: "img/docusaurus.png",
+  twitterImage: "img/docusaurus.png",
 
   // Show documentation's last contributor's name.
   // enableUpdateBy: true,
@@ -100,7 +100,7 @@ const siteConfig = {
 
   // You may provide arbitrary config keys to be used as needed by your
   // template. For example, if you need your repo's URL...
-  repoUrl: 'https://github.com/crypdex/blackbox'
-}
+  repoUrl: "https://github.com/crypdex/blackbox"
+};
 
-module.exports = siteConfig
+module.exports = siteConfig;
