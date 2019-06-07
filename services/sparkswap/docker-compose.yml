@@ -29,15 +29,16 @@ services:
       # This is populated externally w/ an engine
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
       # Persistent certs/keys for broker
-      - "${SPARKSWAP_SECURE_PATH:?SPARKSWAP_SECURE_PATH is required}:/secure"
+      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/secure:/secure"
     environment:
       - NODE_ENV=production
       # - DATA_DIR=${DATA_DIR:-}
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
-      - RPC_ADDRESS=${SPARKSWAP_BROKER_RPC_ADDRESS:-}
+      - RPC_ADDRESS=${SPARKSWAP_RPC_ADDRESS:-}
+      - RPC_USER=${SPARKSWAP_RPC_USER:?SPARKSWAP_RPC_USER is required}
+      - RPC_PASS=${SPARKSWAP_RPC_PASS:?SPARKSWAP_RPC_PASS is required}
+
       - RPC_HTTP_PROXY_ADDRESS=${SPARKSWAP_RPC_HTTP_PROXY_ADDRESS:-}
-      - RPC_USER=${SPARKSWAP_BROKER_RPC_USER:?SPARKSWAP_BROKER_RPC_USER is required}
-      - RPC_PASS=${SPARKSWAP_BROKER_RPC_PASSWORD:?SPARKSWAP_BROKER_RPC_PASSWORD is required}
       - RPC_PUB_KEY=${SPARKSWAP_RPC_PUB_KEY:-}
       - RPC_PRIV_KEY=${SPARKSWAP_RPC_PRIV_KEY:-}
       - ID_PRIV_KEY=${SPARKSWAP_ID_PRIV_KEY:-}
@@ -56,7 +57,7 @@ services:
     depends_on:
       - bitcoin
     ports:
-      - "10113:9735"
+      - 10113:9735
     volumes:
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_btc:/data"
@@ -67,11 +68,13 @@ services:
       - DEBUG=info
       - EXTPREIMAGE_HOST=sparkswap:40369
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
-      - RPC_HOST=${SPARKSWAP_BTC_RPCHOST:-bitcoin}
-      - RPC_PASS=${SPARKSWAP_BTC_RPCPASSWORD:?SPARKSWAP_BTC_RPCPASSWORD is required}
-      - RPC_USER=${SPARKSWAP_BTC_RPCUSER:?SPARKSWAP_BTC_RPCUSER is required}
-      - ZMQPUBRAWBLOCK=tcp://bitcoin:28333
-      - ZMQPUBRAWTX=tcp://bitcoin:28334
+
+      - RPC_HOST=${BITCOIN_RPCHOST:-bitcoin}
+      - RPC_USER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
+      - RPC_PASS=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}
+
+      - ZMQPUBRAWBLOCK=tcp://${BITCOIN_RPCHOST:-bitcoin}:28333
+      - ZMQPUBRAWTX=tcp://${BITCOIN_RPCHOST:-bitcoin}:28334
       # No longer required
       - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:-}"
       # - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:?SPARKSWAP_EXTERNAL_BTC_ADDRESS is required}:10113"
