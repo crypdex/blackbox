@@ -3,15 +3,16 @@
 #  Source whatever variables you may have defined
 source "~/.blackbox/.env" 2>/dev/null
 source "./.env" 2>/dev/null
+source "~/.env" 2>/dev/null
 
 # These are typically not set
-DECRED_RPCUSER="${DECRED_RPCUSER:-alice}"
-DECRED_RPCPASSWORD="${DECRED_RPCPASSWORD:-bob}"
+DECRED_RPCUSER="${DECRED_RPCUSER:?}"
+DECRED_RPCPASS="${DECRED_RPCPASS:?}"
 
 # wallet related commands are to be run on the wallet daemon (is this necessary?)
 if [[ $1 = "--wallet" ]]; then
-  docker exec -it -u decred dcrwallet dcrctl -u ${DECRED_RPCUSER} -P ${DECRED_RPCPASSWORD} -c /home/decred/.dcrwallet/dcrw.cert $@
+  docker exec -it -u decred dcrwallet dcrctl -u ${DECRED_RPCUSER} -P ${DECRED_RPCPASS} -c /home/decred/.dcrwallet/dcrw.cert $@
 else
-  docker exec -it -u decred dcrd dcrctl -u ${DECRED_RPCUSER} -P ${DECRED_RPCPASSWORD} -c /home/decred/.dcrd/dcrd.cert $@
+  docker exec -it -u decred dcrd dcrctl -u ${DECRED_RPCUSER} -P ${DECRED_RPCPASS} -c /home/decred/.dcrd/dcrd.cert $@
 fi
 
