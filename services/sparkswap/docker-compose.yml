@@ -20,8 +20,8 @@ services:
       - lnd_btc
       - lnd_ltc
     ports:
-      - "27492:27492"
-      - "27592:27592"
+      - 27492:27492
+      - 27592:27592
     working_dir: "/home/app"
     volumes:
       # block order and other sparkswap storage
@@ -69,7 +69,7 @@ services:
       - EXTPREIMAGE_HOST=sparkswap:40369
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
 
-      - RPC_HOST=${BITCOIN_RPCHOST:-bitcoin}
+      - RPC_HOST=${BITCOIN_RPCHOST:-bitcoind}
       - RPC_USER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
       - RPC_PASS=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}
 
@@ -100,11 +100,11 @@ services:
       - DEBUG=info
       - EXTPREIMAGE_HOST=sparkswap:40369
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
-      - RPC_HOST=${SPARKSWAP_LTC_RPCHOST:-litecoin}
-      - RPC_PASS=${SPARKSWAP_LTC_RPCPASSWORD:?SPARKSWAP_LTC_RPCPASSWORD is required}
-      - RPC_USER=${SPARKSWAP_LTC_RPCUSER:?SPARKSWAP_LTC_RPCUSER is required}
-      - ZMQPUBRAWBLOCK=tcp://litecoin:28333
-      - ZMQPUBRAWTX=tcp://litecoin:28334
+      - RPC_HOST=${SPARKSWAP_LTC_RPCHOST:-litecoind}
+      - RPC_PASS=${LITECOIN_RPCPASS:?LITECOIN_RPCPASS is required}
+      - RPC_USER=${LITECOIN_RPCUSER:?LITECOIN_RPCUSER is required}
+      - ZMQPUBRAWBLOCK=tcp://${SPARKSWAP_LTC_RPCHOST:-litecoind}:28333
+      - ZMQPUBRAWTX=tcp://${SPARKSWAP_LTC_RPCHOST:-litecoind}:28334
       # No longer required
 #      - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS?SPARKSWAP_EXTERNAL_LTC_ADDRESS is required}:10114"
       - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS:-}"

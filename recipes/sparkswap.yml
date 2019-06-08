@@ -24,8 +24,8 @@ services:
       -maxconnections=4
       -rpcthreads=2
       -maxorphantx=20
-      -rpcuser=$SPARKSWAP_BTC_RPCUSER
-      -rpcpassword=$SPARKSWAP_BTC_RPCPASSWORD
+      -rpcuser=$BITCOIN_RPCUSER
+      -rpcpassword=$BITCOIN_RPCPASS
 
   litecoin:
     command:
@@ -39,8 +39,8 @@ services:
       -maxconnections=4
       -rpcthreads=2
       -maxorphantx=20
-      -rpcuser=$SPARKSWAP_LTC_RPCUSER
-      -rpcpassword=$SPARKSWAP_LTC_RPCPASSWORD
+      -rpcuser=$LITECOIN_RPCUSER
+      -rpcpassword=$LITECOIN_RPCPASS
 
 
 

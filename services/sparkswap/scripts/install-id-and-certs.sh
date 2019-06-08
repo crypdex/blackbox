@@ -7,10 +7,10 @@
 
 
 
-SPARKSWAP_DIRECTORY=${SPARKSWAP_DIRECTORY:-~/.sparkswap}
+SPARKSWAP_DATA_DIR=${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}
 
-print "Creating directories $SPARKSWAP_DIRECTORY/secure"
-mkdir -p ${SPARKSWAP_DIRECTORY}/secure
+print "Creating directories $SPARKSWAP_DATA_DIR/secure"
+mkdir -p ${SPARKSWAP_DATA_DIR}/secure
 
 
 #############################################
@@ -27,11 +27,11 @@ mkdir -p ${SPARKSWAP_DIRECTORY}/secure
 # A previous version of this script placed an file called ipaddress.txt to be clever
 # If this is there, remove any existing certs and allow them to regenerate
 cleanup() {
-  local file=${SPARKSWAP_DIRECTORY}/ipaddress.txt
+  local file=${SPARKSWAP_DATA_DIR}/ipaddress.txt
 
   if [[ -f ${file} ]]; then
     print "Cleaning up potentially bad RPC certs ..."
-    rm ${SPARKSWAP_DIRECTORY}/secure/broker-rpc*
+    rm ${SPARKSWAP_DATA_DIR}/secure/broker-rpc*
     rm ${file}
   fi
 }
@@ -45,9 +45,9 @@ cleanup
 
 EXTERNAL_ADDRESS=${SPARKSWAP_EXTERNAL_ADDRESS:-sparkswap.local}
 
-KEY_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-tls.key
-CERT_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-tls.cert
-CSR_PATH=${SPARKSWAP_DIRECTORY}/secure/broker-rpc-csr.csr
+KEY_PATH=${SPARKSWAP_DATA_DIR}/secure/broker-rpc-tls.key
+CERT_PATH=${SPARKSWAP_DATA_DIR}/secure/broker-rpc-tls.cert
+CSR_PATH=${SPARKSWAP_DATA_DIR}/secure/broker-rpc-csr.csr
 
 generate_tls_certs() {
   print "Generating TLS certs for Broker Daemon: ${EXTERNAL_ADDRESS}"
@@ -91,8 +91,8 @@ fi
 
 
 
-ID_PRIV_KEY=${SPARKSWAP_DIRECTORY}/secure/broker-identity.private.pem
-ID_PUB_KEY=${SPARKSWAP_DIRECTORY}/secure/broker-identity.public.pem
+ID_PRIV_KEY=${SPARKSWAP_DATA_DIR}/secure/broker-identity.private.pem
+ID_PUB_KEY=${SPARKSWAP_DATA_DIR}/secure/broker-identity.public.pem
 
 NO_IDENTITY=false
 
@@ -120,7 +120,7 @@ PREVIOUS_ADDRESS=""
 
 resolve_ip() {
   echo "Resolving IP address"
-  local file=${SPARKSWAP_DIRECTORY}/ipaddress.txt
+  local file=${SPARKSWAP_DATA_DIR}/ipaddress.txt
 
   # PREVIOUS
   if [[ -f ${file} ]]; then
