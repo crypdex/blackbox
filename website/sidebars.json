@@ -2,17 +2,12 @@
   "docs": {
     "Blackbox": [
       "intro",
-      "getting-started",
-      "blackbox-os/configuration",
-      "blackbox-os/hardware-requirements",
-      "blackbox-os/conventions",
-      "blackbox-os/access"
+      "installation",
+      "configuration",
+      "commands",
+      "deployment"
     ],
-    "Services": [
-      "services/lightning",
-      "services/decred",
-      "services/pivx"
-    ],
+    "Services": ["services/lightning", "services/decred", "services/pivx"],
     "Blackbox Devices": ["pivx-staking-node/getting-started"]
   },
   "docs-other": {}
