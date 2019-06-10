@@ -8,6 +8,8 @@ import (
 	"path"
 	"path/filepath"
 
+	"github.com/pkg/errors"
+
 	"github.com/joho/godotenv"
 	homedir "github.com/mitchellh/go-homedir"
 
@@ -108,7 +110,7 @@ func configPaths() []string {
 	}
 }
 
-// registerServices returns a slice of all defined services found by searching the configPaths for "services" dirs
+// registerServices returns a map of all defined services found by searching the configPaths for "services" dirs
 func registerServices() map[string]*Service {
 	services := make(map[string]*Service)
 
@@ -116,25 +118,25 @@ func registerServices() map[string]*Service {
 		servicesPath := filepath.Join(path, "services")
 
 		// Does the services directory exist in this path?
-		if _, err := os.Stat(servicesPath); os.IsNotExist(err) {
+		entries, err := ioutil.ReadDir(servicesPath)
+		if err != nil {
+			Trace("debug", fmt.Sprintf("No services found in %s", servicesPath))
 			continue
 		}
 
-		entries, _ := ioutil.ReadDir(servicesPath)
+		// Trace("debug", fmt.Sprintf("Registering services in %s", servicesPath))
+
 		for _, entry := range entries {
 			if !entry.IsDir() {
 				continue
 			}
-
-			name := entry.Name()
-			servicePath := filepath.Join(path, "services", name)
-			service, ok := services[name]
-			if !ok {
-				services[name] = &Service{Name: name, FilePaths: []string{servicePath}}
+			service, err := LoadService(filepath.Join(servicesPath, entry.Name()))
+			if err != nil {
+				Trace("error", errors.Wrap(err, "cannot load service").Error())
 				continue
 			}
 
-			service.FilePaths = append(service.FilePaths, servicePath)
+			services[entry.Name()] = service
 		}
 	}
 

@@ -1,0 +1,7 @@
+config:
+  name: bitcoin.conf
+  defaults:
+    regtest: 0
+    testnet: 0
+    printtoconsole: 1
+    rpcallowip: 0.0.0.0/0

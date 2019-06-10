@@ -54,6 +54,10 @@ var startCmd = &cobra.Command{
 			fatal(err)
 		}
 
+		if err := config.Configure(); err != nil {
+			fatal(err)
+		}
+
 		client.ComposeUp([]string{"-d", "--remove-orphans"})
 
 		// if status.Exit != 0 {

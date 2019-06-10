@@ -9,7 +9,7 @@ import (
 	"strings"
 
 	. "github.com/logrusorgru/aurora"
-	"github.com/mitchellh/go-homedir"
+	homedir "github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
 
@@ -301,23 +301,21 @@ func (app *App) runScript(service *Service, name string) error {
 	script := fmt.Sprintf("%s.sh", name)
 	Trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
 
-	for _, p := range service.FilePaths {
-		scriptpath := path.Join(p, "scripts", script)
-		if _, err := os.Stat(scriptpath); os.IsNotExist(err) {
-			Trace("error", fmt.Sprintf("%s %s not found", service.Name, script))
-			continue
-		}
-
-		err := RunSync(scriptpath, []string{}, app.EnvVars(), app.Debug)
-		if err != nil {
-			return err
-		}
-		// Trace("info", status.Stdout...)
-		// if status.Exit == 1 {
-		// 	Trace("error", status.Stderr...)
-		// 	return fmt.Errorf("script error: [%s] %s", service.Name, name)
-		// }
+	scriptpath := path.Join(service.Dir, "scripts", script)
+	if _, err := os.Stat(scriptpath); os.IsNotExist(err) {
+		Trace("error", fmt.Sprintf("%s %s not found", service.Name, script))
+		return nil
 	}
+
+	err := RunSync(scriptpath, []string{}, app.EnvVars(), app.Debug)
+	if err != nil {
+		return err
+	}
+	// Trace("info", status.Stdout...)
+	// if status.Exit == 1 {
+	// 	Trace("error", status.Stderr...)
+	// 	return fmt.Errorf("script error: [%s] %s", service.Name, name)
+	// }
 
 	return nil
 }

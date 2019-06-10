@@ -2,20 +2,61 @@ package blackbox
 
 import (
 	"fmt"
+	"io/ioutil"
+	"os"
+	"path"
+	"path/filepath"
+	"strings"
+
+	yaml "gopkg.in/yaml.v2"
 )
 
 type Service struct {
-	Name      string
-	FilePaths []string
-	Env       map[string]string
+	Name   string        `yaml:"name"`
+	Config ServiceConfig `yaml:"config"`
+	Dir    string
+	Env    map[string]string
 }
 
-func (service *Service) DockerComposePaths() []string {
-	var paths []string
-	for _, path := range service.FilePaths {
-		paths = append(paths, fmt.Sprintf("%s/docker-compose.yml", path))
+type ServiceConfig struct {
+	Name     string            `yaml:"name"`
+	Defaults map[string]string `yaml:config.defaults`
+}
+
+func LoadService(dir string) (*Service, error) {
+	name := path.Base(dir)
+	Trace("debug", fmt.Sprintf("Loading '%s'", name))
+
+	service := &Service{Name: name, Dir: dir}
+
+	// LOAD THE SERVICE YAML
+	raw, err := ioutil.ReadFile(filepath.Join(dir, "service.yml"))
+	if err != nil {
+		// Trace("debug", err.Error())
+		return service, nil
 	}
-	return paths
+
+	err = yaml.Unmarshal(raw, &service)
+
+	return service, err
+}
+
+// WARNING DATA_DIR MUST BE SET!
+func (service *Service) DataDir() string {
+	dataDir := os.Getenv(strings.ToUpper(service.Name) + "_DATA_DIR")
+	if dataDir != "" {
+		return dataDir
+	}
+
+	return path.Join(os.Getenv("DATA_DIR"), service.Name)
+}
+
+func (service *Service) ConfigPath() string {
+	return path.Join(service.DataDir(), service.Config.Name)
+}
+
+func (service *Service) DockerComposePath() string {
+	return path.Join(service.Dir, "docker-compose.yml")
 }
 
 // func (service *Service) EnvVars() map[string]string {

@@ -2,9 +2,10 @@ package cmd
 
 import (
 	"fmt"
+	"strings"
+
 	"github.com/crypdex/blackbox/cmd/blackbox"
 	"github.com/spf13/cobra"
-	"strings"
 )
 
 func init() {
