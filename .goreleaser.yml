@@ -125,7 +125,6 @@ nfpms:
       "recipes/**/*": "/var/lib/blackbox/recipes"
       "scripts/blackbox.service": "/etc/systemd/system/blackbox.service"
       "scripts/blackbox-admin.service": "/etc/systemd/system/blackbox-admin.service"
-      "scripts/blackbox-logs.sh": "/usr/local/bin/blackbox-logs"
       # "path/**/glob": "/var/foo/glob"
 
     # Config files to add to your package. They are about the same as
