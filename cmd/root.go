@@ -49,5 +49,9 @@ func Execute(versioninfo ...string) {
 
 // initEnv reads in config file and ENV variables if set.
 func initConfig() {
-	config = blackbox.NewApp(debug, configFile)
+	var err error
+	config, err = blackbox.NewApp(debug, configFile)
+	if err != nil {
+		fatal(err)
+	}
 }

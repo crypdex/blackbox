@@ -2,6 +2,7 @@ package blackbox
 
 import (
 	"fmt"
+	"github.com/crypdex/blackbox/cmd/service"
 	"io/ioutil"
 	"os"
 	"path"
@@ -17,7 +18,7 @@ import (
 type App struct {
 	config             *viper.Viper
 	Debug              bool
-	RegisteredServices map[string]*Service
+	RegisteredServices map[string]*service.Service
 	ConfigFile         string
 }
 
@@ -26,20 +27,28 @@ type App struct {
 //
 // This constructor does the following
 // - "registers" services
-func NewApp(debug bool, configFile string) *App {
+func NewApp(debug bool, configFile string) (*App, error) {
 	// Loads from .env files and assures we have the env vars
 	loadEnv()
 
 	// Let's start with some assumed basic configuration
 	// Create an empty config
 	var v *viper.Viper
+	var err error
 
 	if configFile == "" {
-		v = loadDefault()
+		v, err = loadDefault()
+		if err != nil {
+			return nil, err
+		}
+
 	} else {
 		v = viper.New()
 		v.SetConfigFile(configFile)
-		v.ReadInConfig()
+		err := v.ReadInConfig()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// Load recipe if defined
@@ -68,7 +77,7 @@ func NewApp(debug bool, configFile string) *App {
 		RegisteredServices: registerServices(),
 	}
 
-	return config
+	return config, nil
 }
 
 // DataDir is the global data directory. It may be overridden in each service using x-blackbox
@@ -89,8 +98,8 @@ func (app *App) DataDir() (string, error) {
 }
 
 // Services are those defined in the root blackbox.yml file
-func (app *App) Services() map[string]*Service {
-	services := make(map[string]*Service)
+func (app *App) Services() map[string]*service.Service {
+	services := make(map[string]*service.Service)
 
 	for key, _ := range app.config.GetStringMap("services") {
 		service, ok := app.RegisteredServices[key]
@@ -254,7 +263,7 @@ func parseEnVars(vars []string) map[string]string {
 	return output
 }
 
-func (app *App) ServiceEnvVars(service *Service) map[string]string {
+func (app *App) ServiceEnvVars(service *service.Service) map[string]string {
 	output := map[string]string{}
 
 	if service == nil {
@@ -297,7 +306,7 @@ func (app *App) Reset() {
 	}
 }
 
-func (app *App) runScript(service *Service, name string) error {
+func (app *App) runScript(service *service.Service, name string) error {
 	script := fmt.Sprintf("%s.sh", name)
 	Trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
 

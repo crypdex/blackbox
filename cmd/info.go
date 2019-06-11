@@ -2,11 +2,10 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/crypdex/blackbox/cmd/blackbox"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 // versionCmd represents the version command
@@ -30,6 +29,18 @@ var infoCmd = &cobra.Command{
 		err := client.ComposeConfig()
 		if err != nil {
 			fatal(err)
+		}
+
+		for name, service := range config.Services() {
+			out, err := service.ConfigString()
+			if err != nil {
+				fatal(err)
+			}
+
+			blackbox.Trace("info", fmt.Sprintf("Config file for '%s'", name))
+			blackbox.Trace("info", fmt.Sprintf("%s", service.ConfigPath()))
+
+			fmt.Println(out)
 		}
 
 		// if status.Error != nil {

@@ -1,6 +1,6 @@
 config:
-  name: lnd.conf
-  defaults:
+  filename: lnd.conf
+  data:
     LND_BITCOIN_NODE: bitcoind
     BITCOIN_TESTNET: 0
     BITCOIN_REGTEST: 0

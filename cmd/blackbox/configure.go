@@ -39,7 +39,7 @@ func (app *App) Configure() error {
 		fmt.Println(service.Config)
 
 		var tpl bytes.Buffer
-		err = tmpl.Execute(&tpl, envToMap(service.Config.Defaults))
+		err = tmpl.Execute(&tpl, envToMap(nil))
 		if err != nil {
 			return errors.Wrapf(err, "error writing config for %s", service.Name)
 		}

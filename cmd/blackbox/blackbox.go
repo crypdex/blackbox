@@ -2,6 +2,7 @@ package blackbox
 
 import (
 	"fmt"
+	"github.com/crypdex/blackbox/cmd/service"
 	"io/ioutil"
 	logger "log"
 	"os"
@@ -33,24 +34,21 @@ func getRecipe(v *viper.Viper) string {
 }
 
 // loadDefault attempts to load a default "blackbox.yaml" file
-func loadDefault() *viper.Viper {
+func loadDefault() (*viper.Viper, error) {
 	v := viper.New()
 	v.SetConfigName("blackbox")
 
 	// Add search paths
 	paths := configPaths()
-	// Trace(fmt.Sprintf("Searching paths ... %s", paths))
-	for _, path := range paths {
-		v.AddConfigPath(path)
+	for _, p := range paths {
+		v.AddConfigPath(p)
 	}
 
-	if err := v.ReadInConfig(); err == nil {
-		// Trace("info", fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
-	} else {
-		Trace("error", "No blackbox config file found", err.Error())
+	if err := v.ReadInConfig(); err != nil {
+		return nil, err
 	}
 
-	return v
+	return v, nil
 }
 
 // loadEnv loads a .env file. This should be modified to only current working directory/
@@ -111,8 +109,8 @@ func configPaths() []string {
 }
 
 // registerServices returns a map of all defined services found by searching the configPaths for "services" dirs
-func registerServices() map[string]*Service {
-	services := make(map[string]*Service)
+func registerServices() map[string]*service.Service {
+	services := make(map[string]*service.Service)
 
 	for _, path := range configPaths() {
 		servicesPath := filepath.Join(path, "services")
@@ -130,17 +128,17 @@ func registerServices() map[string]*Service {
 			if !entry.IsDir() {
 				continue
 			}
-			service, err := LoadService(filepath.Join(servicesPath, entry.Name()))
+			service, err := service.FromDir(filepath.Join(servicesPath, entry.Name()))
 			if err != nil {
 				Trace("error", errors.Wrap(err, "cannot load service").Error())
 				continue
 			}
 
-			services[entry.Name()] = service
+			services[service.Name] = service
 		}
+
 	}
 
-	// Trace(fmt.Sprintf("Available services: %s", funk.Keys(services)))
 	return services
 }
 
