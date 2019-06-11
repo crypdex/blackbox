@@ -2,8 +2,7 @@
 
 A Bitcoin Core docker multiarch image. Suitable for `arm64v8` and `amd64` deployments.
 
-[![crypdex/bitcoin-core][docker-pulls-image]][docker-hub-url] 
-[![crypdex/bitcoin-core][docker-stars-image]][docker-hub-url] 
+[![uphold/litecoin-core][docker-pulls-image]][docker-hub-url] [![uphold/litecoin-core][docker-stars-image]][docker-hub-url] [![uphold/litecoin-core][docker-size-image]][docker-hub-url] [![uphold/litecoin-core][docker-layers-image]][docker-hub-url]
 
 ## Tags
 
