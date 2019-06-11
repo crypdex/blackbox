@@ -8,6 +8,7 @@ import (
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
 
 	"github.com/pkg/errors"
 
@@ -118,17 +119,18 @@ func registerServices() map[string]*service.Service {
 		// Does the services directory exist in this path?
 		entries, err := ioutil.ReadDir(servicesPath)
 		if err != nil {
-			Trace("debug", fmt.Sprintf("No services found in %s", servicesPath))
+
 			continue
 		}
+		Trace("debug", fmt.Sprintf("Registering services in %s", servicesPath))
 
 		// Trace("debug", fmt.Sprintf("Registering services in %s", servicesPath))
-
 		for _, entry := range entries {
 			if !entry.IsDir() {
 				continue
 			}
-			service, err := service.FromDir(filepath.Join(servicesPath, entry.Name()))
+			servicePath := filepath.Join(servicesPath, entry.Name())
+			service, err := service.FromDir(servicePath, environmentMap())
 			if err != nil {
 				Trace("error", errors.Wrap(err, "cannot load service").Error())
 				continue
@@ -140,6 +142,15 @@ func registerServices() map[string]*service.Service {
 	}
 
 	return services
+}
+
+func environmentMap() map[string]interface{} {
+	params := make(map[string]interface{})
+	for _, v := range os.Environ() {
+		parts := strings.Split(v, "=")
+		params[parts[0]] = parts[1]
+	}
+	return params
 }
 
 // Trace gives us nice wrapped output

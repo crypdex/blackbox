@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
@@ -14,13 +13,14 @@ type Service struct {
 	Config Config `yaml:"config"`
 	Dir    string
 	Env    map[string]string
+	Params map[string]interface{}
 }
 
 // New loads a new Service object in the context of the given directory
-func FromDir(dir string) (*Service, error) {
+func FromDir(dir string, params map[string]interface{}) (*Service, error) {
 	name := path.Base(dir)
 
-	fmt.Printf("Loading '%s'\n", name)
+	// fmt.Printf("Loading '%s'\n", name)
 
 	service := &Service{
 		Name: name,
@@ -28,29 +28,32 @@ func FromDir(dir string) (*Service, error) {
 		Config: Config{
 			Template: path.Join(dir, "config.tmpl"),
 		},
+		Params: params,
 	}
 
-	// LOAD THE SERVICE YAML
-	raw, err := ioutil.ReadFile(path.Join(dir, "service.yml"))
-	if err != nil {
-		return service, nil
+	// Load the service YAML if it exists
+	yamlFile := path.Join(dir, "service.yml")
+	if _, err := os.Stat(yamlFile); !os.IsNotExist(err) {
+		raw, err := ioutil.ReadFile(yamlFile)
+		if err != nil {
+			return nil, err
+		}
+		// This will put in any "default" Params
+		if err = yaml.Unmarshal(raw, &service); err != nil {
+			return nil, err
+		}
 	}
 
-	err = yaml.Unmarshal(raw, &service)
-	return service, err
+	return service, nil
 }
 
-func (service *Service) ConfigString(args ...map[string]interface{}) (string, error) {
-	data := map[string]interface{}{}
-	if len(args) > 0 {
-		data = args[0]
-	}
+// WriteConfigFile writes the service's config file to it's data directory
+func (service *Service) WriteConfigFile() error {
+	return service.Config.WriteFile(service.DataDir(), service.Params)
+}
 
-	for _, v := range os.Environ() {
-		parts := strings.Split(v, "=")
-		data[parts[0]] = parts[1]
-	}
-	return service.Config.WriteString(data)
+func (service *Service) ConfigFileString() (string, error) {
+	return service.Config.WriteString(service.Params)
 }
 
 // WARNING DATA_DIR MUST BE SET!

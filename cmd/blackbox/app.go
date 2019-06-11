@@ -9,8 +9,7 @@ import (
 	"path/filepath"
 	"strings"
 
-	. "github.com/logrusorgru/aurora"
-	homedir "github.com/mitchellh/go-homedir"
+	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
 
@@ -31,8 +30,6 @@ func NewApp(debug bool, configFile string) (*App, error) {
 	// Loads from .env files and assures we have the env vars
 	loadEnv()
 
-	// Let's start with some assumed basic configuration
-	// Create an empty config
 	var v *viper.Viper
 	var err error
 
@@ -280,6 +277,16 @@ func (app *App) ServiceEnvVars(service *service.Service) map[string]string {
 	return output
 }
 
+func (app *App) Configure() error {
+	// Write each config file
+	for _, service := range app.Services() {
+		if err := service.WriteConfigFile(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Prestart runs the pre-start.sh script for all services if they exist
 func (app *App) Prestart() error {
 	// Add up all the services files
@@ -292,8 +299,6 @@ func (app *App) Prestart() error {
 	}
 	return nil
 }
-
-// RESET
 
 // Prestart runs the pre-start.sh script for all services if they exist
 func (app *App) Reset() {
@@ -327,17 +332,4 @@ func (app *App) runScript(service *service.Service, name string) error {
 	// }
 
 	return nil
-}
-
-func (app *App) log(level string, msg ...string) {
-	for _, m := range msg {
-		switch level {
-		case "error":
-			fmt.Println(Red(m))
-		default:
-			if app.Debug {
-				fmt.Println(Gray(20-1, fmt.Sprintf(" %s ", m)).BgGray(4 - 1))
-			}
-		}
-	}
 }

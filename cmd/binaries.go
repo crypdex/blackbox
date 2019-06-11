@@ -30,7 +30,7 @@ var installCmd = &cobra.Command{
 
 	Run: func(cmd *cobra.Command, args []string) {
 		force := cmd.Flag("force")
-		if err := config.Install(args[0], force.Value.String() != "false"); err != nil {
+		if err := app.Install(args[0], force.Value.String() != "false"); err != nil {
 			fatal(err)
 		}
 	},
@@ -42,7 +42,7 @@ var listCmd = &cobra.Command{
 	Short: "List known binary wrappers",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		binmap, err := config.ListBinaryWrappers()
+		binmap, err := app.ListBinaryWrappers()
 		if err != nil {
 			fatal(err)
 		}
@@ -60,7 +60,7 @@ var removeCmd = &cobra.Command{
 	Args:  cobra.MinimumNArgs(1),
 
 	Run: func(cmd *cobra.Command, args []string) {
-		if err := config.Remove(args[0]); err != nil {
+		if err := app.Remove(args[0]); err != nil {
 			fatal(err)
 		}
 	},

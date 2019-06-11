@@ -7,7 +7,7 @@ import (
 )
 
 func TestFromDir(t *testing.T) {
-	s, err := FromDir("./test_service")
+	s, err := FromDir("./test_service", nil)
 	assert.NoError(t, err)
 
 	fmt.Println(s)

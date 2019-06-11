@@ -15,7 +15,7 @@ var cleanupCmd = &cobra.Command{
 	Short: "Removes dead containers",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		client := blackbox.NewDockerClient(config)
+		client := blackbox.NewDockerClient(app)
 		status := client.Cleanup()
 
 		log("info", status.Stdout...)

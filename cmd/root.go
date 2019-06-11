@@ -11,7 +11,7 @@ import (
 
 var debug bool
 var configFile string
-var config *blackbox.App
+var app *blackbox.App
 
 // These variables are replaced by goreleaser
 var (
@@ -28,7 +28,7 @@ var rootCmd = &cobra.Command{
 
 func init() {
 	cobra.OnInitialize(initConfig)
-	rootCmd.PersistentFlags().StringVarP(&configFile, "config", "c", "", "config file (default is $HOME/.blackbox/blackbox.yml)")
+	rootCmd.PersistentFlags().StringVarP(&configFile, "app", "c", "", "app file (default is $HOME/.blackbox/blackbox.yml)")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "debug is off by default")
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
@@ -47,10 +47,10 @@ func Execute(versioninfo ...string) {
 	}
 }
 
-// initEnv reads in config file and ENV variables if set.
+// initEnv reads in app file and ENV variables if set.
 func initConfig() {
 	var err error
-	config, err = blackbox.NewApp(debug, configFile)
+	app, err = blackbox.NewApp(debug, configFile)
 	if err != nil {
 		fatal(err)
 	}

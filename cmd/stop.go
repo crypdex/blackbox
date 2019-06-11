@@ -24,7 +24,7 @@ var stopCmd = &cobra.Command{
 			name = args[0]
 		}
 
-		client := blackbox.NewDockerClient(config)
+		client := blackbox.NewDockerClient(app)
 
 		// Ensure that any existing running stack is removed
 		client.StackRemove(name)

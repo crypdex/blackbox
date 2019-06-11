@@ -13,7 +13,7 @@ import (
 type Config struct {
 	Filename string                 `yaml:"filename"` // Name of the compiled output file
 	Template string                 `yaml:"template"` // Full path to the template
-	Data     map[string]interface{} `yaml:"data"`
+	Defaults map[string]interface{} `yaml:"defaults"`
 }
 
 func (config Config) WriteFile(dir string, data map[string]interface{}) error {
@@ -34,9 +34,9 @@ func (config Config) WriteFile(dir string, data map[string]interface{}) error {
 	return config.Compile(f, data)
 }
 
-func (config Config) WriteString(data map[string]interface{}) (string, error) {
+func (config Config) WriteString(params map[string]interface{}) (string, error) {
 	var output bytes.Buffer
-	err := config.Compile(&output, data)
+	err := config.Compile(&output, params)
 	return output.String(), err
 }
 
@@ -57,16 +57,16 @@ func (config Config) Compile(wr io.Writer, data map[string]interface{}) error {
 	}
 
 	// It is possible that default data is empty
-	if config.Data == nil {
-		config.Data = map[string]interface{}{}
+	if config.Defaults == nil {
+		config.Defaults = map[string]interface{}{}
 	}
 
 	// Create a copy of the defaults (so as not to modify the object)
 	for k, v := range data {
-		config.Data[k] = v
+		config.Defaults[k] = v
 	}
 
-	err = tmpl.Execute(wr, config.Data)
+	err = tmpl.Execute(wr, config.Defaults)
 	if err != nil {
 		return err
 	}

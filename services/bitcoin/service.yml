@@ -1,6 +1,6 @@
 config:
   filename: bitcoin.conf
-  data:
+  defaults:
     BITCOIN_TESTNET: 0
     BITCOIN_REGTEST: 0
     BITCOIN_RPCALLOWIP: 0.0.0.0/0

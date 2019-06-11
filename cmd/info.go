@@ -14,7 +14,7 @@ var infoCmd = &cobra.Command{
 	Short: "Displays the current configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		blackbox.Trace("info", "BLACKBOX config:")
+		blackbox.Trace("info", "BLACKBOX app:")
 
 		// fmt.Println("")
 		// displayBlackboxInfo()
@@ -25,14 +25,15 @@ var infoCmd = &cobra.Command{
 		// }
 		// fmt.Println("")
 
-		client := blackbox.NewDockerClient(config)
+		client := blackbox.NewDockerClient(app)
 		err := client.ComposeConfig()
 		if err != nil {
 			fatal(err)
 		}
 
-		for name, service := range config.Services() {
-			out, err := service.ConfigString()
+		for name, service := range app.Services() {
+
+			out, err := service.ConfigFileString()
 			if err != nil {
 				fatal(err)
 			}
@@ -59,7 +60,7 @@ func displayBlackboxInfo() {
 
 	settings, _ := yaml.Marshal(viper.AllSettings())
 	fmt.Println("config_file:", viper.ConfigFileUsed())
-	fmt.Println("config:\n", string(settings))
+	fmt.Println("app:\n", string(settings))
 }
 
 func init() {

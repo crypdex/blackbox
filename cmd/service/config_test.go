@@ -2,7 +2,6 @@ package service
 
 import (
 	"bytes"
-	"fmt"
 	"github.com/stretchr/testify/assert"
 	"os"
 	"testing"
@@ -30,7 +29,7 @@ func TestConfig_Compile(t *testing.T) {
 		"BITCOIN_RPCUSER": "crypdex",
 	})
 	assert.IsType(t, template.ExecError{}, err)
-	fmt.Println(config.Data)
+
 	// Missing template
 }
 
@@ -47,12 +46,11 @@ func TestConfig_WriteFile(t *testing.T) {
 	config := Config{
 		Filename: "bitcoin.conf",
 		Template: "./test_service/config.tmpl",
-		Data: map[string]interface{}{
-			"BITCOIN_RPCUSER": "crypdex2",
-			"BITCOIN_RPCPASS": "blackbox2",
-		},
 	}
 
-	err := config.WriteFile("./test_service", nil)
+	err := config.WriteFile("./test_service", map[string]interface{}{
+		"BITCOIN_RPCUSER": "crypdex2",
+		"BITCOIN_RPCPASS": "blackbox2",
+	})
 	assert.NoError(t, err)
 }
