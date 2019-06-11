@@ -1,9 +1,6 @@
 # crypdex/litecoin-core
 
-A Bitcoin Core docker multiarch image. Suitable for `arm64v8` and `amd64` deployments.
-
-[![crypdex/litecoin-core][docker-pulls-image]][docker-hub-url] 
-[![crypdex/litecoin-core][docker-stars-image]][docker-hub-url] 
+A Litecoin Core docker multiarch image. Suitable for `arm64v8` and `amd64` deployments.
 
 ## Tags
 
@@ -18,3 +15,5 @@ A Bitcoin Core docker multiarch image. Suitable for `arm64v8` and `amd64` deploy
 
 - Supported architectures:<br/>
   `amd64`, `arm64v8`
+  
+## Usage
