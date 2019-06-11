@@ -1,8 +1,21 @@
-# crypdex/bitcoin-core
+<a href="https://crypdex.io">
+  <img src="https://raw.githubusercontent.com/crypdex/blackbox/master/docs/assets/logo2.png" width=300>
+</a>
 
-A Bitcoin Core docker multiarch image. Suitable for `arm64v8` and `amd64` deployments.
 
-[![uphold/litecoin-core][docker-pulls-image]][docker-hub-url] [![uphold/litecoin-core][docker-stars-image]][docker-hub-url] [![uphold/litecoin-core][docker-size-image]][docker-hub-url] [![uphold/litecoin-core][docker-layers-image]][docker-hub-url]
+
+
+# Bitcoin Core 
+
+
+
+**A clean Bitcoin Core multiarch image suitable for deployment on a range of targets from SBCs to the cloud.**
+
+This image is maintained as part of the **[Blackbox](https://crypdex.github.com/blackbox)** framework.
+
+![docker pulls](https://img.shields.io/docker/pulls/crypdex/bitcoin-core.svg?style=flat-square)
+
+
 
 ## Tags
 
@@ -15,5 +28,50 @@ A Bitcoin Core docker multiarch image. Suitable for `arm64v8` and `amd64` deploy
 
 ## Supported Architectures
 
-- Supported architectures: (more info)<br/>
+- Supported architectures:<br/>
   `amd64`, `arm64v8`
+  
+## Basic Usage
+
+This image contains the main binaries from the Bitcoin Core project:
+
+- `bitcoind`
+- `bitcoin-cli`
+- `bitcoin-tx` 
+
+It behaves like a binary, so you can pass any arguments to the image and they will be forwarded to `bitcoind`:
+
+```shell
+❯ docker run --rm crypdex/bitcoin-core -regtest=1 -printtoconsole
+```
+
+Or you may specify the binary to call, like `bitcoin-cli`:
+
+```shell
+❯ docker run --rm crypdex/bitcoin-core bitcoin-cli getinfo
+``` 
+
+By default, bitcoind will run as user `bitcoin` for security reasons.
+
+## Volume Mounts
+
+The container uses Bitcoin's default data directory, `~/.bitcoin`. As such you can mount a persistent volume like so
+
+```shell
+❯ docker run -v ${PWD}/data:/home/bitcoin/.bitcoin --rm crypdex/bitcoin-core -regtest=1 -printtoconsole
+```
+
+## Docker Compose
+
+A minimal `docker-compose.yml` file might look like this
+
+```yaml
+bitcoin-core:
+  image: crypdex/bitcoin-core
+  command:
+    -printtoconsole
+    -regtest=1
+```
+## Credits
+
+Modified from the original at [`uphold/bitcoin-core`](https://hub.docker.com/r/uphold/bitcoin-core) to accommodate multiarch deployment.

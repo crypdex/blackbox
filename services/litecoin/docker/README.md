@@ -11,7 +11,7 @@
 
 **A clean Litecoin Core multiarch image suitable for deployment on a range of targets from SBCs to the cloud.**
 
-This image is maintained as part of the **[Blackbox](https://github.com/crypdex/blackbox)** framework.
+This image is maintained as part of the **[Blackbox](https://crypdex.github.io/blackbox)** framework.
 
 ![docker pulls](https://img.shields.io/docker/pulls/crypdex/litecoin-core.svg?style=flat-square)
 
@@ -74,4 +74,4 @@ litecoin-core:
 ```
 ## Credits
 
-Modified from the original at [`uphold/litecoin-core`](https://hub.docker.com/r/uphold/litecoin-core) to accomidate multiarch deployment.
+Modified from the original at [`uphold/litecoin-core`](https://hub.docker.com/r/uphold/litecoin-core) to accommodate multiarch deployment.
