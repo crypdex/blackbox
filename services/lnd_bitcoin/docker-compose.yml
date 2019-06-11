@@ -8,13 +8,6 @@ services:
     restart: on-failure
     depends_on:
       - bitcoin
-    # Overriding environment variables can be unpredictable.
-    environment:
-      - CHAIN=bitcoin
-      - BACKEND=bitcoind
-      - NETWORK=${BITCOIN_NETWORK:-mainnet}
-      - RPCUSER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
-      - RPCPASS=${BITCOIN_RPCPASS:?BITCOIN_RPCPASS is required}
     command:
       --rpclisten=0.0.0.0:10009
     volumes:
@@ -28,8 +21,6 @@ services:
     restart: on-failure
     volumes:
       - ${DATA_DIR:?DATA_DIR required}/${BITCOIN_DIR:-bitcoin}:/home/bitcoin/.bitcoin
-    environment:
-      - NETWORK=${BITCOIN_NETWORK-mainnet}
     ports:
       - 8332:8332
       - 8333:8333
@@ -38,11 +29,8 @@ services:
       - 18443:18443
       - 18444:18444
     command:
-      -rpcuser=${BITCOIN_RPCUSER}
-      -rpcpassword=${BITCOIN_RPCPASS}
-      -rpcallowip=0.0.0.0/0
       -zmqpubrawblock=tcp://0.0.0.0:28333
       -zmqpubrawtx=tcp://0.0.0.0:28334
       -printtoconsole
-      -txindex
+
 

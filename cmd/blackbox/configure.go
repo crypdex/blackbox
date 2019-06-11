@@ -29,9 +29,6 @@ func (app *App) Configure() error {
 		// Make the template
 		tmpl, err := template.
 			New(path.Base(tmplpath)).
-			// Funcs(template.FuncMap{
-			// 	"lookup": lookup,
-			// }).
 			Option("missingkey=error").
 			ParseFiles(tmplpath)
 
@@ -39,18 +36,17 @@ func (app *App) Configure() error {
 			return err
 		}
 
-		params := make(map[string]string)
-		for k, v := range service.Config.Defaults {
-			params[strings.ToUpper(service.Name+"_"+k)] = v
-		}
+		fmt.Println(service.Config)
 
 		var tpl bytes.Buffer
-		err = tmpl.Execute(&tpl, envToMap(params))
+		err = tmpl.Execute(&tpl, envToMap(service.Config.Defaults))
 		if err != nil {
 			return errors.Wrapf(err, "error writing config for %s", service.Name)
 		}
 
 		Trace("info", fmt.Sprintf("Writing %s conf to %s", service.Name, service.ConfigPath()))
+
+		fmt.Println(tpl.String())
 
 		err = ioutil.WriteFile(service.ConfigPath(), tpl.Bytes(), 0600)
 		if err != nil {

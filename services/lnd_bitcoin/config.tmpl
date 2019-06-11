@@ -1,0 +1,21 @@
+###################################################
+# This config is generated and managed by Blackbox
+###################################################
+
+[Bitcoin]
+
+bitcoin.active=1
+bitcoin.node={{.LND_BITCOIN_NODE}}
+
+bitcoin.testnet={{.BITCOIN_TESTNET}}
+bitcoin.regtest={{.BITCOIN_REGTEST}}
+
+
+[Bitcoind]
+
+bitcoind.rpchost={{.BITCOIN_RPCHOST}}
+bitcoind.rpcuser={{.BITCOIN_RPCUSER}}
+bitcoind.rpcpass={{.BITCOIN_RPCPASS}}
+
+bitcoind.zmqpubrawblock={{.BITCOIN_ZMQPUBRAWBLOCK}}
+bitcoind.zmqpubrawtx={{.BITCOIN_ZMQPUBRAWTX}}
