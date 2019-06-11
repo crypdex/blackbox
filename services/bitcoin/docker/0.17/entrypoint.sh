@@ -2,6 +2,7 @@
 
 set -e
 
+user=bitcoin
 datadir="/home/${user}/.bitcoin"
 
 if [[ $(echo "$1" | cut -c1) = "-" ]]; then
@@ -13,7 +14,7 @@ fi
 if [[ $(echo "$1" | cut -c1) = "-" ]] || [[ "$1" = "bitcoind" ]]; then
   mkdir -p ${datadir}
   chmod 700 ${datadir}
-  chown -R bitcoin ${datadir}
+  chown -R ${user} ${datadir}
 
   echo "$0: setting data directory to ${datadir}"
 

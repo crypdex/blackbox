@@ -17,6 +17,8 @@ SERVICE=${SERVICE}
 VERSION_DIR=${VERSION_DIR}
 VERSION=${VERSION}
 
+IMAGE_NAME=${IMAGE_NAME:-${SERVICE}}
+
 
 failed=0
 
@@ -30,7 +32,7 @@ for i in "${!ARCHS[@]}"; do
   echo "=> Building ${SERVICE} {arch: ${arch}, image: ${image}, common: ${common_arch}"
 
   docker build -f ${VERSION_DIR}/Dockerfile \
-    -t ${ORG}/${SERVICE}:${VERSION}-${common_arch} \
+    -t ${ORG}/${IMAGE_NAME}:${VERSION}-${common_arch} \
     --build-arg ARCH=${arch} \
     --build-arg IMAGE=${image} \
     --build-arg VERSION=${VERSION} \
@@ -40,7 +42,7 @@ for i in "${!ARCHS[@]}"; do
     echo "Build failed"
     failed=$((failed + 1))
   else
-    docker push ${ORG}/${SERVICE}:${VERSION}-${common_arch}
+    docker push ${ORG}/${IMAGE_NAME}:${VERSION}-${common_arch}
   fi
 done
 
@@ -53,16 +55,16 @@ if [[ ${failed} -eq 0 ]]; then
   rm -rf ~/.docker/manifests/*
 
   # minor version
-  docker manifest create ${ORG}/${SERVICE}:${VERSION_DIR} ${ORG}/${SERVICE}:${VERSION}-${COMMON_ARCHS[0]} ${ORG}/${SERVICE}:${VERSION}-${COMMON_ARCHS[1]}
-  docker manifest push ${ORG}/${SERVICE}:${VERSION_DIR}
+  docker manifest create ${ORG}/${IMAGE_NAME}:${VERSION_DIR} ${ORG}/${IMAGE_NAME}:${VERSION}-${COMMON_ARCHS[0]} ${ORG}/${IMAGE_NAME}:${VERSION}-${COMMON_ARCHS[1]}
+  docker manifest push ${ORG}/${IMAGE_NAME}:${VERSION_DIR}
 
   # patch version
-  docker manifest create ${ORG}/${SERVICE}:${VERSION} ${ORG}/${SERVICE}:${VERSION}-${COMMON_ARCHS[0]} ${ORG}/${SERVICE}:${VERSION}-${COMMON_ARCHS[1]}
-  docker manifest push ${ORG}/${SERVICE}:${VERSION}
+  docker manifest create ${ORG}/${IMAGE_NAME}:${VERSION} ${ORG}/${IMAGE_NAME}:${VERSION}-${COMMON_ARCHS[0]} ${ORG}/${IMAGE_NAME}:${VERSION}-${COMMON_ARCHS[1]}
+  docker manifest push ${ORG}/${IMAGE_NAME}:${VERSION}
 
   # latest?
-  docker manifest create ${ORG}/${SERVICE}:latest ${ORG}/${SERVICE}:${VERSION}-${COMMON_ARCHS[0]} ${ORG}/${SERVICE}:${VERSION}-${COMMON_ARCHS[1]}
-  docker manifest push ${ORG}/${SERVICE}:latest
+  docker manifest create ${ORG}/${IMAGE_NAME}:latest ${ORG}/${IMAGE_NAME}:${VERSION}-${COMMON_ARCHS[0]} ${ORG}/${IMAGE_NAME}:${VERSION}-${COMMON_ARCHS[1]}
+  docker manifest push ${ORG}/${IMAGE_NAME}:latest
 fi
 
 
