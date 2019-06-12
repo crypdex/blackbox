@@ -1,0 +1,16 @@
+[Bitcoin]
+
+bitcoin.active=1
+bitcoin.node={{or .LND_BITCOIN_NODE "bitcoind"}}
+bitcoin.mainnet={{or .BITCOIN_MAINNET 1}}
+bitcoin.testnet={{or .BITCOIN_TESTNET 0}}
+bitcoin.regtest={{or .BITCOIN_REGTEST 0}}
+
+[Bitcoind]
+
+bitcoind.rpchost={{or .BITCOIN_RPCHOST "bitcoin"}}
+bitcoind.rpcuser={{require . "BITCOIN_RPCUSER"}}
+bitcoind.rpcpass={{require . "BITCOIN_RPCPASSWORD"}}
+bitcoind.zmqpubrawblock={{or .BITCOIN_ZMQPUBRAWBLOCK "tcp://bitcoin:28333"}}
+bitcoind.zmqpubrawtx={{or .BITCOIN_ZMQPUBRAWTX "tcp://bitcoin:28334"}}
+

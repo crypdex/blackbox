@@ -1,10 +1,10 @@
 package service
 
 import (
-	"gopkg.in/yaml.v2"
 	"io/ioutil"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 )
 
@@ -23,37 +23,12 @@ func FromDir(dir string, params map[string]interface{}) (*Service, error) {
 	// fmt.Printf("Loading '%s'\n", name)
 
 	service := &Service{
-		Name: name,
-		Dir:  dir,
-		Config: Config{
-			Template: path.Join(dir, "config.tmpl"),
-		},
+		Name:   name,
+		Dir:    dir,
 		Params: params,
 	}
 
-	// Load the service YAML if it exists
-	yamlFile := path.Join(dir, "service.yml")
-	if _, err := os.Stat(yamlFile); !os.IsNotExist(err) {
-		raw, err := ioutil.ReadFile(yamlFile)
-		if err != nil {
-			return nil, err
-		}
-		// This will put in any "default" Params
-		if err = yaml.Unmarshal(raw, &service); err != nil {
-			return nil, err
-		}
-	}
-
 	return service, nil
-}
-
-// WriteConfigFile writes the service's config file to it's data directory
-func (service *Service) WriteConfigFile() error {
-	return service.Config.WriteFile(service.DataDir(), service.Params)
-}
-
-func (service *Service) ConfigFileString() (string, error) {
-	return service.Config.WriteString(service.Params)
 }
 
 // WARNING DATA_DIR MUST BE SET!
@@ -66,8 +41,63 @@ func (service *Service) DataDir() string {
 	return path.Join(os.Getenv("DATA_DIR"), service.Name)
 }
 
-func (service *Service) ConfigPath() string {
-	return path.Join(service.DataDir(), service.Config.Filename)
+func (service *Service) Configs() []*Config {
+	configs := make([]*Config, 0)
+	root := path.Join(service.Dir, "config")
+
+	visit := func(path string, f os.FileInfo, err error) error {
+		if f.IsDir() {
+			return nil
+		}
+
+		fn := strings.Replace(path, root, "", -1)
+		destination := strings.TrimSuffix(fn, filepath.Ext(fn))
+
+		configs = append(configs, &Config{
+			Destination: destination,
+			Template:    path,
+		})
+		return nil
+	}
+
+	if err := filepath.Walk(root, visit); err != nil {
+	}
+
+	return configs
+}
+
+func (service *Service) CompiledConfigs() (map[string]string, error) {
+	compiled := make(map[string]string)
+	for _, config := range service.Configs() {
+		c, err := config.WriteString(service.Params)
+		if err != nil {
+			return compiled, err
+		}
+		compiled[path.Join(service.DataDir(), config.Destination)] = c
+	}
+	return compiled, nil
+}
+
+// WriteConfigFile writes the service's config file to it's data directory
+func (service *Service) WriteConfigFiles() error {
+	configs, err := service.CompiledConfigs()
+	if err != nil {
+		return err
+	}
+
+	for path, config := range configs {
+		d, _ := filepath.Split(path)
+		err := os.MkdirAll(d, os.ModePerm)
+		if err != nil {
+			return err
+		}
+
+		if err := ioutil.WriteFile(path, []byte(config), 0600); err != nil {
+			return err
+		}
+	}
+
+	return nil
 }
 
 func (service *Service) DockerComposePath() string {

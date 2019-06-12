@@ -1,9 +1,0 @@
-config:
-  filename: lnd.conf
-  defaults:
-    LND_BITCOIN_NODE: bitcoind
-    BITCOIN_TESTNET: 0
-    BITCOIN_REGTEST: 0
-    BITCOIN_RPCHOST: bitcoin
-    BITCOIN_ZMQPUBRAWBLOCK: tcp://bitcoin:28333
-    BITCOIN_ZMQPUBRAWTX: tcp://bitcoin:28334

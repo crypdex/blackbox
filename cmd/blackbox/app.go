@@ -280,7 +280,7 @@ func (app *App) ServiceEnvVars(service *service.Service) map[string]string {
 func (app *App) Configure() error {
 	// Write each config file
 	for _, service := range app.Services() {
-		if err := service.WriteConfigFile(); err != nil {
+		if err := service.WriteConfigFiles(); err != nil {
 			return err
 		}
 	}

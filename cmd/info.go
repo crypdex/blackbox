@@ -31,17 +31,27 @@ var infoCmd = &cobra.Command{
 			fatal(err)
 		}
 
-		for name, service := range app.Services() {
-
-			out, err := service.ConfigFileString()
+		for _, service := range app.Services() {
+			configs, err := service.CompiledConfigs()
 			if err != nil {
 				fatal(err)
 			}
 
-			blackbox.Trace("info", fmt.Sprintf("Config file for '%s'", name))
-			blackbox.Trace("info", fmt.Sprintf("%s", service.ConfigPath()))
+			for k, config := range configs {
+				blackbox.Trace("info", k)
+				fmt.Println(config)
+			}
 
-			fmt.Println(out)
+			//
+			// out, err := service.ConfigFileString()
+			// if err != nil {
+			// 	fatal(err)
+			// }
+			//
+			// blackbox.Trace("info", fmt.Sprintf("Config file for '%s'", name))
+			// blackbox.Trace("info", fmt.Sprintf("%s", service.ConfigPath()))
+			//
+			// fmt.Println(out)
 		}
 
 		// if status.Error != nil {

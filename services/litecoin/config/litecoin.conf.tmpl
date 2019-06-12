@@ -1,0 +1,8 @@
+rpcuser={{require . "LITECOIN_RPCUSER"}}
+rpcpassword={{require . "LITECOIN_RPCPASSWORD"}}
+testnet={{or .LITECOIN_TESTNET 0}}
+regtest={{or .LITECOIN_REGTEST 0}}
+rpcallowip={{or .LITECOIN_RPCALLOWIP "0.0.0.0/0"}}
+txindex={{or .LITECOIN_TXINDEX 0}}
+zmqpubrawblock={{or .LITECOIN_ZMQPUBRAWBLOCK "tcp://0.0.0.0:28333"}}
+zmqpubrawtx={{or .LITECOIN_ZMQPUBRAWTX "tcp://0.0.0.0:28334"}}

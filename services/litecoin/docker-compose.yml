@@ -3,7 +3,7 @@ version: "3.7"
 services:
   litecoin:
     image: crypdex/litecoin:${LITECOIN_VERSION:-0.17}
-    container_name: litecoind
+    container_name: litecoin
     restart: on-failure
     ports:
       - "9332:9332" # RPC
@@ -11,10 +11,8 @@ services:
       - "19332:19332"
       - "19333:19333"
       - "19444:19444"
-    environment:
-      - NETWORK=${LITECOIN_NETWORK-mainnet}
     volumes:
       - ${LITECOIN_DATA_DIR:?LITECOIN_DATA_DIR required}:/home/litecoin/.litecoin
     # Command-line options override values set in the configuration file.
-    command: -rpcallowip=0.0.0.0/0 -printtoconsole
+    command:  -printtoconsole
 

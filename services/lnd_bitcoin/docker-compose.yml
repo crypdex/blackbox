@@ -11,26 +11,6 @@ services:
     command:
       --rpclisten=0.0.0.0:10009
     volumes:
-      - ${DATA_DIR}/${LND_DIR:-lnd}:/home/lnd/.lnd
-
-  # Be aware that the service name is 'bitcoin',
-  # but the container_name is bitcoind
-  bitcoin:
-    image: crypdex/bitcoin:${BITCOIN_VERSION:-0.17}
-    container_name: bitcoind
-    restart: on-failure
-    volumes:
-      - ${DATA_DIR:?DATA_DIR required}/${BITCOIN_DIR:-bitcoin}:/home/bitcoin/.bitcoin
-    ports:
-      - 8332:8332
-      - 8333:8333
-      - 18332:18332
-      - 18333:18333
-      - 18443:18443
-      - 18444:18444
-    command:
-      -zmqpubrawblock=tcp://0.0.0.0:28333
-      -zmqpubrawtx=tcp://0.0.0.0:28334
-      -printtoconsole
+      - ${LND_BITCOIN_DATA_DIR:?LND_BITCOIN_DATA_DIR required}:/home/lnd/.lnd
 
 

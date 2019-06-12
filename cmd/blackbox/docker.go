@@ -113,7 +113,6 @@ func (client *DockerClient) formatServices(flagName string) []string {
 
 	// Add up all the services files
 	for _, service := range client.config.Services() {
-
 		args = append(args, flagName)
 		args = append(args, service.DockerComposePath())
 	}

@@ -44,8 +44,8 @@ func TestConfig_MissingTemplate(t *testing.T) {
 
 func TestConfig_WriteFile(t *testing.T) {
 	config := Config{
-		Filename: "bitcoin.conf",
-		Template: "./test_service/config.tmpl",
+		Destination: "bitcoin.conf",
+		Template:    "./test_service/config.tmpl",
 	}
 
 	err := config.WriteFile("./test_service", map[string]interface{}{

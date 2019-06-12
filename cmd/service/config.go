@@ -11,27 +11,8 @@ import (
 
 // Config encapsulates a service's config file
 type Config struct {
-	Filename string                 `yaml:"filename"` // Name of the compiled output file
-	Template string                 `yaml:"template"` // Full path to the template
-	Defaults map[string]interface{} `yaml:"defaults"`
-}
-
-func (config Config) WriteFile(dir string, data map[string]interface{}) error {
-	info, err := os.Stat(dir)
-	if os.IsNotExist(err) {
-		return err
-	}
-
-	if !info.IsDir() {
-		return errors.New("not a directory")
-	}
-
-	f, err := os.OpenFile(path.Join(dir, config.Filename), os.O_RDWR|os.O_CREATE, 0600)
-	if err != nil {
-		return err
-	}
-
-	return config.Compile(f, data)
+	Destination string `yaml:"destination"` // Name of the compiled output file
+	Template    string `yaml:"template"`    // Full path to the template
 }
 
 func (config Config) WriteString(params map[string]interface{}) (string, error) {
@@ -46,27 +27,28 @@ func (config Config) Compile(wr io.Writer, data map[string]interface{}) error {
 		return err
 	}
 
+	funcMap := template.FuncMap{
+		"require": func(m map[string]interface{}, key string) (interface{}, error) {
+			val, ok := m[key]
+			if !ok {
+				return nil, errors.New("missing key " + key)
+			}
+			return val, nil
+		},
+	}
+
 	// Make the template
 	tmpl, err := template.
-		New(path.Base(config.Template)).
-		Option("missingkey=error").
+		New(path.Base(config.Template)).Funcs(funcMap).
+		// Option("missingkey=error").
+		// Option("missingkey=zero").
 		ParseFiles(config.Template)
 
 	if err != nil {
 		return err
 	}
 
-	// It is possible that default data is empty
-	if config.Defaults == nil {
-		config.Defaults = map[string]interface{}{}
-	}
-
-	// Create a copy of the defaults (so as not to modify the object)
-	for k, v := range data {
-		config.Defaults[k] = v
-	}
-
-	err = tmpl.Execute(wr, config.Defaults)
+	err = tmpl.Execute(wr, data)
 	if err != nil {
 		return err
 	}

@@ -1,0 +1,9 @@
+config:
+  filename: lnd.conf
+  defaults:
+    LND_LITECOIN_NODE: litecoind
+    LITECOIN_TESTNET: 0
+    LITECOIN_REGTEST: 0
+    LITECOIN_RPCHOST: litecoin
+    LITECOIN_ZMQPUBRAWBLOCK: tcp://litecoin:28333
+    LITECOIN_ZMQPUBRAWTX: tcp://litecoin:28334
