@@ -6,8 +6,8 @@ services:
     image: crypdex/lnd:0.6
     container_name: lnd_litecoin
     restart: on-failure
-    command:
-      --rpclisten=0.0.0.0:10009
+    ports:
+      - ${LND_LITECOIN_RPCPORT:-10009}:10009
     volumes:
       - ${LND_LITECOIN_DATA_DIR:?LND_LITECOIN_DATA_DIR required}:/home/lnd/.lnd
 
