@@ -67,9 +67,9 @@ services:
       - DEBUG=info
       - EXTPREIMAGE_HOST=sparkswap:40369
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
-      - RPC_HOST=${SPARKSWAP_BTC_RPCHOST:-bitcoin}
-      - RPC_PASS=${SPARKSWAP_BTC_RPCPASSWORD:?SPARKSWAP_BTC_RPCPASSWORD is required}
-      - RPC_USER=${SPARKSWAP_BTC_RPCUSER:?SPARKSWAP_BTC_RPCUSER is required}
+      - RPC_HOST=${BITCOIN_RPCHOST:-bitcoin}
+      - RPC_PASS=${BITCOIN_RPCPASSWORD:?BITCOIN_RPCPASSWORD is required}
+      - RPC_USER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
       - ZMQPUBRAWBLOCK=tcp://bitcoin:28333
       - ZMQPUBRAWTX=tcp://bitcoin:28334
       # No longer required
@@ -97,9 +97,9 @@ services:
       - DEBUG=info
       - EXTPREIMAGE_HOST=sparkswap:40369
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
-      - RPC_HOST=${SPARKSWAP_LTC_RPCHOST:-litecoin}
-      - RPC_PASS=${SPARKSWAP_LTC_RPCPASSWORD:?SPARKSWAP_LTC_RPCPASSWORD is required}
-      - RPC_USER=${SPARKSWAP_LTC_RPCUSER:?SPARKSWAP_LTC_RPCUSER is required}
+      - RPC_HOST=${LITECOIN_RPCHOST:-litecoin}
+      - RPC_PASS=${LITECOIN_RPCPASSWORD:?LITECOIN_RPCPASSWORD is required}
+      - RPC_USER=${LITECOIN_RPCUSER:?LITECOIN_RPCUSER is required}
       - ZMQPUBRAWBLOCK=tcp://litecoin:28333
       - ZMQPUBRAWTX=tcp://litecoin:28334
       # No longer required
