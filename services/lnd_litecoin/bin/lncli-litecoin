@@ -1,10 +1,5 @@
 #!/usr/bin/env bash
-
-#  Source whatever variables you may have defined
-source "~/.env" 2>/dev/null
-source "~/.blackbox/.env" 2>/dev/null
-source "./.env" 2>/dev/null
-
-
-docker exec -it -u lnd lnd_litecoin lncli -c litecoin $@
+cmd="docker exec -it -u lnd lnd_litecoin lncli -c litecoin $@"
+echo ${cmd}
+($cmd)
 

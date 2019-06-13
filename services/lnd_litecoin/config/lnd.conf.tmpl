@@ -1,0 +1,16 @@
+[Litecoin]
+
+litecoin.active=1
+litecoin.node={{or .LND_LITECOIN_NODE "litecoind"}}
+litecoin.mainnet={{or .LITECOIN_MAINNET 1}}
+litecoin.testnet={{or .LITECOIN_TESTNET 0}}
+litecoin.regtest={{or .LITECOIN_REGTEST 0}}
+
+[Litecoind]
+
+litecoind.rpchost={{or .LITECOIN_RPCHOST "litecoin"}}
+litecoind.rpcuser={{require . "LITECOIN_RPCUSER"}}
+litecoind.rpcpass={{require . "LITECOIN_RPCPASSWORD"}}
+litecoind.zmqpubrawblock={{or .LITECOIN_ZMQPUBRAWBLOCK "tcp://litecoin:28333"}}
+litecoind.zmqpubrawtx={{or .LITECOIN_ZMQPUBRAWTX "tcp://litecoin:28334"}}
+

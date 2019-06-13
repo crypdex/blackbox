@@ -6,8 +6,6 @@ services:
     image: crypdex/lnd:0.6
     container_name: lnd_bitcoin
     restart: on-failure
-    depends_on:
-      - bitcoin
     command:
       --rpclisten=0.0.0.0:10009
     volumes:
