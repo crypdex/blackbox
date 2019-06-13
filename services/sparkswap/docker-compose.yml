@@ -17,8 +17,8 @@ services:
     container_name: sparkswap
     restart: on-failure
     depends_on:
-      - lnd_btc
-      - lnd_ltc
+      - lnd_bitcoin
+      - lnd_litecoin
     ports:
       - "27492:27492"
       - "27592:27592"
@@ -49,14 +49,14 @@ services:
   # -------------
   # LIGHTNING BTC
   # -------------
-  lnd_btc:
+  lnd_bitcoin:
     image: crypdex/sparkswap-lnd-btc:0.5.2-beta
-    container_name: lnd_btc
+    container_name: lnd_bitcoin
     restart: on-failure
     depends_on:
       - bitcoin
     ports:
-      - "10113:9735"
+      - 10113:9735
     volumes:
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_btc:/data"
@@ -79,14 +79,14 @@ services:
   # -------------
   # LIGHTNING LTC
   # -------------
-  lnd_ltc:
+  lnd_litecoin:
     image: crypdex/sparkswap-lnd-ltc:0.5.2-beta
-    container_name: lnd_ltc
+    container_name: lnd_litecoin
     restart: on-failure
     depends_on:
       - litecoin
     ports:
-      - "10114:9735"
+      - 10114:9735
     volumes:
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/lnd_ltc:/data"
