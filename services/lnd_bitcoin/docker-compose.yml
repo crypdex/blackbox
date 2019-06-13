@@ -10,5 +10,6 @@ services:
       - ${LND_BITCOIN_RPCPORT:-10009}:10009
     volumes:
       - ${LND_BITCOIN_DATA_DIR:?LND_BITCOIN_DATA_DIR required}:/home/lnd/.lnd
-
+    command:
+      --configfile=/home/lnd/.lnd/lnd_bitcoin.conf
 
