@@ -2,13 +2,13 @@ package blackbox
 
 import (
 	"fmt"
+	"github.com/crypdex/blackbox/cmd/service"
 	"io/ioutil"
 	"os"
 	"path"
 	"path/filepath"
 	"strings"
 
-	. "github.com/logrusorgru/aurora"
 	"github.com/mitchellh/go-homedir"
 	"github.com/spf13/viper"
 )
@@ -17,7 +17,7 @@ import (
 type App struct {
 	config             *viper.Viper
 	Debug              bool
-	RegisteredServices map[string]*Service
+	RegisteredServices map[string]*service.Service
 	ConfigFile         string
 }
 
@@ -26,20 +26,26 @@ type App struct {
 //
 // This constructor does the following
 // - "registers" services
-func NewApp(debug bool, configFile string) *App {
+func NewApp(debug bool, configFile string) (*App, error) {
 	// Loads from .env files and assures we have the env vars
 	loadEnv()
 
-	// Let's start with some assumed basic configuration
-	// Create an empty config
 	var v *viper.Viper
+	var err error
 
 	if configFile == "" {
-		v = loadDefault()
+		v, err = loadDefault()
+		if err != nil {
+			return nil, err
+		}
+
 	} else {
 		v = viper.New()
 		v.SetConfigFile(configFile)
-		v.ReadInConfig()
+		err := v.ReadInConfig()
+		if err != nil {
+			return nil, err
+		}
 	}
 
 	// Load recipe if defined
@@ -68,7 +74,7 @@ func NewApp(debug bool, configFile string) *App {
 		RegisteredServices: registerServices(),
 	}
 
-	return config
+	return config, nil
 }
 
 // DataDir is the global data directory. It may be overridden in each service using x-blackbox
@@ -89,8 +95,8 @@ func (app *App) DataDir() (string, error) {
 }
 
 // Services are those defined in the root blackbox.yml file
-func (app *App) Services() map[string]*Service {
-	services := make(map[string]*Service)
+func (app *App) Services() map[string]*service.Service {
+	services := make(map[string]*service.Service)
 
 	for key, _ := range app.config.GetStringMap("services") {
 		service, ok := app.RegisteredServices[key]
@@ -254,7 +260,7 @@ func parseEnVars(vars []string) map[string]string {
 	return output
 }
 
-func (app *App) ServiceEnvVars(service *Service) map[string]string {
+func (app *App) ServiceEnvVars(service *service.Service) map[string]string {
 	output := map[string]string{}
 
 	if service == nil {
@@ -271,6 +277,16 @@ func (app *App) ServiceEnvVars(service *Service) map[string]string {
 	return output
 }
 
+func (app *App) Configure() error {
+	// Write each config file
+	for _, service := range app.Services() {
+		if err := service.WriteConfigFiles(); err != nil {
+			return err
+		}
+	}
+	return nil
+}
+
 // Prestart runs the pre-start.sh script for all services if they exist
 func (app *App) Prestart() error {
 	// Add up all the services files
@@ -284,8 +300,6 @@ func (app *App) Prestart() error {
 	return nil
 }
 
-// RESET
-
 // Prestart runs the pre-start.sh script for all services if they exist
 func (app *App) Reset() {
 	// Add up all the services files
@@ -297,40 +311,25 @@ func (app *App) Reset() {
 	}
 }
 
-func (app *App) runScript(service *Service, name string) error {
+func (app *App) runScript(service *service.Service, name string) error {
 	script := fmt.Sprintf("%s.sh", name)
 	Trace(fmt.Sprintf("Running '%s' for service: %s", name, service.Name))
 
-	for _, p := range service.FilePaths {
-		scriptpath := path.Join(p, "scripts", script)
-		if _, err := os.Stat(scriptpath); os.IsNotExist(err) {
-			Trace("error", fmt.Sprintf("%s %s not found", service.Name, script))
-			continue
-		}
-
-		err := RunSync(scriptpath, []string{}, app.EnvVars(), app.Debug)
-		if err != nil {
-			return err
-		}
-		// Trace("info", status.Stdout...)
-		// if status.Exit == 1 {
-		// 	Trace("error", status.Stderr...)
-		// 	return fmt.Errorf("script error: [%s] %s", service.Name, name)
-		// }
+	scriptpath := path.Join(service.Dir, "scripts", script)
+	if _, err := os.Stat(scriptpath); os.IsNotExist(err) {
+		Trace("error", fmt.Sprintf("%s %s not found", service.Name, script))
+		return nil
 	}
+
+	err := RunSync(scriptpath, []string{}, app.EnvVars(), app.Debug)
+	if err != nil {
+		return err
+	}
+	// Trace("info", status.Stdout...)
+	// if status.Exit == 1 {
+	// 	Trace("error", status.Stderr...)
+	// 	return fmt.Errorf("script error: [%s] %s", service.Name, name)
+	// }
 
 	return nil
-}
-
-func (app *App) log(level string, msg ...string) {
-	for _, m := range msg {
-		switch level {
-		case "error":
-			fmt.Println(Red(m))
-		default:
-			if app.Debug {
-				fmt.Println(Gray(20-1, fmt.Sprintf(" %s ", m)).BgGray(4 - 1))
-			}
-		}
-	}
 }

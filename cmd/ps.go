@@ -16,7 +16,7 @@ var psCmd = &cobra.Command{
 	Short: "Show Docker processes",
 
 	Run: func(cmd *cobra.Command, args []string) {
-		client := blackbox.NewDockerClient(config)
+		client := blackbox.NewDockerClient(app)
 		client.ComposePs(nil)
 	},
 }

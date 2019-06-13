@@ -2,11 +2,15 @@ package blackbox
 
 import (
 	"fmt"
+	"github.com/crypdex/blackbox/cmd/service"
 	"io/ioutil"
 	logger "log"
 	"os"
 	"path"
 	"path/filepath"
+	"strings"
+
+	"github.com/pkg/errors"
 
 	"github.com/joho/godotenv"
 	homedir "github.com/mitchellh/go-homedir"
@@ -31,24 +35,21 @@ func getRecipe(v *viper.Viper) string {
 }
 
 // loadDefault attempts to load a default "blackbox.yaml" file
-func loadDefault() *viper.Viper {
+func loadDefault() (*viper.Viper, error) {
 	v := viper.New()
 	v.SetConfigName("blackbox")
 
 	// Add search paths
 	paths := configPaths()
-	// Trace(fmt.Sprintf("Searching paths ... %s", paths))
-	for _, path := range paths {
-		v.AddConfigPath(path)
+	for _, p := range paths {
+		v.AddConfigPath(p)
 	}
 
-	if err := v.ReadInConfig(); err == nil {
-		// Trace("info", fmt.Sprintf("Blackbox config file found: %s", v.ConfigFileUsed()))
-	} else {
-		Trace("error", "No blackbox config file found", err.Error())
+	if err := v.ReadInConfig(); err != nil {
+		return nil, err
 	}
 
-	return v
+	return v, nil
 }
 
 // loadEnv loads a .env file. This should be modified to only current working directory/
@@ -108,38 +109,48 @@ func configPaths() []string {
 	}
 }
 
-// registerServices returns a slice of all defined services found by searching the configPaths for "services" dirs
-func registerServices() map[string]*Service {
-	services := make(map[string]*Service)
+// registerServices returns a map of all defined services found by searching the configPaths for "services" dirs
+func registerServices() map[string]*service.Service {
+	services := make(map[string]*service.Service)
 
 	for _, path := range configPaths() {
 		servicesPath := filepath.Join(path, "services")
 
 		// Does the services directory exist in this path?
-		if _, err := os.Stat(servicesPath); os.IsNotExist(err) {
+		entries, err := ioutil.ReadDir(servicesPath)
+		if err != nil {
+
 			continue
 		}
+		Trace("debug", fmt.Sprintf("Registering services in %s", servicesPath))
 
-		entries, _ := ioutil.ReadDir(servicesPath)
+		// Trace("debug", fmt.Sprintf("Registering services in %s", servicesPath))
 		for _, entry := range entries {
 			if !entry.IsDir() {
 				continue
 			}
-
-			name := entry.Name()
-			servicePath := filepath.Join(path, "services", name)
-			service, ok := services[name]
-			if !ok {
-				services[name] = &Service{Name: name, FilePaths: []string{servicePath}}
+			servicePath := filepath.Join(servicesPath, entry.Name())
+			service, err := service.FromDir(servicePath, environmentMap())
+			if err != nil {
+				Trace("error", errors.Wrap(err, "cannot load service").Error())
 				continue
 			}
 
-			service.FilePaths = append(service.FilePaths, servicePath)
+			services[service.Name] = service
 		}
+
 	}
 
-	// Trace(fmt.Sprintf("Available services: %s", funk.Keys(services)))
 	return services
+}
+
+func environmentMap() map[string]interface{} {
+	params := make(map[string]interface{})
+	for _, v := range os.Environ() {
+		parts := strings.Split(v, "=")
+		params[parts[0]] = parts[1]
+	}
+	return params
 }
 
 // Trace gives us nice wrapped output

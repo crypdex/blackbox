@@ -1,0 +1,7 @@
+config:
+  filename: bitcoin.conf
+  data:
+    BITCOIN_TESTNET: 0
+    BITCOIN_REGTEST: 0
+    BITCOIN_RPCALLOWIP: 0.0.0.0/0
+    BITCOIN_TXINDEX: 0

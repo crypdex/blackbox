@@ -35,11 +35,7 @@ var startCmd = &cobra.Command{
 		// }
 
 		// When we start up, let's assure that we are in swarm mode
-		client := blackbox.NewDockerClient(config)
-
-		// Let's ensure that we have left the swarm (legacy)
-		// This can be removed after everyone has updated ;)
-		client.SwarmLeave()
+		client := blackbox.NewDockerClient(app)
 
 		c := make(chan os.Signal)
 		signal.Notify(c, os.Interrupt, syscall.SIGTERM)
@@ -49,7 +45,11 @@ var startCmd = &cobra.Command{
 			os.Exit(0)
 		}()
 
-		err := config.Prestart()
+		if err := app.Configure(); err != nil {
+			fatal(err)
+		}
+
+		err := app.Prestart()
 		if err != nil {
 			fatal(err)
 		}

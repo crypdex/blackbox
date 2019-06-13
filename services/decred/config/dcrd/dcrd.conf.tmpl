@@ -1,0 +1,8 @@
+rpclisten={{or .DECRED_RPCLISTEN "0.0.0.0"}}
+rpcuser={{require . "DECRED_RPCUSER"}}
+rpcpass={{require . "DECRED_RPCPASS"}}
+rpccert=/home/decred/.dcrd/dcrd.cert
+rpckey=/home/decred/.dcrd/dcrd.key
+
+testnet={{or .DECRED_TESTNET 0}}
+simnet={{or .DECRED_SIMNET 0}}

@@ -33,7 +33,7 @@ func RunSync(command string, cmdArgs []string, env map[string]string, debug bool
 
 	if err := cmd.Run(); err != nil {
 		if exitError, ok := err.(*exec.ExitError); ok {
-			fmt.Println(exitError.ExitCode())
+			// fmt.Println(exitError.ExitCode())
 			return exitError
 		}
 		return err

@@ -8,14 +8,11 @@ function print() {
     echo "[litecoin] ${1}"
 }
 
-print "Configuring Litecoin"
-
 if [[ -z "${LITECOIN_DATA_DIR}" ]]
 then
   echo "LITECOIN_DATA_DIR is empty"
   exit 1
 fi
-
 
 
 if [[ -d "${LITECOIN_DATA_DIR}" ]]; then
@@ -24,35 +21,3 @@ else
     print "Creating directory for data at ${LITECOIN_DATA_DIR}"
     mkdir -p ${LITECOIN_DATA_DIR}
 fi
-
-
-# -----------
-# CONFIG FILE
-# -----------
-
-file="${LITECOIN_DATA_DIR}/litecoin.conf"
-
-if [[ -f "${file}" ]]; then
-    print "INFO: Config file ${file} exists. NOT OVERWRITING."
-else
-    if [[ -z "${LITECOIN_RPCUSER}" ]]
-    then
-      print "LITECOIN_RPCUSER is empty, generating one"
-      LITECOIN_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
-    fi
-
-    if [[ -z "${LITECOIN_RPCPASSWORD}" ]]
-    then
-      print "LITECOIN_RPCPASSWORD is empty, generating one"
-      LITECOIN_RPCPASSWORD=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 64)
-    fi
-
-# Be aware that the location of the walletnotify script is relative to the container
-cat >${file} <<EOF
-rpcuser=${LITECOIN_RPCUSER}
-rpcpassword=${LITECOIN_RPCPASSWORD}
-EOF
-fi
-
-
-

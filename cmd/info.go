@@ -2,11 +2,10 @@ package cmd
 
 import (
 	"fmt"
-
 	"github.com/crypdex/blackbox/cmd/blackbox"
 	"github.com/spf13/cobra"
 	"github.com/spf13/viper"
-	yaml "gopkg.in/yaml.v2"
+	"gopkg.in/yaml.v2"
 )
 
 // versionCmd represents the version command
@@ -15,7 +14,7 @@ var infoCmd = &cobra.Command{
 	Short: "Displays the current configuration",
 	Run: func(cmd *cobra.Command, args []string) {
 
-		blackbox.Trace("info", "BLACKBOX config:")
+		blackbox.Trace("info", "BLACKBOX app:")
 
 		// fmt.Println("")
 		// displayBlackboxInfo()
@@ -26,10 +25,33 @@ var infoCmd = &cobra.Command{
 		// }
 		// fmt.Println("")
 
-		client := blackbox.NewDockerClient(config)
+		client := blackbox.NewDockerClient(app)
 		err := client.ComposeConfig()
 		if err != nil {
 			fatal(err)
+		}
+
+		for _, service := range app.Services() {
+			configs, err := service.CompiledConfigs()
+			if err != nil {
+				fatal(err)
+			}
+
+			for k, config := range configs {
+				blackbox.Trace("info", k)
+				fmt.Println(config)
+			}
+
+			//
+			// out, err := service.ConfigFileString()
+			// if err != nil {
+			// 	fatal(err)
+			// }
+			//
+			// blackbox.Trace("info", fmt.Sprintf("Config file for '%s'", name))
+			// blackbox.Trace("info", fmt.Sprintf("%s", service.ConfigPath()))
+			//
+			// fmt.Println(out)
 		}
 
 		// if status.Error != nil {
@@ -48,7 +70,7 @@ func displayBlackboxInfo() {
 
 	settings, _ := yaml.Marshal(viper.AllSettings())
 	fmt.Println("config_file:", viper.ConfigFileUsed())
-	fmt.Println("config:\n", string(settings))
+	fmt.Println("app:\n", string(settings))
 }
 
 func init() {

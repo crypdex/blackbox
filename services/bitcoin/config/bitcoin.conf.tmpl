@@ -1,0 +1,8 @@
+rpcuser={{require . "BITCOIN_RPCUSER"}}
+rpcpassword={{require . "BITCOIN_RPCPASSWORD"}}
+testnet={{or .BITCOIN_TESTNET 0}}
+regtest={{or .BITCOIN_REGTEST 0}}
+rpcallowip={{or .BITCOIN_RPCALLOWIP "0.0.0.0/0"}}
+txindex={{or .BITCOIN_TXINDEX 0}}
+zmqpubrawblock={{or .BITCOIN_ZMQPUBRAWBLOCK "tcp://0.0.0.0:28333"}}
+zmqpubrawtx={{or .BITCOIN_ZMQPUBRAWTX "tcp://0.0.0.0:28334"}}
