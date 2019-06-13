@@ -41,9 +41,13 @@ func (service *Service) DataDir() string {
 	return path.Join(os.Getenv("DATA_DIR"), service.Name)
 }
 
-func (service *Service) Configs() []*Config {
+func (service *Service) Configs() ([]*Config, error) {
 	configs := make([]*Config, 0)
 	root := path.Join(service.Dir, "config")
+
+	if _, err := os.Stat(root); os.IsNotExist(err) {
+		return configs, nil
+	}
 
 	visit := func(path string, f os.FileInfo, err error) error {
 		if f.IsDir() {
@@ -61,14 +65,20 @@ func (service *Service) Configs() []*Config {
 	}
 
 	if err := filepath.Walk(root, visit); err != nil {
+		return nil, err
 	}
 
-	return configs
+	return configs, nil
 }
 
 func (service *Service) CompiledConfigs() (map[string]string, error) {
 	compiled := make(map[string]string)
-	for _, config := range service.Configs() {
+	configs, err := service.Configs()
+	if err != nil {
+		return compiled, err
+	}
+
+	for _, config := range configs {
 		c, err := config.WriteString(service.Params)
 		if err != nil {
 			return compiled, err

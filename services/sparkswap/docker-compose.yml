@@ -29,10 +29,9 @@ services:
       # This is populated externally w/ an engine
       - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/shared:/shared"
       # Persistent certs/keys for broker
-      - "${SPARKSWAP_SECURE_PATH:?SPARKSWAP_SECURE_PATH is required}:/secure"
+      - "${SPARKSWAP_DATA_DIR:?SPARKSWAP_DATA_DIR is required}/secure:/secure"
     environment:
       - NODE_ENV=production
-      # - DATA_DIR=${DATA_DIR:-}
       - NETWORK=${SPARKSWAP_NETWORK:-mainnet}
       - RPC_ADDRESS=${SPARKSWAP_BROKER_RPC_ADDRESS:-}
       - RPC_HTTP_PROXY_ADDRESS=${SPARKSWAP_RPC_HTTP_PROXY_ADDRESS:-}
@@ -51,7 +50,7 @@ services:
   # -------------
   lnd_bitcoin:
     image: crypdex/sparkswap-lnd-btc:0.5.2-beta
-    container_name: lnd_bitcoin
+    container_name: lnd_btc # changing this results in failures
     restart: on-failure
     depends_on:
       - bitcoin
@@ -70,8 +69,8 @@ services:
       - RPC_HOST=${BITCOIN_RPCHOST:-bitcoin}
       - RPC_PASS=${BITCOIN_RPCPASSWORD:?BITCOIN_RPCPASSWORD is required}
       - RPC_USER=${BITCOIN_RPCUSER:?BITCOIN_RPCUSER is required}
-      - ZMQPUBRAWBLOCK=tcp://bitcoin:28333
-      - ZMQPUBRAWTX=tcp://bitcoin:28334
+      - ZMQPUBRAWBLOCK=${BITCOIN_ZMQPUBRAWBLOCK:-tcp://bitcoin:28333}
+      - ZMQPUBRAWTX=${BITCOIN_ZMQPUBRAWTX:-tcp://bitcoin:28334}
       # No longer required
       - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:-}"
       # - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_BTC_ADDRESS:?SPARKSWAP_EXTERNAL_BTC_ADDRESS is required}:10113"
@@ -81,7 +80,7 @@ services:
   # -------------
   lnd_litecoin:
     image: crypdex/sparkswap-lnd-ltc:0.5.2-beta
-    container_name: lnd_litecoin
+    container_name: lnd_ltc # changing this results in failures
     restart: on-failure
     depends_on:
       - litecoin
@@ -100,8 +99,8 @@ services:
       - RPC_HOST=${LITECOIN_RPCHOST:-litecoin}
       - RPC_PASS=${LITECOIN_RPCPASSWORD:?LITECOIN_RPCPASSWORD is required}
       - RPC_USER=${LITECOIN_RPCUSER:?LITECOIN_RPCUSER is required}
-      - ZMQPUBRAWBLOCK=tcp://litecoin:28333
-      - ZMQPUBRAWTX=tcp://litecoin:28334
+      - ZMQPUBRAWBLOCK=${LITECOIN_ZMQPUBRAWBLOCK:-tcp://litecoin:28333}
+      - ZMQPUBRAWTX=${LITECOIN_ZMQPUBRAWTX:-tcp://litecoin:28334}
       # No longer required
 #      - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS?SPARKSWAP_EXTERNAL_LTC_ADDRESS is required}:10114"
       - EXTERNAL_ADDRESS="${SPARKSWAP_EXTERNAL_LTC_ADDRESS:-}"

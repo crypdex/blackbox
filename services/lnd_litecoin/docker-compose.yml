@@ -10,5 +10,6 @@ services:
       - ${LND_LITECOIN_RPCPORT:-10009}:10009
     volumes:
       - ${LND_LITECOIN_DATA_DIR:?LND_LITECOIN_DATA_DIR required}:/home/lnd/.lnd
+    command:
 
 
