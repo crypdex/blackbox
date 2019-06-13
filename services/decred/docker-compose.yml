@@ -11,12 +11,10 @@ version: '3.7'
 services:
   decred:
     build: .
-    container_name: decred
 
   dcrd:
     image: crypdex/decred:1.4
     restart: on-failure
-    container_name: dcrd
     ports:
       - 9108:9108
       - 9109:9109
@@ -32,7 +30,6 @@ services:
   dcrwallet:
     image: crypdex/decred:1.4
     restart: on-failure
-    container_name: dcrwallet
     ports:
       - 9110:9110
       - 9111:9111

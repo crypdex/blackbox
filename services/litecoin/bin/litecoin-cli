@@ -1,4 +1,4 @@
 #!/usr/bin/env bash
-
-# docker exec -it -u ${USER} ${CONTAINER_NAME} ${COMMAND} $@
-docker exec -it -u litecoin litecoin litecoin-cli $@
+cmd="docker exec -ti -u litecoin $(docker ps -qf "label=name=litecoind" | head -1) litecoin-cli $@"
+echo ${cmd}
+($cmd)

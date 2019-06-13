@@ -4,7 +4,6 @@ services:
 
   lnd_litecoin:
     image: crypdex/lnd:0.6
-    container_name: lnd_litecoin
     restart: on-failure
     ports:
       - ${LND_LITECOIN_RPCPORT:-10009}:10009

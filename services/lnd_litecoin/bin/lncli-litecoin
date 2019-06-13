@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-cmd="docker exec -it -u lnd lnd_litecoin lncli -c litecoin $@"
+cmd="docker exec -ti -u lnd  $(docker ps -qf "name=lnd_litecoin" | head -1) lncli -c litecoin $@"
 echo ${cmd}
 ($cmd)
 

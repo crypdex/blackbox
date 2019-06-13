@@ -1,3 +1,4 @@
 #!/usr/bin/env bash
-
-docker exec -it -u bitcoin bitcoind bitcoin-cli $@
+cmd="docker exec -ti -u bitcoin $(docker ps -qf "label=name=bitcoind" | head -1) bitcoin-cli $@"
+echo ${cmd}
+($cmd)

@@ -3,10 +3,10 @@
 
 # wallet related commands are to be run on the wallet daemon (is this necessary?)
 if [[ $1 = "--wallet" ]]; then
-  cmd="docker exec -it -u decred dcrwallet dcrctl $@"
+  cmd="docker exec -it -u decred $(docker ps -qf "name=dcrwallet" | head -1) dcrctl $@"
   echo ${cmd}
   (${cmd})
 else
-  docker exec -it -u decred dcrd dcrctl $@
+  docker exec -it -u decred $(docker ps -qf "name=dcrd" | head -1) dcrctl $@
 fi
 

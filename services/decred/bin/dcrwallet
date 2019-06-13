@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-docker exec -it -u decred dcrwallet dcrwallet $@
+docker exec -it -u decred $(docker ps -qf "name=dcrwallet" | head -1) dcrwallet $@
