@@ -1,6 +1,0 @@
-configs:
-  -
-    template: dcrd.tmpl
-    # output is relative to the parent service's directory
-    output: dcrd/dcrd.conf
-    defaults:

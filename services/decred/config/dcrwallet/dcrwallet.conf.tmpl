@@ -1,0 +1,19 @@
+rpclisten={{or .DECRED_RPCLISTEN "0.0.0.0"}}
+rpcconnect=dcrd:9109
+username={{require . "DECRED_RPCUSER"}}
+password={{require . "DECRED_RPCPASS"}}
+rpccert=/home/decred/.dcrwallet/dcrw.cert
+rpckey=/home/decred/.dcrwallet/dcrw.key
+cafile=/home/decred/.dcrd/dcrd.cert
+pass={{or .DECRED_WALLET_PASSWORD ""}}
+
+testnet={{or .DECRED_TESTNET 0}}
+simnet={{or .DECRED_SIMNET 0}}
+
+##############
+# Ticket Buyer
+##############
+
+enableticketbuyer={{or .DECRED_ENABLETICKETBUYER 0}}
+ticketbuyer.votingaddress={{or .DECRED_VOTINGADDRESS ""}}
+ticketbuyer.balancetomaintainabsolute={{or .DECRED_BALANCETOMAINTAINABSOLUTE 0}}

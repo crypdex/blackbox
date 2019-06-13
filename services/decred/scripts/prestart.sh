@@ -49,23 +49,6 @@ for dir in ${dirs}; do
   fi
 done
 
-# dcrd.conf
-dcrdconf=${DECRED_DATA_DIR}/dcrd/dcrd.conf
-if [[ -f "${dcrdconf}" ]]; then
-    print "✓ dcrd.conf exists."
-else
-  print "Creating conf file for dcrd"
-  touch ${dcrdconf}
-fi
-
-# dcrwallet.conf
-dcrwalletconf=${DECRED_DATA_DIR}/dcrwallet/dcrwallet.conf
-if [[ -f "${dcrwalletconf}" ]]; then
-    print "✓ dcrwallet.conf exists."
-else
-  print "Creating conf file for dcrwallet"
-  touch ${dcrwalletconf}
-fi
 
 ########################
 # Generate the TLS certs
@@ -109,7 +92,20 @@ done
 #####################
 
 DECRED_WALLET_PASSWORD=${DECRED_WALLET_PASSWORD:-}
+
 DECRED_NETWORK=${DECRED_NETWORK:-mainnet}
+
+DECRED_TESTNET=${DECRED_TESTNET:-0}
+if [[ -z ${DECRED_NETWORK} && ${DECRED_TESTNET} -eq 1 ]]; then
+  DECRED_NETWORK=testnet3
+fi
+
+if [[ -z ${DECRED_NETWORK} && ${DECRED_SIMNET} -eq 1 ]]; then
+  DECRED_NETWORK=simnet
+fi
+
+
+
 WALLET_FILE=${DECRED_DATA_DIR}/dcrwallet/${DECRED_NETWORK}/wallet.db
 
 if [[  -f "$WALLET_FILE" ]]; then
@@ -126,7 +122,7 @@ else
     print "${YELLOW}ATTENTION: Your decred wallet has been successfully initialized!${NC}"
     print "${YELLOW}ATTENTION: Add your wallet password to env var DECRED_WALLET_PASSWORD and restart.${NC}"
     # We exit with a non-zero code to keep blackboxd from continuing.
-    exit 0
+    exit 1
   fi
 
   # echo

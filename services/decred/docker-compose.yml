@@ -12,36 +12,37 @@ services:
   decred:
     build: .
     container_name: decred
+
   dcrd:
     image: crypdex/decred:1.4
     restart: on-failure
     container_name: dcrd
+    ports:
+      - 9108:9108
+      - 9109:9109
+      - 19108:19108
+      - 19109:19109
+      - 18555:18555
     volumes:
+      - ${DECRED_DATA_DIR:?DECRED_DATA_DIR required}/dcrctl:/home/decred/.dcrctl
       - ${DECRED_DATA_DIR:?DECRED_DATA_DIR required}/dcrd:/home/decred/.dcrd
       - ${DECRED_DATA_DIR:?DECRED_DATA_DIR required}/dcrwallet:/home/decred/.dcrwallet
     command: dcrd
-      --rpclisten=0.0.0.0
-      --rpcuser=${DECRED_RPCUSER:-alice}
-      --rpcpass=${DECRED_RPCPASSWORD:-bob}
-      --rpccert=/home/decred/.dcrd/dcrd.cert
-      --rpckey=/home/decred/.dcrd/dcrd.key
-      ${DECRED_DCRD_FLAGS:-}
 
   dcrwallet:
     image: crypdex/decred:1.4
     restart: on-failure
     container_name: dcrwallet
+    ports:
+      - 9110:9110
+      - 9111:9111
+      - 19110:19110
+      - 19111:19111
+      - 19557:19557
+      - 19558:19558
     volumes:
+      - ${DECRED_DATA_DIR:?DECRED_DATA_DIR required}/dcrctl:/home/decred/.dcrctl
       - ${DECRED_DATA_DIR:?DECRED_DATA_DIR required}/dcrd:/home/decred/.dcrd
       - ${DECRED_DATA_DIR:?DECRED_DATA_DIR required}/dcrwallet:/home/decred/.dcrwallet
-    # --pass= should be set in the .conf file!
     command: dcrwallet
-      --rpclisten=0.0.0.0
-      --rpcconnect=dcrd:9109
-      --username=${DECRED_RPCUSER:-alice}
-      --password=${DECRED_RPCPASSWORD:-bob}
-      --rpccert=/home/decred/.dcrwallet/dcrw.cert
-      --rpckey=/home/decred/.dcrwallet/dcrw.key
-      --cafile=/home/decred/.dcrd/dcrd.cert
-      --pass=${DECRED_WALLET_PASSWORD}
-      ${DECRED_DCRWALLET_FLAGS:-}
+

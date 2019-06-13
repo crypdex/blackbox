@@ -40,8 +40,7 @@ func (config Config) Compile(wr io.Writer, data map[string]interface{}) error {
 	// Make the template
 	tmpl, err := template.
 		New(path.Base(config.Template)).Funcs(funcMap).
-		// Option("missingkey=error").
-		// Option("missingkey=zero").
+		Option("missingkey=zero").
 		ParseFiles(config.Template)
 
 	if err != nil {
