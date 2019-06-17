@@ -3,14 +3,11 @@ version: '3.7'
 services:
   pivx:
     image: crypdex/pivx:${PIVX_VERSION:-3.2}
-    container_name: pivx
     restart: on-failure
     ports:
-      - '51472:51472'
-      - '51473:51473'
+      - 51472:51472
+      - 51473:51473
     volumes:
       - ${PIVX_DATA_DIR:?PIVX_DATA_DIR required}:/home/pivx/.pivx
     # Command-line options override values set in the configuration file.
-    command:
-      -rpcallowip=0.0.0.0/0
-      -printtoconsole
+    command: -printtoconsole

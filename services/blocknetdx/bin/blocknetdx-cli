@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # docker exec -it -u ${USER} ${CONTAINER_NAME} ${COMMAND} $@
-cmd="docker exec -ti -u pivx $(docker ps -qf "name=pivx" | head -1) pivx-cli $@"
+cmd="docker exec -ti -u blocknetdx $(docker ps -qf "name=blocknetdx" | head -1) blocknetdx-cli $@"
 echo ${cmd}
 (${cmd})

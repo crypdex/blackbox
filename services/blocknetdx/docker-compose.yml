@@ -3,13 +3,10 @@ version: "3.7"
 services:
   blocknetdx:
     image: crypdex/blocknetdx:${BLOCKNETDX_VERSION:-3.13}
-    container_name: blocknetdx
     restart: on-failure
     volumes:
       - ${BLOCKNETDX_DATA_DIR:?BLOCKNETDX_DATA_DIR required}:/home/blocknetdx/.blocknetdx
-    command:
-      -rpcallowip=0.0.0.0/0
-      -printtoconsole
+    command: -printtoconsole
     ports:
       - 41412:41412 # RPC
       - 41414:41414 # P2P

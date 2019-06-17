@@ -1,0 +1,7 @@
+rpcuser={{require . "BLOCKNETDX_RPCUSER"}}
+rpcpassword={{require . "BLOCKNETDX_RPCPASSWORD"}}
+rpcpassword={{or "BLOCKNETDX_RPCPORT" ""}}
+rpcallowip={{or .BLOCKNETDX_RPCALLOWIP "0.0.0.0/0"}}
+testnet={{or .BLOCKNETDX_TESTNET 0}}
+regtest={{or .BLOCKNETDX_REGTEST 0}}
+walletnotify={{or .BLOCKNETDX_WALLETNOTIFY ""}}

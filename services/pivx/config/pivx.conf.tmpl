@@ -1,0 +1,7 @@
+rpcuser={{require . "PIVX_RPCUSER"}}
+rpcpassword={{require . "PIVX_RPCPASSWORD"}}
+rpcpassword={{or "PIVX_RPCPORT" ""}}
+rpcallowip={{or .PIVX_RPCALLOWIP "0.0.0.0/0"}}
+testnet={{or .PIVX_TESTNET 0}}
+regtest={{or .PIVX_REGTEST 0}}
+walletnotify={{or .PIVX_WALLETNOTIFY ""}}
