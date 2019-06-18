@@ -46,7 +46,7 @@ func (service *Service) Configs() []*Config {
 	root := path.Join(service.Dir, "config")
 
 	visit := func(path string, f os.FileInfo, err error) error {
-		if f.IsDir() {
+		if f == nil || f.IsDir() {
 			return nil
 		}
 

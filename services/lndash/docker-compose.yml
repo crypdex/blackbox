@@ -1,0 +1,12 @@
+version: "3.7"
+
+services:
+  lndash:
+    image: crypdex/lndash:latest
+    volumes:
+      - ${LND_BITCOIN_DATA_DIR:?LND_BITCOIN_DATA_DIR required}/tls.cert:/usr/src/app/config/tls.cert
+      - ${LND_BITCOIN_DATA_DIR:?LND_BITCOIN_DATA_DIR required}/data/chain/bitcoin/mainnet/readonly.macaroon:/usr/src/app/config/readonly.macaroon
+    environment:
+      LNDASH_LND_SERVER: "lnd_bitcoin:10009"
+    ports:
+      - 8000:8000

@@ -16,10 +16,6 @@
       "blackbox-os/nanopc-t4": {
         "title": "blackbox-os/nanopc-t4"
       },
-      "blackbox-summary": {
-        "title": "About",
-        "sidebar_label": "About"
-      },
       "commands": {
         "title": "Commands",
         "sidebar_label": "Commands"
@@ -31,18 +27,6 @@
       "deployment": {
         "title": "Deployment",
         "sidebar_label": "Deployment"
-      },
-      "doc2": {
-        "title": "document number 2"
-      },
-      "doc3": {
-        "title": "This is document number 3"
-      },
-      "doc4": {
-        "title": "Other Document"
-      },
-      "doc5": {
-        "title": "Fifth Document"
       },
       "installation": {
         "title": "Installation",

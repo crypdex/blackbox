@@ -13,7 +13,8 @@ Blackbox networks are configured with YAML files. The format is a small subset o
 # A Bitcoin+LND nodeset
 version: "3.7"
 services:
-  lnd_bitcoin: {}
+  bitcoin:
+  lnd_bitcoin:
 ```
 
 This file is conventionally located at `~/.blackbox/blackbox.yml`
