@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   pivx:
-    image: crypdex/pivx:${PIVX_VERSION:-3.2}
+    image: crypdex/pivx:${PIVX_VERSION:-3.3}
     restart: on-failure
     ports:
       - 51472:51472
