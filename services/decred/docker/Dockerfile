@@ -26,7 +26,8 @@ RUN apt-get update -y && \
     rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
 COPY download-release.sh ./
-RUN bash download-release.sh
+RUN VERSION=$VERSION bash download-release.sh
+
 
 # Download and install Decred
 # useradd -r $USER -d $HOME && \

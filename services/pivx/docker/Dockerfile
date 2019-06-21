@@ -13,10 +13,14 @@ RUN useradd -r $USER \
   && apt-get clean \
   && rm -rf /var/lib/apt/lists/* /tmp/* /var/tmp/*
 
-WORKDIR /tmp
-
 COPY download-release.sh ./
 RUN VERSION=$VERSION bash download-release.sh
+
+
+RUN mkdir pivx-${VERSION} && \
+  tar xf pivx-${VERSION}.tar.gz -C pivx-${VERSION} --strip 1 && \
+  cd pivx-${VERSION} && \
+  mv bin/* /usr/local/bin
 
 RUN git clone https://github.com/ncopa/su-exec.git \
   && cd su-exec && make && cp su-exec /usr/local/bin/ \
