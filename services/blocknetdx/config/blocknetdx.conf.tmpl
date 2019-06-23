@@ -1,6 +1,6 @@
 rpcuser={{require . "BLOCKNETDX_RPCUSER"}}
 rpcpassword={{require . "BLOCKNETDX_RPCPASSWORD"}}
-rpcpassword={{or "BLOCKNETDX_RPCPORT" ""}}
+rpcport={{or .BLOCKNETDX_RPCPORT 41412}}
 rpcallowip={{or .BLOCKNETDX_RPCALLOWIP "0.0.0.0/0"}}
 testnet={{or .BLOCKNETDX_TESTNET 0}}
 regtest={{or .BLOCKNETDX_REGTEST 0}}
