@@ -1,0 +1,5 @@
+#!/usr/bin/env bash
+# docker exec -it -u ${USER} ${CONTAINER_NAME} ${COMMAND} $@
+cmd="docker exec -ti -u zcoin $(docker ps -qf "name=zcoin" | head -1) zcoin-cli $@"
+echo ${cmd}
+(${cmd})
