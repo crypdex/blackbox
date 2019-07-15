@@ -2,7 +2,7 @@ version: '3.7'
 
 services:
   zcoin:
-    image: crypdex/zcoin:${ZCOIN_VERSION:-0.13.7}
+    image: crypdex/zcoin:${ZCOIN_VERSION:-0.13.8}
     container_name: zcoin
     restart: on-failure
     ports:
