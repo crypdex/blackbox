@@ -1,93 +1,12 @@
-# Make is used as a utility for coordinating various parts of the Blackbox
-#
-# Environment variables are used to parameterize the application.
-# Values are imported from a .env file formatted as "VAR=value".
-#
-# NB: !! This .env will overwrite values from the environment   !!
-# NB: !! If .env contains CHAINS= then no chains will be loaded !!
-#
-# CHAINS
-# DATA_DIR
 
-##############
-## ENVIRONMENT
-##############
+build: require-service
+	./scripts/build.sh ${service}
 
-include ./.env
-# LEGACY ENV
-include ./.blackbox.env
-export
+require-service:
+ifndef service
+	$(error 'service' is undefined)
+endif
 
-# This is called if .env does not exist
-.env:
-	@echo ".env file does not exist"
-.blackbox.env:
-	@echo ".blackbox.env file does not exist"
-
-# If DATA_DIR is already in the environment, keep it
-DATA_DIR?=/root/data
-BLACKBOX_DIR?=/root/blackbox
-
-# CHAINS can be empty to allow for configuration
-CHAINS?=
-
-################
-## ENTRY TARGETS
-################
-
-start:
-	@bash ./scripts/start.sh
-
-# make stop
-stop: stop-docker
-
-restart: update-docker restart-admin
-
-############
-## ADMIN APP
-############
-
-build-admin:
-	@cd admin && bash ./scripts/build.sh
-
-start-admin:
-	@bash ./admin/scripts/start.sh
-
-restart-admin:
-	systemctl restart blackbox.admin.service
-
-#################
-## DOCKER COMPOSE
-#################
-
-# API and ADMIN services are in by default
-
-docker-compose = DATA_DIR=$(DATA_DIR) BLACKBOX_DIR=$(BLACKBOX_DIR) \
-	docker-compose -p blackbox \
-	-f ./services/api/docker-compose.yml \
-	-f ./services/admin/docker-compose.yml \
-	$(foreach service,$(CHAINS),-f ./services/$(service)/docker-compose.yml)
-
-build:
-	./scripts/build-docker.sh
-
-configuration:
-	$(docker-compose) config
-
-pull: setup
-	$(docker-compose) pull
-
-start-docker: pull
-	$(docker-compose) up -t 60
-
-# update and start are the same
-update-docker: start-docker
-
-stop-docker:
-	$(docker-compose) down --remove-orphans
-
-log:
-	$(docker-compose) logs -f
 
 
 ##################

@@ -11,15 +11,15 @@
 
 **A clean Bitcoin Core multiarch image suitable for deployment on a range of targets from SBCs to the cloud.**
 
-This image is maintained as part of the **[Blackbox](https://crypdex.github.com/blackbox)** framework.
+This image is maintained as part of the **[Crypdex](https://crypdex.github.com/blackbox)** framework.
 
 ![docker pulls](https://img.shields.io/docker/pulls/crypdex/bitcoin-core.svg?style=flat-square)
 
-
+Binaries are downloaded from bitcoin.org releases and checksums and signatures are verified.
 
 ## Tags
 
-- `0.17.1`, `0.17`, `latest` ([0.17/Dockerfile](https://github.com/crypdex/blackbox/blob/master/services/bitcoin/docker/0.17/Dockerfile))
+- `0.17.1`, `0.17`, `latest` ([Dockerfile](https://github.com/crypdex/blackbox/blob/master/services/bitcoin/docker/Dockerfile))
 
 **Picking the right tag**
 
@@ -29,7 +29,7 @@ This image is maintained as part of the **[Blackbox](https://crypdex.github.com/
 ## Supported Architectures
 
 - Supported architectures:<br/>
-  `amd64`, `arm64v8`
+  `amd64`, `arm64v8`, `arm32v7`
   
 ## Basic Usage
 
