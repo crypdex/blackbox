@@ -1,7 +1,6 @@
 package service
 
 import (
-	"fmt"
 	"io/ioutil"
 	"os"
 	"path"
@@ -98,8 +97,7 @@ func (service *Service) WriteConfigFiles() error {
 			return err
 		}
 
-		fmt.Println("writing", path)
-		if err := ioutil.WriteFile(path, []byte(config), 0600); err != nil {
+		if err := ioutil.WriteFile(path, []byte(config), 0777); err != nil {
 			return err
 		}
 	}
