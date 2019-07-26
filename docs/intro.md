@@ -4,7 +4,7 @@ title: An introduction to
 sidebar_label: Intro
 ---
 
-<div class="superduper">Blackbox</div>
+<div class="superduper">BlackboxOS</div>
 
 **Blackbox** is a framework for responsive infrastructure design focused on blockchain applications. It gives developers a foundation to build out blockchain application stacks and get them deployed quickly, with minimal configuration.
 

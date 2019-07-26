@@ -101,7 +101,9 @@ test-dist:
 publish-docs:
 	cd website && USE_SSH=true yarn publish-gh-pages
 
-
+.PHONY: docs
+docs:
+	cd website && yarn start
 
 ##################
 ## CIRCLE CI
