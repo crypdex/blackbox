@@ -111,7 +111,7 @@ WALLET_FILE=${DECRED_DATA_DIR}/dcrwallet/${DECRED_NETWORK}/wallet.db
 if [[  -f "$WALLET_FILE" ]]; then
   print "✓ Wallet exists"
   if [[ -z "${DECRED_WALLET_PASSWORD}" ]]; then
-    fatal "You have to set DECRED_DCRWALLET_PASSWORD in the .env or blackboxd will hang. Please make sure its right. Sorry homie."
+    fatal "You have to set DECRED_WALLET_PASSWORD in the .env or blackboxd will hang. Please make sure its right. Sorry homie."
   exit 1
 fi
 else

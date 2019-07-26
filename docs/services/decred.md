@@ -9,6 +9,66 @@ From the Decred [docs](https://docs.decred.org/)
 
 > Decred (/ˈdi:ˈkred/, /dɪˈkred/, dee-cred) is a blockchain-based cryptocurrency with a strong focus on community input, open governance, and sustainable funding for development. It utilizes a hybrid Proof-of-Work (PoW) and Proof-of-Stake (PoS) mining system to ensure that a small group cannot dominate the flow of transactions or make changes to Decred without the input of the community. A unit of the currency is called a decred (DCR).
 
+# Quickstart
+
+## Config
+`~/.blackbox/blackbox.yaml`
+
+```yaml
+version: '3.7'
+services: 
+  decred:
+```
+
+## Environment
+```.env
+DECRED_RPCUSER=satoshi
+DECRED_RPCPASS=somethingstrong
+DECRED_WALLET_PASSWORD=secretstuff
+```
+
+## Initialization
+
+Decred has some very specific things it needs to get initialized that require manual intervention. When you first startup the stack, you will be prompted for input.
+
+```shell
+root@odroidc2:~# blackbox start
+❯ Registering services in /var/lib/blackbox/services
+❯ BLACKBOX starting ...
+❯ Running prestart script for decred
+[decred] Configuring Decred ...
+[decred] Creating directory: /root/.blackbox/data/decred
+[decred] Creating directory: /root/.blackbox/data/decred/dcrd
+[decred] Creating directory: /root/.blackbox/data/decred/dcrwallet
+[decred] Generating dcrd TLS certs
+[decred] Generating dcrwallet TLS certs
+[decred] ATTENTION: You need to create a wallet ...
+... pulling the images ...
+2019-07-26 15:18:26.960 [WRN] DCRW: open /home/decred/.dcrwallet/dcrwallet.conf: no such file or directory
+
+Enter the private passphrase for your new wallet:
+Confirm passphrase:
+
+Do you want to add an additional layer of encryption for public data? (n/no/y/yes) [no]:
+Do you have an existing wallet seed you want to use? (n/no/y/yes) [no]:
+Your wallet generation seed is:
+<a bunch of words>
+Hex: <hex>
+IMPORTANT: Keep the seed in a safe place as you
+will NOT be able to restore your wallet without it.
+Please keep in mind that anyone who has access
+to the seed can also restore your wallet thereby
+giving them access to all your funds, so it is
+imperative that you keep it in a secure location.
+Once you have stored the seed in a safe and secure location, enter "OK" to coOK nue: ≈
+Creating the wallet...
+2019-07-26 15:20:20.311 [INF] WLLT: Upgrading database from version 1 to 11
+2019-07-26 15:20:28.959 [INF] WLLT: Opened wallet
+The wallet has been created successfully.
+[decred] ATTENTION: Your decred wallet has been successfully initialized!
+[decred] ATTENTION: Add your wallet password to env var DECRED_WALLET_PASSWORD and restart.
+```
+
 ## Recipe: Solo Voting
 
 > This service requires manual setup
