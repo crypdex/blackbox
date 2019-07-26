@@ -45,6 +45,8 @@ builds:
       - amd64
       - arm64
       - arm
+    goarm:
+      - 7
   - binary: blackbox-admin
     main: ./admin/main.go
     goos:
@@ -53,6 +55,8 @@ builds:
       - amd64
       - arm64
       - arm
+    goarm:
+      - 7
 
 checksum:
   name_template: "checksums.txt"

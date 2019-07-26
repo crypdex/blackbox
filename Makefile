@@ -72,11 +72,12 @@ endif
 TAG?=
 
 release: require-tag
-#	git tag ${TAG}
-#	git push origin ${TAG}
+	git tag ${TAG}
+	git push origin ${TAG}
 	goreleaser --rm-dist --release-notes=docs/release-notes/latest.md
-	curl -F package=@dist/blackboxd_${TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/ && \
-	curl -F package=@dist/blackboxd_${TAG}_linux_x86_64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
+	curl -F package=@dist/blackbox-os_${TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/ && \
+	curl -F package=@dist/blackbox-os_${TAG}_linux_armv7.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/ && \
+	curl -F package=@dist/blackbox-os_${TAG}_linux_x86_64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
 
 release-test:
 	goreleaser --snapshot --skip-publish --rm-dist --release-notes=docs/release-notes/latest.md
