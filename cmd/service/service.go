@@ -100,6 +100,10 @@ func (service *Service) WriteConfigFiles() error {
 		if err := ioutil.WriteFile(path, []byte(config), 0777); err != nil {
 			return err
 		}
+
+		if os.Chmod(path, 0777); err != nil {
+			return err
+		}
 	}
 
 	return nil
