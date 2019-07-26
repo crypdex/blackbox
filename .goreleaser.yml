@@ -82,6 +82,7 @@ nfpms:
     # Values are the respective replacements.
     # Default is empty.
     replacements:
+      arm: armv7
       arm64: arm64v8
       amd64: x86_64
       darwin: macOS
