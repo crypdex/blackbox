@@ -4,7 +4,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
-ExecStart=/usr/local/bin/blackbox-os start
+ExecStart=/usr/local/bin/blackbox start
 
 [Install]
 WantedBy=multi-user.target
