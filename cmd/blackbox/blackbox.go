@@ -46,6 +46,7 @@ func loadDefault() (*viper.Viper, error) {
 	}
 
 	if err := v.ReadInConfig(); err != nil {
+		Trace("error", "error: BlackboxOS config could not be loaded")
 		return nil, err
 	}
 
@@ -71,17 +72,18 @@ func loadEnv() map[string]string {
 	if len(files) != 0 {
 		// Trace(fmt.Sprintf("Found .env %s", files))
 	} else {
-		Trace("info", "No .env found ")
+		Trace("info", "warning: no '.env' file found")
+		return nil
 	}
 
 	err := godotenv.Load(files...)
 	if err != nil {
-		fmt.Println(err)
+		// fmt.Println(err)
 	}
 
 	env, err := godotenv.Read(files...)
 	if err != nil {
-		fmt.Println(err)
+		// fmt.Println(err)
 	}
 
 	return env

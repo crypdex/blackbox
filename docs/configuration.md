@@ -3,11 +3,19 @@ title: Configuration
 sidebar_label: Configuration
 ---
 
+Now that you have `blackbox` installed we can configure our network. We will use a Bitcoin+Lightning stack as an example to illustrate the process.
+
+There are 2 primary things you will need to get going
+1. A YAML config file
+2. Environment variables for sensative config data
+
+
 ## Config File
+Blackbox stacks are configured with YAML files. 
 
-Now that you have the `blackboxd` installed we can configure our network.
+A YAML config file is conventionally located at `~/.blackbox/blackbox.yml`
 
-Blackbox networks are configured with YAML files. The format is a small subset of [Compose version 3](https://docs.docker.com/compose/compose-file/). Blackbox pre-defines [`services`](https://github.com/crypdex/blackbox/tree/master/services) with reasonable defaults that you can use by simply writing something like:
+The format is a small subset of [Compose version 3](https://docs.docker.com/compose/compose-file/). Blackbox pre-defines [`services`](https://github.com/crypdex/blackbox/tree/master/services) with reasonable defaults that you can use by simply writing something like:
 
 ```yaml
 # A Bitcoin+LND nodeset
@@ -17,27 +25,27 @@ services:
   lnd_bitcoin:
 ```
 
-This file is conventionally located at `~/.blackbox/blackbox.yml`
 
-> Config file location will be moved to the `DATA_DIR` in version 0.2 release
 
 Because it's just Docker Compose, anything you add here that is a valid Compose config will be added to the network as it is pulled up.
 
-## Variables and Service Params
+Documentation on individual services provide specifics on configuration.
 
-Just like Compose, environment variables are the primary way to parameterize services. Each service exposes a set of variables you can use which are conventionally `SCREAMING_SNAKE_CASE` with the service name as a prefix.
+## Environment Variables and Service Params
 
-[Variables are sourced by Docker Compose](https://docs.docker.com/compose/environment-variables/). Please see the Compose [documentation](https://docs.docker.com/compose/environment-variables/) for specific details.
+Just like Compose, environment variables are the primary way to parameterize services. Each service exposes a set of variables you can use which are conventionally `SCREAMING_SNAKE_CASE` with the service name as a prefix. Documentation on individual services provide specifics on which environment variables it expects.
 
-Generally, I have been creating a file at `~/.env` when running services.
+Variables for services can also be set in a `~/.env` file. Since Docker Compose is currently the core orchestration, [this documentation](https://docs.docker.com/compose/environment-variables/) should given some extra detail on the various ways variables can be set. 
 
-### `DATA_DIR`
+## `DATA_DIR`
 
-The `DATA_DIR` environment variable is really important. This is the only variable required by `blackboxd`. It specifies the root data directory location for all service data. With just this var, every service knows where it's stuff should live.
+> You must at least set `DATA_DIR` in your environment
 
-In practice for many networks you will need large storage volumes. We recommend using an externally attached SSD - be that a cloud provisioned one, or a USB3/C connected device.
+**The `DATA_DIR` environment variable is really important.** This is the only variable required by `blackbox`. It specifies the root data directory location for all service data. With just this var, every service knows where it's data should live.
 
-### Example: Bitcoin+LND
+In practice for many networks you will need large storage volumes. Most services allow for overriding this `DATA_DIR` if you need to have a separate volume for a service.
+
+### Variables Example: Bitcoin+Lightning
 
 #### Mainnet
 
@@ -50,17 +58,15 @@ DATA_DIR=
 # bitcoin: required
 BITCOIN_RPCUSER=
 BITCOIN_RPCPASS=
-
-# bitcoin: available with defaults
-BITCOIN_NETWORK=mainnet
 ```
 
 #### Regtest
 
-To run this network on `regtest` instead, just change the last line to
+To run this network on `regtest` instead, just add the following
 
 ```.env
-BITCOIN_NETWORK=regtest
+BITCOIN_REGTEST=1
+BITCOIN_MAINNET=0
 ```
 
 There are more examples in the **[Services](services/lightning)** section.
@@ -70,11 +76,15 @@ There are more examples in the **[Services](services/lightning)** section.
 Now everything should be setup. You can start your network with the following command
 
 ```shell
-$ blackboxd start
+$ blackbox info
+```
+
+```shell
+$ blackbox start
 ```
 
 If you want to see whats happening
 
 ```shell
-$ blackboxd logs
+$ blackbox logs
 ```

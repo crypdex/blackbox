@@ -4,7 +4,7 @@
 
 platform=$(uname -sm)
 if [[ ${platform} == "Linux x86_64" ]]; then
-  arch=x86_64
+  arch=amd64
 elif [[ ${platform} == "Linux aarch64" ]]; then
   arch=aarch64
 elif [[ ${platform} == "Linux armv7l" ]]; then
@@ -16,7 +16,12 @@ fi
 
 curl -SLO https://github.com/lightningnetwork/lnd/releases/download/v${VERSION}/lnd-linux-${arch}-v${VERSION}.tar.gz
 tar --strip=1 -xzf *.tar.gz
+
 mv lnd /usr/local/bin
 mv lncli /usr/local/bin
+
+chmod +x /usr/local/bin/lnd
+chmod +x /usr/local/bin/lncli
+
 rm *.tar.gz
 
