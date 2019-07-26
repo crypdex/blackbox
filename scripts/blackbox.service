@@ -1,10 +1,10 @@
- [Unit]
+[Unit]
 Description=BlackboxOS
 After=docker.service
 Requires=docker.service
 
 [Service]
-ExecStart=/usr/local/bin/blackboxd start
+ExecStart=/usr/local/bin/blackbox-os start
 
 [Install]
 WantedBy=multi-user.target

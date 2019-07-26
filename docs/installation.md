@@ -29,7 +29,7 @@ $ sudo usermod -aG docker your-user
 
 ```shell
 $ apt install libffi-dev python3-dev python3-pip
-$ pip3 install setuptools docker-compose
+$ pip3 install wheel setuptools docker-compose
 ```
 
 # Install BlackboxOS
@@ -39,7 +39,7 @@ Blackbox is distributed via APT for Linux and [Homebrew](https://brew.sh/) on ma
 ### macOS
 
 ```shell
-$ brew install crypdex/blackbox/blackboxd
+$ brew install crypdex/blackbox/blackbox-os
 ```
 
 ### Linux

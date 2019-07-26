@@ -11,13 +11,13 @@ echo "[postinstall] Enabling the systemd service"
 deb-systemd-invoke enable blackbox.service
 deb-systemd-helper daemon-reload
 
-echo "[postinstall] Starting the services ..."
+echo "[postinstall] Starting the admin ..."
 
 deb-systemd-invoke start blackbox-admin.service
 #deb-systemd-invoke start blackbox.service
 
 echo "[postinstall] Cleaning up Docker ..."
 
-blackboxd cleanup
+blackbox cleanup
 
 
