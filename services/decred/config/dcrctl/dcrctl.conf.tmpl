@@ -26,11 +26,11 @@ rpcuser={{require . "DECRED_RPCUSER"}}
 rpcpass={{require . "DECRED_RPCPASS"}}
 
 ; RPC server to connect to
-; rpcserver=localhost
+rpcserver={{or .DECRED_DAEMON_SERVER "dcrd"}}
 
 ; Wallet RPC server to connect to
-; walletrpcserver=localhost
+walletrpcserver={{or .DECRED_WALLET_SERVER "dcrwallet"}}
 
 ; RPC server certificate chain file for validation
 ; rpccert=~/.dcrd/rpc.cert
-rpccert=~/.dcrd/dcrd.cert
+; rpccert=~/.dcrd/dcrd.cert

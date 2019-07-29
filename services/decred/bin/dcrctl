@@ -1,12 +1,16 @@
 #!/usr/bin/env bash
 
+echo "here"
 
 # wallet related commands are to be run on the wallet daemon (is this necessary?)
 if [[ $1 = "--wallet" ]]; then
-  cmd="docker exec -it -u decred $(docker ps -qf "name=dcrwallet" | head -1) dcrctl $@"
+  cmd="docker exec -it -u decred $(docker ps -qf "name=dcrwallet" | head -1) dcrctl --rpccert ~/.dcrwallet/dcrwallet.cert $@"
   echo ${cmd}
   (${cmd})
 else
-  docker exec -it -u decred $(docker ps -qf "name=dcrd" | head -1) dcrctl $@
+  cmd="docker exec -it -u decred $(docker ps -qf "name=dcrd" | head -1) dcrctl --rpccert ~/.dcrd/dcrd.cert $@"
+  echo ${cmd}
+  (${cmd})
+
 fi
 

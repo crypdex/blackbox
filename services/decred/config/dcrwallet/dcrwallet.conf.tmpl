@@ -2,8 +2,8 @@ rpclisten={{or .DECRED_RPCLISTEN "0.0.0.0"}}
 rpcconnect=dcrd
 username={{require . "DECRED_RPCUSER"}}
 password={{require . "DECRED_RPCPASS"}}
-rpccert=/home/decred/.dcrwallet/dcrw.cert
-rpckey=/home/decred/.dcrwallet/dcrw.key
+rpccert=/home/decred/.dcrwallet/dcrwallet.cert
+rpckey=/home/decred/.dcrwallet/dcrwallet.key
 cafile=/home/decred/.dcrd/dcrd.cert
 pass={{or .DECRED_WALLET_PASSWORD ""}}
 
