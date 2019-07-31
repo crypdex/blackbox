@@ -5,9 +5,26 @@ sidebar_label: Decred
 
 <img src="/blackbox/docs/assets/dcr.svg" style="width:60%;"/>
 
-From the Decred [docs](https://docs.decred.org/)
+## Introduction
 
-> Decred (/ˈdi:ˈkred/, /dɪˈkred/, dee-cred) is a blockchain-based cryptocurrency with a strong focus on community input, open governance, and sustainable funding for development. It utilizes a hybrid Proof-of-Work (PoW) and Proof-of-Stake (PoS) mining system to ensure that a small group cannot dominate the flow of transactions or make changes to Decred without the input of the community. A unit of the currency is called a decred (DCR).
+The [Decred](https://docs.decred.org/) service makes it simple to setup and run a full Decred node. There are a couple of reasons you would want to do this:
+
+1. **Automatically buy tickets** 
+2. **Run a voting node**
+
+## Use Cases
+
+### Automated ticket buying
+
+> This service makes automated ticket buying simple
+
+Stakeholders who participate in Decred’s decision-making are rewarded for their efforts with DCR, Decred’s native currency. To participate, DCR holders purchase “tickets” to register their vote. The actual vote is cast by an always-on node. The process of purchasing tickets is a variation on "staking" and locks up the collateral used for a certain period of time.
+
+Once a ticket is purchased, it remains "live" until a proposal comes up for a vote. Successful votes pay a block reward to ticket holders and the staked collateral used to purchase the ticket is unlocked. At this point new tickets may be purchased.
+
+The ticket buying process (staking) can be automated, but in order to do so, a node needs to be online to process transactions. 
+
+### Voting Node
 
 # Quickstart
 
@@ -22,9 +39,18 @@ services:
 
 ## Environment
 ```.env
+# Required variables
 DECRED_RPCUSER=satoshi
 DECRED_RPCPASS=somethingstrong
 DECRED_WALLET_PASSWORD=secretstuff
+
+# Uncomment for automated ticket buying
+# DECRED_ENABLETICKETBUYER=1
+# DECRED_VOTINGADDRESS=<voting node address>
+
+# Uncomment to enable voting
+# DECRED_ENABLEVOTING=1
+# DECRED_EXTERNALIP=<addressable ip>
 ```
 
 ## Initialization
