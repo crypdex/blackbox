@@ -1,0 +1,33 @@
+##
+## dash.conf configuration file. Lines beginning with # are comments.
+##
+
+rpcuser={{require . "DASH_RPCUSER"}}
+rpcpassword={{require . "DASH_RPCPASSWORD"}}
+rpcconnect={{or .DASH_RPCCONNECT "127.0.0.1"}}
+
+testnet={{or .DASH_TESTNET 0}}
+regtest={{or .DASH_REGNET 0}}
+rpcallowip={{or .DASH_RPCALLOWIP "0.0.0.0/0"}}
+
+
+# optional indices
+
+txindex={{or .DASH_TXINDEX 0}}
+addressindex={{or .DASH_ADDRESSINDEX 0}}
+timestampindex={{or .DASH_TIMESTAMPINDEX 0}}
+spentindex={{or .DASH_SPENTINDEX 0}}
+
+# Masternode Config
+
+listen={{or .DASH_LISTEN 1}}
+server={{or .DASH_SERVER 1}}
+# daemon=1
+maxconnections={{or .DASH_MAXCONNECTIONS 64}}
+
+masternode={{or .DASH_MASTERNODE 0}}
+masternodeblsprivkey={{or .DASH_MASTERNODEBLSPRIVKEY ""}}
+
+{{ if .DASH_EXTERNALIP }}
+externalip={{.DASH_EXTERNALIP}}
+{{ end }}

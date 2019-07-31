@@ -2,8 +2,7 @@ version: "3.7"
 
 services:
   dash:
-    image: crypdex/dash-core:${DASH_VERSION:-0.13}
-    container_name: dash
+    image: crypdex/dash-core:${DASH_VERSION:-0.14}
     restart: on-failure
     volumes:
       - ${DASH_DATA_DIR:?DASH_DATA_DIR required}:/home/dash/.dash
@@ -12,4 +11,6 @@ services:
       -printtoconsole
     ports:
       - 9998:9998 # RPC
-      - 9999:9996 # P2P
+      - 9999:9999 # P2P
+      - 19998:19998 # testnet
+      - 19999:19999 # testnet
