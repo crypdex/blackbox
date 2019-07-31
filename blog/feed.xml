@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <rss version="2.0">
     <channel>
-        <title>Blackbox Blog</title>
+        <title>CRYPDEX Blog</title>
         <link>https://crypdex.io/blackbox/blog</link>
-        <description>The best place to stay up-to-date with the latest Blackbox news and events.</description>
+        <description>The best place to stay up-to-date with the latest CRYPDEX news and events.</description>
         <lastBuildDate>Tue, 24 Oct 2017 06:00:00 GMT</lastBuildDate>
         <docs>http://blogs.law.harvard.edu/tech/rss</docs>
         <generator>Feed for Node.js</generator>
         <image>
-            <title>Blackbox Blog</title>
+            <title>CRYPDEX Blog</title>
             <url>https://crypdex.io/blackbox/img/logo.svg</url>
             <link>https://crypdex.io/blackbox/blog</link>
         </image>
