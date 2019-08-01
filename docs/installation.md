@@ -16,31 +16,22 @@ If you are developing on macOS, Docker Desktop for Mac has everything you need i
 
 ```shell
 $ curl -fsSL https://get.docker.com -o get-docker.sh
-$ sudo sh get-docker.sh
+$ sh get-docker.sh
 ```
-To run Docker as a non-root user,
-
-```shell
-$ sudo usermod -aG docker your-user
-```
-
 
 ### Docker Compose ARM64 (Armbian)
 
+Installing Docker-Compose on ARM devices should be done via python/pip
+
 ```shell
 $ apt install libffi-dev python3-dev python3-pip
-$ pip3 install wheel setuptools docker-compose
+$ pip3 install wheel setuptools
+$ pip3 install docker-compose
 ```
 
 # Install BlackboxOS
 
 Blackbox is distributed via APT for Linux and [Homebrew](https://brew.sh/) on macOS.
-
-### macOS
-
-```shell
-$ brew install crypdex/blackbox/blackbox-os
-```
 
 ### Linux
 
@@ -58,7 +49,12 @@ Install
 $ apt update && apt install blackbox-os
 ```
 
+### macOS
+
+```shell
+$ brew install crypdex/blackbox/blackbox-os
+```
+
 ### Manual Package Installation
 
 [Download the most current package](https://github.com/crypdex/blackbox/releases) from the releases and use apt to install. If it is already installed, it will be updated it.
-
