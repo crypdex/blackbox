@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  dash:
+    image: crypdex/dash-sentinel
+    restart: on-failure
+    volumes:
+      - ${DASH_DATA_DIR:?DASH_DATA_DIR required}:/root/.dash
+`
