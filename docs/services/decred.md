@@ -7,58 +7,60 @@ sidebar_label: Decred
 
 ## Introduction
 
-The [Decred](https://docs.decred.org/) service makes it simple to setup and run a full Decred node. There are a couple of reasons you would want to do this:
+The `decred` service makes it simple to setup and run a full Decred node. If you have a **[Decred Solo](https://crypdex.io/decred-solo)**, then this service is pre-configured and you may skip to the [setup](https://crypdex.github.io/blackbox/docs/services/decred#setup).
 
-1. **Automatically buy tickets** 
-2. **Run a voting node**
+There are a couple of reasons you would want run a Decred node:
+
+1. **Automatically buy tickets**
+2. **Run a "solo voting" node**
 
 ## Use Cases
 
-### Automated ticket buying
-
-> This service makes automated ticket buying simple
+### Automated Ticket Buying
 
 Stakeholders who participate in Decred’s decision-making are rewarded for their efforts with DCR, Decred’s native currency. To participate, DCR holders purchase “tickets” to register their vote. The actual vote is cast by an always-on node. The process of purchasing tickets is a variation on "staking" and locks up the collateral used for a certain period of time.
 
-Once a ticket is purchased, it remains "live" until a proposal comes up for a vote. Successful votes pay a block reward to ticket holders and the staked collateral used to purchase the ticket is unlocked. At this point new tickets may be purchased.
+Once a ticket is purchased, it remains "live" until a proposal comes up for a vote. Successful votes pay a block reward to ticket holders and the staked collateral that was used to purchase the ticket is unlocked. At this point new tickets may be purchased.
 
-The ticket buying process (staking) can be automated, but in order to do so, a node needs to be online to process transactions. 
+The ticket buying process (staking) can be automated, but in order to do so, a node needs to be online to process transactions. The Decredition application is simple to use, but must be monitored for "liveness" of tickets so that new ones may be purchased.
 
-### Voting Node
+### Solo Voting
 
-# Quickstart
+The actual casting of votes on proposals is done by nodes that are online continuously. Decred allows ticket holders to delegate their votes to Voting Service Providers (VSPs) or you may run your own [Solo Voting Node](https://docs.decred.org/advanced/solo-proof-of-stake-voting/).
 
-## Config
-`~/.blackbox/blackbox.yaml`
+VPSs typically take a fee for providing services that can sometimes be as high as 5%. Solo voting bypasses these fees at the risk of missing votes (and block rewards).
+
+## Quickstart
+
+**The `decred` service requires manual setup.** This process generates unique credentials and initializes your wallet. Compared to other services, it is more involved, but most of the work has been scripted out for you.
+
+### Config
+
+First, define the `decred` service in the [BlackboxOS config file](https://crypdex.github.io/blackbox/docs/configuration).
+
+```shell
+$ nano ~/.blackbox/blackbox.yaml
+```
 
 ```yaml
 version: '3.7'
-services: 
-  decred:
+services:
+  decred: {}
 ```
 
-## Environment
-```.env
-# Required variables
-DECRED_RPCUSER=satoshi
-DECRED_RPCPASS=somethingstrong
-DECRED_WALLET_PASSWORD=secretstuff
+### Setup
 
-# Uncomment for automated ticket buying
-# DECRED_ENABLETICKETBUYER=1
-# DECRED_VOTINGADDRESS=<voting node address>
-
-# Uncomment to enable voting
-# DECRED_ENABLEVOTING=1
-# DECRED_EXTERNALIP=<addressable ip>
-```
-
-## Initialization
-
-Decred has some very specific things it needs to get initialized that require manual intervention. When you first startup the stack, you will be prompted for input.
+With the `decred` service defined in the config, start `blackbox` and follow the prompts to continue with Decred initialization. Decred has some very specific things it needs and you will be prompted for input.
 
 ```shell
-root@odroidc2:~# blackbox start
+$ blackbox start
+```
+
+Your session should go something like this:
+
+```shell
+root@blackbox:~# blackbox start
+
 ❯ Registering services in /var/lib/blackbox/services
 ❯ BLACKBOX starting ...
 ❯ Running prestart script for decred
@@ -69,107 +71,96 @@ root@odroidc2:~# blackbox start
 [decred] Generating dcrd TLS certs
 [decred] Generating dcrwallet TLS certs
 [decred] ATTENTION: You need to create a wallet ...
-... pulling the images ...
-2019-07-26 15:18:26.960 [WRN] DCRW: open /home/decred/.dcrwallet/dcrwallet.conf: no such file or directory
 
 Enter the private passphrase for your new wallet:
 Confirm passphrase:
-
-Do you want to add an additional layer of encryption for public data? (n/no/y/yes) [no]:
-Do you have an existing wallet seed you want to use? (n/no/y/yes) [no]:
-Your wallet generation seed is:
-<a bunch of words>
-Hex: <hex>
-IMPORTANT: Keep the seed in a safe place as you
-will NOT be able to restore your wallet without it.
-Please keep in mind that anyone who has access
-to the seed can also restore your wallet thereby
-giving them access to all your funds, so it is
-imperative that you keep it in a secure location.
-Once you have stored the seed in a safe and secure location, enter "OK" to coOK nue: ≈
-Creating the wallet...
-2019-07-26 15:20:20.311 [INF] WLLT: Upgrading database from version 1 to 11
-2019-07-26 15:20:28.959 [INF] WLLT: Opened wallet
-The wallet has been created successfully.
-[decred] ATTENTION: Your decred wallet has been successfully initialized!
-[decred] ATTENTION: Add your wallet password to env var DECRED_WALLET_PASSWORD and restart.
 ```
 
-## Recipe: Solo Voting
+If you have not already created a `~/.env` file, the initialization script will make one for you with some securely generated credentials and a few variables you can use to customize your node.
 
-> This service requires manual setup
+### Environment
 
+You will now give the service a few variables.
 
-1. Add the following config to your `blackbox.yml`
-  ```yaml
-  version: "3.7"
-  
-  x-blackbox: 
-    recipe: decred-solo-voting
-  ```
-1. Install the binary wrappers and start the service stack, following the prompts to manually create a wallet (if absent)
-
-  ```shell
-  blackboxd bin install dcrctl && \
-  blackboxd start 
-  ```
-1. Generate a voting address  
-
-  ```shell
-  dcrctl --wallet getnewaddress
-  ```
-1. Add the following environment variables to `.env`
-
-  ```.env
-  DATA_DIR=
-  DECRED_WALLET_PASSWORD=
-  DECRED_VOTING_ADDRESS=
-  ```
-  
-  * `DATA_DIR` defaults to `~/.blackbox/data`. Change this to suit.
-  * `DECRED_WALLET_PASSWORD` is the password given during setup
-  * `DECRED_VOTING_ADDRESS` is the address generated in the previous step
-1. Finally, restart the service stack
-
-  ```shell
-  blackboxd start 
-  ```
-
-## General Usage
-
-> This service requires manual setup
-
-
-
-The `decred` service is composed of 2 individual services: `dcrd` and `dcrwallet`. These sub-services are not currently separable from the main `decred` service since they function together.
-
-To use the recipe, configure your `blackbox.yml` file as follows:
-
-```yaml
-version: "3.7"
-
-services: 
-  decred:
+```shell
+$ nano ~/.env
 ```
 
+The `decred` service uses the following variables in its operation. If the file did not exist prior to the first run setup detailed above, the following will be generated for you.
 
-
-Once you have specified the `decred` recipe, run `blackboxd start` and follow the prompts to initialize your wallet.
-After this is done, you should be able to reliably boot `blackboxd` unattended.
-
-## Environment Variables
-
-When using the service, these environment variables are generated by `blackboxd` with reasonable defaults. You may override them in your shell or `.env` file.
+> **Auto ticket buying and solo voting are enabled by default.** If you would like to purchase tickets manually and setup a VSP, please adjust the environment variables.
 
 ```.env
+# Default data directory. Change if desired
+DATA_DIR=$HOME/.blackbox/data
 
-# Once you setup the wallet by starting the system, the following should be set for unattended operation.
+# These are required
+DECRED_RPCUSER=<random>
+DECRED_RPCPASS=<random>
 DECRED_WALLET_PASSWORD=
-DECRED_VOTING_ADDRESS=
-DECRED_EXTERNAL_IP=
+
+# Solo Voting
+# ------------
+DECRED_ENABLEVOTING=1
+
+# Ticket Buyer
+# -------------
+DECRED_ENABLETICKETBUYER=1
+# DECRED_BALANCETOMAINTAINABSOLUTE=0
+# DECRED_MAXPRICEABSOLUTE=150
 ```
 
-You may `export` these in the shell before startup, or put them in a `.env` file at the root of the blackbox dir.
+To get going, you will need to fill in the following variables (assuming the others were generated):
+
+```.env
+DECRED_WALLET_PASSWORD=<the passphrase you entered during setup>
+DECRED_VOTINGADDRESS=<the voting node delegate address>
+```
+
+## `dcrctl`
+
+With everything setup, you may now use the node with the command line client, `dcrctl`. Because `decred` is running in Docker, the BlackboxOS provides a binary wrapper for easy access.
+
+Log into your device and type
+
+```shell
+$ blackbox exec dcrctl -- --wallet walletinfo
+```
+
+You may also install the binary wrapper so that you do not have to prefix the command
+
+```shell
+$ blackbox bin install dcrctl
+```
+
+You may now access `dcrctl` normally
+
+```shell
+$ dcrctl --wallet getinfo
+```
+
+## Vote Delegation
+
+Because this service runs a full node, you can delegate your votes to a VSP as well. However, delegation is a work in progress for BlackboxOS and Decredition is simpler to use.
+
+Please refer to this documentation for the commands necessary for delegating
+https://docs.decred.org/wallets/cli/dcrwallet-tickets
+
+### Finding a Voting Service Provider
+
+To delegate your votes to a Voting Service Provider (VSP) you will need to find one and setup an account. A list of providers can be found at https://decred.org/vsp/. All things being equal, you are looking for a provider that has the lowest fee and the least number of missed votes. https://stakey.net/ is one such provider.
+
+### Configuration
+
+To support vote delegation, BlackboxOS will pick up the following variables to configure the service.
+
+```.env
+... your other vars ...
+
+DECRED_VOTINGADDRESS=
+DECRED_POOLADDRESS=<check vsp>
+DECRED_POOLFEES=<check vsp>
+```
 
 ## Ports
 
@@ -191,17 +182,7 @@ https://docs.decred.org/wallets/cli/dcrd-and-dcrwallet-cli-arguments/
 | JSON-RPC | 9110    | 19110   | 19557  |
 | gRPC     | 9111    | 19111   | 19558  |
 
-By default, these ports are not exposed. To open them, add the `ports` key to the config file.
-
-```yaml
-version: "3.7"
-
-services:
-  pivx:
-    ports:
-      - 9108:9108
-      ...
-```
+By default, these ports are exposed.
 
 ## TLS Certs
 

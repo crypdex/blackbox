@@ -17,5 +17,21 @@ enablevoting={{or .DECRED_ENABLEVOTING 0}}
 ##############
 
 enableticketbuyer={{or .DECRED_ENABLETICKETBUYER 0}}
-ticketbuyer.votingaddress={{or .DECRED_VOTINGADDRESS ""}}
-ticketbuyer.balancetomaintainabsolute={{or .DECRED_BALANCETOMAINTAINABSOLUTE 0}}
+{{ if .DECRED_VOTINGADDRESS }}
+ticketbuyer.votingaddress={{.DECRED_VOTINGADDRESS}}
+{{ end }}
+{{ if .DECRED_BALANCETOMAINTAINABSOLUTE }}
+ticketbuyer.balancetomaintainabsolute={{.DECRED_BALANCETOMAINTAINABSOLUTE}}
+{{ end }}
+{{ if .DECRED_MAXPRICEABSOLUTE }}
+ticketbuyer.maxpriceabsolute={{.DECRED_MAXPRICEABSOLUTE}}
+{{ end }}
+
+# VSP
+{{ if .DECRED_POOLADDRESS }}
+poolfees={{.DECRED_POOLADDRESS}}
+{{ end }}
+{{ if .DECRED_POOLFEES }}
+poolfees={{.DECRED_POOLFEES}}
+{{ end }}
+

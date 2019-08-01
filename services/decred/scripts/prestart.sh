@@ -75,6 +75,9 @@ for service in dcrd dcrwallet; do
     fatal ${output}
   fi
 
+  # Permissions are strange on Linux
+  chmod 0777 ${KEY}
+
   # $ openssl req -new -out dcrd.csr -key dcrd.key -config ./openssl-decred.cnf -subj "/CN=dcrd cert"
   output=$(openssl req -new -out ${CSR} -key ${KEY} -config ${__dir}/openssl-decred.cnf -subj "/CN=${service} cert" 2>&1)
   if [[ $? -eq 1 ]]; then
@@ -104,7 +107,7 @@ else
 
     if [[ -z "${DATA_DIR}" ]]; then
       print "DATA_DIR is empty, generating one"
-      DATA_DIR=~/.blackbox/data
+      DATA_DIR=${HOME}/.blackbox/data
     fi
 
     print "Writing default .env for decred to ${file}"
@@ -121,11 +124,21 @@ else
 # Be aware that the location of the walletnotify script is relative to the container
 cat >${file} <<EOF
 DATA_DIR=${DATA_DIR}
+
+# These are required
 DECRED_RPCUSER=${DECRED_RPCUSER}
 DECRED_RPCPASS=${DECRED_RPCPASS}
 DECRED_WALLET_PASSWORD=
+
+# Ticket buying is on by default
 DECRED_ENABLETICKETBUYER=1
 DECRED_BALANCETOMAINTAINABSOLUTE=0
+# Set this address to the voting node (delegate or solo)
+DECRED_VOTINGADDRESS=
+
+# Uncomment to enable voting
+# DECRED_ENABLEVOTING=1
+# DECRED_EXTERNALIP=<addressable ip>
 EOF
 fi
 
