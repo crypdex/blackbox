@@ -78,6 +78,8 @@ Confirm passphrase:
 
 If you have not already created a `~/.env` file, the initialization script will make one for you with some securely generated credentials and a few variables you can use to customize your node.
 
+You will now need to add your password to the environment before booting up the node again.
+
 ### Environment
 
 You will now give the service a few variables.
@@ -117,9 +119,25 @@ DECRED_WALLET_PASSWORD=<the passphrase you entered during setup>
 DECRED_VOTINGADDRESS=<the voting node delegate address>
 ```
 
+### Starting your Node
+
+With these filled in, you can start up your node
+
+```shell
+$ blackbox start
+```
+
+... and monitor whats happening
+
+```shell
+$ blackbox logs
+```
+
+It will take a few hours to get all synced up.
+
 ## `dcrctl`
 
-With everything setup, you may now use the node with the command line client, `dcrctl`. Because `decred` is running in Docker, the BlackboxOS provides a binary wrapper for easy access.
+With everything setup and running, you may now use the node with the command line client, `dcrctl`. Because `decred` is running in Docker, the BlackboxOS provides a binary wrapper for easy access.
 
 Log into your device and type
 
