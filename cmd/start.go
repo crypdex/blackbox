@@ -45,12 +45,12 @@ var startCmd = &cobra.Command{
 			os.Exit(0)
 		}()
 
-		if err := app.Configure(); err != nil {
+		err := app.Prestart()
+		if err != nil {
 			fatal(err)
 		}
 
-		err := app.Prestart()
-		if err != nil {
+		if err := app.Configure(); err != nil {
 			fatal(err)
 		}
 

@@ -28,6 +28,20 @@ RUN apt-get update -y && \
 COPY download-release.sh ./
 RUN VERSION=$VERSION bash download-release.sh
 
+###########
+# STAKEPOOL
+###########
+
+#ARG DCRSTAKEPOOL_COMMIT=cce2438c018237ee12d13fef64f96c0ee88e41e1
+## Build dcrstakepool (frontend) and stakepoold (backend)
+#RUN git clone https://github.com/decred/dcrstakepool.git && \
+#  cd dcrstakepool && \
+#  git checkout $DCRSTAKEPOOL_COMMIT && \
+#  go build && \
+#  mv dcrstakepool /usr/local/bin && \
+#  cd backend/stakepoold && \
+#  go build && \
+#  mv stakepoold /usr/local/bin
 
 # Download and install Decred
 # useradd -r $USER -d $HOME && \

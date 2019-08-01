@@ -11,6 +11,5 @@ else
   cmd="docker exec -it -u decred $(docker ps -qf "name=dcrd" | head -1) dcrctl --rpccert ~/.dcrd/dcrd.cert $@"
   echo ${cmd}
   (${cmd})
-
 fi
 

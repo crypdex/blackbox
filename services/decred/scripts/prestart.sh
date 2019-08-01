@@ -56,6 +56,7 @@ done
 
 for service in dcrd dcrwallet; do
   prefix=${DECRED_DATA_DIR}/${service}/${service}
+
   KEY=${prefix}.key
   CSR=${prefix}.csr
   CERT=${prefix}.cert
@@ -66,26 +67,67 @@ for service in dcrd dcrwallet; do
   fi
 
   print "Generating ${service} TLS certs"
+
   # Generate a key file
+  # $ openssl ecparam -name secp521r1 -genkey -out dcrd.key
   output=$(openssl ecparam -name secp521r1 -genkey -out ${KEY} 2>&1)
   if [[ $? -eq 1 ]]; then
     fatal ${output}
   fi
 
-  output=$(openssl req -new -out ${CSR} -key ${KEY} -config ${__dir}/openssl-decred.cnf -subj "/CN=dcrd cert" 2>&1)
+  # $ openssl req -new -out dcrd.csr -key dcrd.key -config ./openssl-decred.cnf -subj "/CN=dcrd cert"
+  output=$(openssl req -new -out ${CSR} -key ${KEY} -config ${__dir}/openssl-decred.cnf -subj "/CN=${service} cert" 2>&1)
   if [[ $? -eq 1 ]]; then
     fatal "${output}"
   fi
 
-  #openssl req -text -noout -in dcrd.csr
+  openssl req -text -noout -in ${CSR}
+
   output=$(openssl x509 -req -days 36500 -in ${CSR} -signkey ${KEY} -out ${CERT} -extensions v3_req -extfile ${__dir}/openssl-decred.cnf 2>&1)
   if [[ $? -eq 1 ]]; then
     fatal ${output}
   fi
 
-  #openssl x509 -text -in dcrd.cert
+  openssl x509 -text -in ${CERT}
 done
 
+
+#####################
+# Pre-configure .env
+#####################
+
+file="${HOME}/.env"
+
+if [[ -f "${file}" ]]; then
+    print "INFO: .env file ${file} exists. Not overwriting."
+else
+
+    if [[ -z "${DATA_DIR}" ]]; then
+      print "DATA_DIR is empty, generating one"
+      DATA_DIR=~/.blackbox/data
+    fi
+
+    print "Writing default .env for decred to ${file}"
+    if [[ -z "${DECRED_RPCUSER}" ]]; then
+      print "DECRED_RPCUSER is empty, generating one"
+      DECRED_RPCUSER=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
+    fi
+
+    if [[ -z "${DECRED_RPCPASS}" ]]; then
+      print "DECRED_RPCPASS is empty, generating one"
+      DECRED_RPCPASS=$(base64 < /dev/urandom | tr -d 'O0Il1+\:/' | head -c 32)
+    fi
+
+# Be aware that the location of the walletnotify script is relative to the container
+cat >${file} <<EOF
+DATA_DIR=${DATA_DIR}
+DECRED_RPCUSER=${DECRED_RPCUSER}
+DECRED_RPCPASS=${DECRED_RPCPASS}
+DECRED_WALLET_PASSWORD=
+DECRED_ENABLETICKETBUYER=1
+DECRED_BALANCETOMAINTAINABSOLUTE=0
+EOF
+fi
 
 #####################
 # Check for a wallet: MAINNET ONLY RIGHT NOW
