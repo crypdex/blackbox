@@ -1,5 +1,11 @@
 #!/usr/bin/env bash
 
+if [[ -f $HOME/.env ]]
+then
+  echo "Loading .env file ..."
+  export $(cat $HOME/.env | sed 's/#.*//g' | xargs)
+fi
+
 # ---------------
 # Decred Prestart
 # ---------------
@@ -151,11 +157,11 @@ DECRED_WALLET_PASSWORD=${DECRED_WALLET_PASSWORD:-}
 DECRED_NETWORK=${DECRED_NETWORK:-mainnet}
 
 DECRED_TESTNET=${DECRED_TESTNET:-0}
-if [[ -z ${DECRED_NETWORK} && ${DECRED_TESTNET} -eq 1 ]]; then
+if [[ ${DECRED_TESTNET} -eq 1 ]]; then
   DECRED_NETWORK=testnet3
 fi
 
-if [[ -z ${DECRED_NETWORK} && ${DECRED_SIMNET} -eq 1 ]]; then
+if [[ ${DECRED_SIMNET} -eq 1 ]]; then
   DECRED_NETWORK=simnet
 fi
 
