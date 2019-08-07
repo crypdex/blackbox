@@ -19,7 +19,7 @@ progress="$(echo ${verificationprogress} | awk '{printf( "%.2f", 100 * $1)}')%%"
 #blockchaininfo=$(${blackboxcmd} exec dcrctl getblockchaininfo 2>/dev/null)
 bestblockhash=$(echo "${blockchaininfo}" | jq -r '.bestblockhash')
 chain=$(echo "${blockchaininfo}" | jq -r '.chain')
-
+syncheight=$(echo "${blockchaininfo}" | jq -r '.syncheight')
 
 
 stakeinfo=$(${blackboxcmd} exec dcrctl -- --wallet getstakeinfo 2>/dev/null)
@@ -43,7 +43,7 @@ peercount=$(echo "${peerinfo}" | jq '. | length')
 
 printf "
   ${GREEN}${chain}${CLEAR} ${progress}
-  ${blocks} ${bestblockhash}
+  ${blocks}/${syncheight} ${bestblockhash}
   ${peercount} peers
 
   [tickets]
