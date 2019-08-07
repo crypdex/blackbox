@@ -93,7 +93,7 @@ func (service *Service) WriteConfigFiles() error {
 			return err
 		}
 
-		if os.Chmod(d, 0777); err != nil {
+		if err = os.Chmod(d, 0777); err != nil {
 			return err
 		}
 
@@ -101,7 +101,7 @@ func (service *Service) WriteConfigFiles() error {
 			return err
 		}
 
-		if os.Chmod(path, 0777); err != nil {
+		if err = os.Chmod(path, 0777); err != nil {
 			return err
 		}
 	}

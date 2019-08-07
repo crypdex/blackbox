@@ -30,7 +30,7 @@ func main() {
 	e.Server.ReadTimeout = 1 * time.Minute
 	e.Server.WriteTimeout = 1 * time.Minute
 
-	port := "56443"
+	port := "10591"
 	if os.Getenv("PORT") != "" {
 		port = os.Getenv("PORT")
 	}
@@ -48,7 +48,7 @@ func main() {
 }
 
 func getInfo(context echo.Context) error {
-	info, err := apt.GetPackageInfo("blackboxd")
+	info, err := apt.GetPackageInfo("blackbox-os")
 	if err != nil {
 		return err
 	}
@@ -58,7 +58,7 @@ func getInfo(context echo.Context) error {
 
 // doUpgrade performs the upgrade
 func doUpgrade(context echo.Context) error {
-	_, err := apt.Upgrade("blackboxd")
+	_, err := apt.Upgrade("blackbox-os")
 	if err != nil {
 		return err
 	}
