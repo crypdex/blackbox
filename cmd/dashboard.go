@@ -1,9 +1,10 @@
 package cmd
 
 import (
+	"path"
+
 	"github.com/crypdex/blackbox/cmd/blackbox"
 	"github.com/spf13/cobra"
-	"path"
 )
 
 func init() {
@@ -26,6 +27,8 @@ var dashboardCmd = &cobra.Command{
 		commandargs := []string{
 			"-c",
 			"-t",
+			"-p",
+			"-n 0.5",
 			path.Join(scriptsDir, "dashboard/start.sh"),
 		}
 		err = blackbox.RunSync(command, commandargs, nil, false)

@@ -24,7 +24,7 @@ $ sh get-docker.sh
 Installing Docker-Compose on ARM devices should be done via python/pip
 
 ```shell
-$ apt install libffi-dev python3-dev python3-pip
+$ apt install libffi-dev libssl-dev python3-dev python3-pip
 $ pip3 install wheel setuptools
 $ pip3 install docker-compose
 ```
