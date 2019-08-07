@@ -60,13 +60,13 @@ fi
 
 
 printf "
-${AMBER}BlackboxOS v${version}
-${GRAY}Developed by CRYPDEX [https://crypdex.io]
-${YELLOW}─────────────────────────────────────────────────────
-$(date)
-${color_gray}Load avg: ${load}, CPU temp: ${tempC}°C/${tempF}°F
-${color_gray}${uptime}
-${color_gray}Free Mem ${color_ram}${ram} ${GRAY} Free HDD ${color_hdd}${hdd}${CLEAR}
-${color_gray}${color_green}${ACTIVE_IP}${color_gray} ${color_amber}▼ ${network_rx} RX ${color_purple}▲ ${network_tx} TX
-${color_clear}
+  ${AMBER}BlackboxOS v${version}
+  ${GRAY}Developed by CRYPDEX [https://crypdex.io]
+  ${YELLOW}─────────────────────────────────────────────────────
+  $(date)
+  ${color_gray}Load avg: ${load}, CPU temp: ${tempC}°C/${tempF}°F
+  ${color_gray}${uptime}
+  ${color_gray}Free Mem ${color_ram}${ram} ${GRAY} Free HDD ${color_hdd}${hdd}${CLEAR}
+  ${color_gray}${color_green}${ACTIVE_IP}${color_gray} ${color_amber}▼ ${network_rx} RX ${color_purple}▲ ${network_tx} TX
+  ${color_clear}
 "

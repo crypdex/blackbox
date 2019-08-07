@@ -42,15 +42,15 @@ peerinfo=$(${blackboxcmd} exec dcrctl getpeerinfo 2>/dev/null)
 peercount=$(echo "${peerinfo}" | jq '. | length')
 
 printf "
-${GREEN}${chain}${CLEAR} ${progress}
-${blocks} ${bestblockhash}
-${peercount} peers
+  ${GREEN}${chain}${CLEAR} ${progress}
+  ${blocks} ${bestblockhash}
+  ${peercount} peers
 
-[tickets]
-live: ${live}, voted: ${voted}, immature: ${immature}
-missed: ${missed}, expired: ${expired}, revoked: ${revoked}
+  [tickets]
+  live: ${live}, voted: ${voted}, immature: ${immature}
+  missed: ${missed}, expired: ${expired}, revoked: ${revoked}
 
-[account]
-${total} DCR
-${lockedbytickets} locked, ${spendable} spendable, ${unconfirmed} unconfirmed
+  [account]
+  ${total} DCR
+  ${lockedbytickets} locked, ${spendable} spendable, ${unconfirmed} unconfirmed
 "
