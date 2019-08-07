@@ -79,7 +79,7 @@ G_OBTAIN_CPU_TEMP(){
       if (( $cpu_temp_current >= 70 )); then
         cpu_temp_current="\e[1;31mWARNING: $cpu_temp_current'C : $cpu_temp_current_f'F (Reducing the life of your device)\e[0m"
       elif (( $cpu_temp_current >= 60 )); then
-        cpu_temp_current="\e[38;5;202m$cpu_temp_current'C : $cpu_temp_current_f'F\e[90m (Running hot, not recommended)\e[0m"
+        cpu_temp_current="\e[1;31m$cpu_temp_current'C : $cpu_temp_current_f'F\e[90m (Running hot, not recommended)\e[0m"
       elif (( $cpu_temp_current >= 50 )); then
         cpu_temp_current="\e[1;33m$cpu_temp_current'C : $cpu_temp_current_f'F\e[90m (Running warm, but safe)\e[0m"
       elif (( $cpu_temp_current >= 40 )); then
@@ -92,7 +92,8 @@ G_OBTAIN_CPU_TEMP(){
     fi
   fi
 
-  echo -e "$cpu_temp_current"
+  printf "$cpu_temp_current"
 
 }
 
+G_OBTAIN_CPU_TEMP

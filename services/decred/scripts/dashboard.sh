@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 
-printf "  ${GREEN}Decred${CLEAR}
-  ─────────────────────────────────────────────────────"
+printf "
+  ${color_yellow}Decred
+  ─────────────────────────────────────────────────────${color_clear}"
 
 # Get the location of this script
 __dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
@@ -42,7 +43,7 @@ peerinfo=$(${blackboxcmd} exec dcrctl getpeerinfo 2>/dev/null)
 peercount=$(echo "${peerinfo}" | jq '. | length')
 
 printf "
-  ${GREEN}${chain}${CLEAR} ${progress} ${blocks}/${syncheight}
+  ${color_boldgreen}${chain}${color_boldwhite} ${progress}${color_clear} ${blocks}/${syncheight}
   ${bestblockhash}
   ${peercount} peers
 
