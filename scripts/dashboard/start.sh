@@ -9,7 +9,6 @@ blackboxcmd="blackbox"
 . ${__dir}/colors.sh
 
 
-
 services=$(${blackboxcmd} info -q | jq -r 'to_entries | map(.key) | join(" ")')
 
 # Get the dirs as an array

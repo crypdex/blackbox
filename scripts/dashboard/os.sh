@@ -2,6 +2,11 @@
 
 # Get the location of this script
 __dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
+. ${__dir}/colors.sh
+. ${__dir}/network.sh
+. ${__dir}/cpu_temp.sh
+
+cpu_temp_current=$(G_OBTAIN_CPU_TEMP)
 
 version=$(${blackboxcmd} version -q)
 # get uptime & load
@@ -60,13 +65,13 @@ fi
 
 
 printf "
-  ${AMBER}BlackboxOS v${version}
-  ${GRAY}Developed by CRYPDEX [https://crypdex.io]
-  ${YELLOW}─────────────────────────────────────────────────────
+  ${color_amber}BlackboxOS v${version}
+  ${color_gray}Developed by CRYPDEX [https://crypdex.io]
+  ${color_yellow}─────────────────────────────────────────────────────
   $(date)
-  ${color_gray}Load avg: ${load}, CPU temp: ${tempC}°C/${tempF}°F
+  ${color_gray}Load avg: ${load}, CPU temp: ${cpu_temp_current}
   ${color_gray}${uptime}
-  ${color_gray}Free Mem ${color_ram}${ram} ${GRAY} Free HDD ${color_hdd}${hdd}${CLEAR}
+  ${color_gray}Free Mem ${color_ram}${ram} ${color_gray} Free HDD ${color_hdd}${hdd}${CLEAR}
   ${color_gray}${color_green}${ACTIVE_IP}${color_gray} ${color_amber}▼ ${network_rx} RX ${color_purple}▲ ${network_tx} TX
   ${color_clear}
 "
