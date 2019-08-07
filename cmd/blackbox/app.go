@@ -15,11 +15,14 @@ import (
 
 // App contains common variables and defaults used by blackboxd
 type App struct {
-	config             *viper.Viper
-	Debug              bool
-	RegisteredServices map[string]*service.Service
-	ConfigFile         string
+	config     *viper.Viper
+	Debug      bool
+	Quiet      bool
+	ServiceMap map[string]*service.Service
+	ConfigFile string
 }
+
+var Quiet = false
 
 // NewApp ...
 // Overriding the configfile used should be done from outside this func
@@ -68,10 +71,10 @@ func NewApp(debug bool, configFile string) (*App, error) {
 	}
 
 	config := &App{
-		config:             v,
-		Debug:              debug,
-		ConfigFile:         v.ConfigFileUsed(),
-		RegisteredServices: registerServices(),
+		config:     v,
+		Debug:      debug,
+		ConfigFile: v.ConfigFileUsed(),
+		ServiceMap: registerServices(),
 	}
 
 	return config, nil
@@ -99,7 +102,7 @@ func (app *App) Services() map[string]*service.Service {
 	services := make(map[string]*service.Service)
 
 	for key, _ := range app.config.GetStringMap("services") {
-		service, ok := app.RegisteredServices[key]
+		service, ok := app.ServiceMap[key]
 		if !ok {
 			// Trace("debug", fmt.Sprintf("no registered service: %s", key))
 			continue
@@ -130,7 +133,7 @@ func (app *App) Install(bin string, force bool) error {
 	var binPath string
 
 	// Loop through all the services
-	for name, _ := range app.RegisteredServices { // range app.Services() {
+	for name, _ := range app.ServiceMap { // range app.Services() {
 		// Check for the service in each of the config paths ...
 		for _, p := range configPaths() {
 			// Does the bin exist here?

@@ -8,7 +8,7 @@ import (
 
 func (app *App) Exec(bin string, args []string) error {
 	var fullpath string
-	for _, service := range app.RegisteredServices {
+	for _, service := range app.ServiceMap {
 		p := path.Join(service.Dir, "bin", bin)
 		if _, err := os.Stat(p); !os.IsNotExist(err) {
 			fullpath = p

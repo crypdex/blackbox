@@ -124,7 +124,7 @@ func registerServices() map[string]*service.Service {
 
 			continue
 		}
-		Trace("debug", fmt.Sprintf("Registering services in %s", servicesPath))
+		// Trace("debug", fmt.Sprintf("Registering services in %s", servicesPath))
 
 		// Trace("debug", fmt.Sprintf("Registering services in %s", servicesPath))
 		for _, entry := range entries {
@@ -157,6 +157,9 @@ func environmentMap() map[string]interface{} {
 
 // Trace gives us nice wrapped output
 func Trace(level string, args ...string) {
+	if Quiet {
+		return
+	}
 	for _, msg := range args {
 		switch level {
 		case "error":
@@ -184,4 +187,23 @@ func getRecipeFile(name string) (string, error) {
 		return recipePath, nil
 	}
 	return "", fmt.Errorf("No recipe found named %s", name)
+}
+
+func ScriptsDir() (string, error) {
+	pwd, err := os.Getwd()
+	if err != nil {
+		return "", err
+	}
+	// "scripts" dir exists in `pwd`
+	if _, err := os.Stat(path.Join(pwd, "scripts")); !os.IsNotExist(err) {
+		return path.Join(pwd, "scripts"), nil
+	}
+
+	// This depends upon where it is installed.
+	// On linux its "appspace", but maybe not so on mac/windows
+	if _, err := os.Stat(path.Join(appspace, "scripts")); !os.IsNotExist(err) {
+		return path.Join(appspace, "scripts"), nil
+	}
+
+	return "", errors.New("could not find a valid dir for scripts")
 }

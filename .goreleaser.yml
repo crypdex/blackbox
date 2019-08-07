@@ -129,7 +129,8 @@ nfpms:
     # Values are the destination locations of the files in the package.
     files:
       "services/**/*": "/var/lib/blackbox/services"
-      "recipes/**/*": "/var/lib/blackbox/recipes"
+      "recipes/**/*": "/var/lib/blackbox/recipes",
+      "scripts/**/*": "/var/lib/blackbox/scripts",
       "scripts/blackbox.service": "/etc/systemd/system/blackbox.service"
       "scripts/blackbox-admin.service": "/etc/systemd/system/blackbox-admin.service"
       # "path/**/glob": "/var/foo/glob"

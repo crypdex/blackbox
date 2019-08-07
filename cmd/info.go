@@ -1,6 +1,7 @@
 package cmd
 
 import (
+	"encoding/json"
 	"fmt"
 	"github.com/crypdex/blackbox/cmd/blackbox"
 	"github.com/spf13/cobra"
@@ -16,6 +17,12 @@ var infoCmd = &cobra.Command{
 
 		blackbox.Trace("info", "BLACKBOX app:")
 
+		services := app.Services()
+
+		j, _ := json.MarshalIndent(services, "", "  ")
+
+		fmt.Println(string(j))
+
 		// fmt.Println("")
 		// displayBlackboxInfo()
 		// fmt.Println("")
@@ -25,41 +32,25 @@ var infoCmd = &cobra.Command{
 		// }
 		// fmt.Println("")
 
-		client := blackbox.NewDockerClient(app)
-		err := client.ComposeConfig()
-		if err != nil {
-			fatal(err)
-		}
-
-		for _, service := range app.Services() {
-			configs, err := service.CompiledConfigs()
-			if err != nil {
-				fatal(err)
-			}
-
-			for k, config := range configs {
-				blackbox.Trace("info", k)
-				fmt.Println(config)
-			}
-
-			//
-			// out, err := service.ConfigFileString()
-			// if err != nil {
-			// 	fatal(err)
-			// }
-			//
-			// blackbox.Trace("info", fmt.Sprintf("Config file for '%s'", name))
-			// blackbox.Trace("info", fmt.Sprintf("%s", service.ConfigPath()))
-			//
-			// fmt.Println(out)
-		}
-
-		// if status.Error != nil {
-		// 	fatal(status.Error)
+		// client := blackbox.NewDockerClient(app)
+		// err := client.ComposeConfig()
+		// if err != nil {
+		// 	fatal(err)
 		// }
+
+		// for _, service := range app.Services() {
+		// 	configs, err := service.CompiledConfigs()
+		// 	if err != nil {
+		// 		fatal(err)
+		// 	}
 		//
-		// fmt.Println(strings.Join(status.Stdout, "\n"))
-		// fmt.Println(aurora.Red(strings.Join(status.Stderr, "\n")))
+		// 	for k, config := range configs {
+		// 		blackbox.Trace("info", k)
+		// 		fmt.Println(config)
+		// 	}
+		//
+		// }
+
 	},
 }
 

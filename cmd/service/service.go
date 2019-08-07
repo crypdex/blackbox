@@ -1,6 +1,7 @@
 package service
 
 import (
+	"encoding/json"
 	"io/ioutil"
 	"os"
 	"path"
@@ -14,6 +15,16 @@ type Service struct {
 	Dir    string
 	Env    map[string]string
 	Params map[string]interface{}
+}
+
+func (service *Service) MarshalJSON() ([]byte, error) {
+	return json.Marshal(&struct {
+		Name string `json:"name"`
+		Dir  string `json:"dir"`
+	}{
+		Name: service.Name,
+		Dir:  service.Dir,
+	})
 }
 
 // New loads a new Service object in the context of the given directory

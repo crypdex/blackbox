@@ -10,6 +10,7 @@ import (
 )
 
 var debug bool
+var quiet bool
 var configFile string
 var app *blackbox.App
 
@@ -30,6 +31,7 @@ func init() {
 	cobra.OnInitialize(initConfig)
 	rootCmd.PersistentFlags().StringVarP(&configFile, "app", "c", "", "app file (default is $HOME/.blackbox/blackbox.yml)")
 	rootCmd.PersistentFlags().BoolVarP(&debug, "debug", "d", false, "debug is off by default")
+	rootCmd.PersistentFlags().BoolVarP(&quiet, "quiet", "q", false, "quiet is off by default")
 	rootCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
 
@@ -51,6 +53,8 @@ func Execute(versioninfo ...string) {
 func initConfig() {
 	var err error
 	app, err = blackbox.NewApp(debug, configFile)
+	// TODO: This is inelegant
+	blackbox.Quiet = quiet
 	if err != nil {
 		fatal(err)
 	}
