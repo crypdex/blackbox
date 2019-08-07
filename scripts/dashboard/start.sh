@@ -4,7 +4,7 @@
 __dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
 
 
-blackboxcmd="go run main.go"
+blackboxcmd="blackbox"
 
 . ${__dir}/colors.sh
 
