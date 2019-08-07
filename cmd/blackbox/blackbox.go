@@ -189,6 +189,8 @@ func getRecipeFile(name string) (string, error) {
 	return "", fmt.Errorf("No recipe found named %s", name)
 }
 
+// ScriptsDir returns the directory to the scripts which is either in the pwd (useful for development)
+// or its in the install location.
 func ScriptsDir() (string, error) {
 	pwd, err := os.Getwd()
 	if err != nil {
