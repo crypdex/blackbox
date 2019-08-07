@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
-printf "${GREEN}Decred${CLEAR}
-─────────────────────────────────────────────────────"
+printf "  ${GREEN}Decred${CLEAR}
+  ─────────────────────────────────────────────────────"
 
 # Get the location of this script
 __dir="$( cd "$( dirname "${BASH_SOURCE[0]}" )" >/dev/null 2>&1 && pwd )"
