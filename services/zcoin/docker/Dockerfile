@@ -10,17 +10,19 @@ RUN apt-get update && apt-get install -y \
   git \
   build-essential libtool autotools-dev automake pkg-config bsdmainutils python3 \
   libssl-dev libevent-dev \
-#  libboost-system1.65.1 \
-#  libboost-filesystem1.65.1 \
-#  libboost-program-options1.65.1 \
-#  libboost-thread1.65.1 \
-#  libboost-chrono1.65.1 \
-#  libboost-all-dev \
+  libboost-system1.65.1 \
+  libboost-filesystem1.65.1 \
+  libboost-program-options1.65.1 \
+  libboost-thread1.65.1 \
+  libboost-chrono1.65.1 \
   libboost-all-dev \
+  #  libboost-all-dev \
   # 0MQ
   libzmq3-dev \
   # Required by BerkleyDB
   software-properties-common
+
+# libboost_system.so.1.65.1: cannot open shared object file
 
 # Berkley DB
 RUN add-apt-repository ppa:bitcoin/bitcoin && apt-get update && apt-get install -y \
