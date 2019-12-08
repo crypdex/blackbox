@@ -9,23 +9,14 @@ brew:
     owner: crypdex
     name: blackbox-tap
 
-  homepage: "https://crypdex.io/"
+  homepage: 'https://crypdex.io/'
 
-  description: "A pluggable platform for multi-chain deployments."
-
+  description: 'A pluggable platform for multi-chain deployments.'
 
 # Sign the checksums.txt with CRYPDEX pgp key
 sign:
   artifacts: checksum
-  args:
-    [
-      "-u",
-      "E8359963",
-      "--output",
-      "${signature}",
-      "--detach-sign",
-      "${artifact}",
-    ]
+  args: ['-u', 'E8359963', '--output', '${signature}', '--detach-sign', '${artifact}']
 
 before:
   hooks:
@@ -35,7 +26,8 @@ before:
     - go generate ./...
 
 builds:
-  - binary: blackbox
+  - id: 'blackbox-os'
+    binary: blackbox
     env:
       - CGO_ENABLED=0
     goos:
@@ -47,7 +39,8 @@ builds:
       - arm
     goarm:
       - 7
-  - binary: blackbox-admin
+  - id: 'blackbox-os-admin'
+    binary: blackbox-admin
     main: ./admin/main.go
     goos:
       - linux
@@ -59,23 +52,23 @@ builds:
       - 7
 
 checksum:
-  name_template: "checksums.txt"
+  name_template: 'checksums.txt'
 
 snapshot:
-  name_template: "snapshot"
+  name_template: 'snapshot'
 
 changelog:
   skip: true
   sort: asc
   filters:
     exclude:
-      - "^docs:"
-      - "^test:"
+      - '^docs:'
+      - '^test:'
 
 nfpms:
   - # You can change the name of the package.
     # Default: `{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}`
-    name_template: "{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}"
+    name_template: '{{ .ProjectName }}_{{ .Version }}_{{ .Os }}_{{ .Arch }}'
 
     # Replacements for GOOS and GOARCH in the package name.
     # Keys should be valid GOOSs or GOARCHs.
@@ -128,11 +121,11 @@ nfpms:
     # Keys are source paths/globs to get the files from.
     # Values are the destination locations of the files in the package.
     files:
-      "services/**/*": "/var/lib/blackbox/services"
-      "recipes/**/*": "/var/lib/blackbox/recipes"
-      "scripts/**/*": "/var/lib/blackbox/scripts"
-      "scripts/blackbox.service": "/etc/systemd/system/blackbox.service"
-      "scripts/blackbox-admin.service": "/etc/systemd/system/blackbox-admin.service"
+      'services/**/*': '/var/lib/blackbox/services'
+      'recipes/**/*': '/var/lib/blackbox/recipes'
+      'scripts/**/*': '/var/lib/blackbox/scripts'
+      'scripts/blackbox.service': '/etc/systemd/system/blackbox.service'
+      'scripts/blackbox-admin.service': '/etc/systemd/system/blackbox-admin.service'
       # "path/**/glob": "/var/foo/glob"
 
     # Config files to add to your package. They are about the same as
@@ -149,5 +142,5 @@ nfpms:
     # Values are the paths to the scripts which will be executed
     scripts:
       #    preinstall: "scripts/preinstall.sh"
-      postinstall: "scripts/postinstall.sh"
+      postinstall: 'scripts/postinstall.sh'
   #    postremove: "scripts/postremove.sh"
