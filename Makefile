@@ -1,4 +1,8 @@
 
+build-all:
+	./scripts/build-all.sh
+
+# Build docker images for protocol
 build: require-service
 	./scripts/build.sh ${service}
 
