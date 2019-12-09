@@ -4,6 +4,7 @@ services:
   pivx:
     image: crypdex/pivx:${PIVX_VERSION:-3.4}
     restart: on-failure
+    container_name: pivx
     labels:
       name: 'pivx'
     ports:
