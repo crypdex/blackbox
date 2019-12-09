@@ -1,4 +1,14 @@
 rpcuser={{require . "ZCOIN_RPCUSER"}}
 rpcpassword={{require . "ZCOIN_RPCPASSWORD"}}
+rpcallowip={{or .ZCOIN_RPCALLOWIP "127.0.0.1"}}
 walletnotify={{or .ZCOIN_WALLETNOTIFY ""}}
-masternode={{or .ZCOIN_MASTERNODE 0}}
+
+# listen=1
+# server=1
+# daemon=1
+# logtimestamps=1
+txindex={{or .ZCOIN_TXINDEX "1"}}
+
+znode={{or .ZCOIN_ZNODE "0"}}
+externalip={{or .ZCOIN_EXTERNALIP ""}}
+znodeprivkey={{or .ZCOIN_ZNODEPRIVKEY ""}}
