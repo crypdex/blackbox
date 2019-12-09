@@ -4,6 +4,7 @@ After=docker.service
 Requires=docker.service
 
 [Service]
+WorkingDirectory=/root
 ExecStart=/usr/local/bin/blackbox start
 
 [Install]
