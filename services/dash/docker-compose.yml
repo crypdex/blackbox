@@ -5,6 +5,8 @@ services:
     container_name: dash
     image: crypdex/dash-core:${DASH_VERSION:-0.14}
     restart: on-failure
+    labels:
+      name: 'dash'
     volumes:
       - ${DASH_DATA_DIR:?DASH_DATA_DIR required}:/home/dash/.dash
     command: -rpcallowip=0.0.0.0/0
