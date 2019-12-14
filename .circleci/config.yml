@@ -4,41 +4,41 @@
 # - replace latest.md with the release
 
 version: 2
-jobs:
-  deploy-website:
-    docker:
-      # specify the version you desire here
-      - image: circleci/node:8.11.1
+# jobs:
+#   deploy-website:
+#     docker:
+#       # specify the version you desire here
+#       - image: circleci/node:8.11.1
 
-    steps:
-      - checkout
-      - run:
-          name: Deploying to GitHub Pages
-          command: |
-            git config --global user.email "crypdex@users.noreply.github.com"
-            git config --global user.name "CRYPDEX"
-            echo "machine github.com login dmichael password $GITHUB_TOKEN" > ~/.netrc
-            cd website && yarn install && GIT_USER=dmichael yarn run publish-gh-pages
+#     steps:
+#       - checkout
+#       - run:
+#           name: Deploying to GitHub Pages
+#           command: |
+#             git config --global user.email "crypdex@users.noreply.github.com"
+#             git config --global user.name "CRYPDEX"
+#             echo "machine github.com login dmichael password $GITHUB_TOKEN" > ~/.netrc
+#             cd website && yarn install && GIT_USER=dmichael yarn run publish-gh-pages
 
-  release:
-    docker:
-      - image: circleci/golang:1.12
-    steps:
-      - checkout
-      - run:
-          name: Import GPG key
-          command: echo -e "$GPG_KEY" | gpg --import
-      - run:
-          name: Build and Release
-          command: |
-            curl -sL https://git.io/goreleaser |  \
-            bash -s -- --release-notes=docs/release-notes/latest.md
-            ls dist/ | grep -i '.*[.]deb'
-      - run:
-          name: Push .deb packages to Gemfury
-          command: |
-            curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
-            curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_x86_64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
+#   release:
+#     docker:
+#       - image: circleci/golang:1.12
+#     steps:
+#       - checkout
+#       - run:
+#           name: Import GPG key
+#           command: echo -e "$GPG_KEY" | gpg --import
+#       - run:
+#           name: Build and Release
+#           command: |
+#             curl -sL https://git.io/goreleaser |  \
+#             bash -s -- --release-notes=docs/release-notes/latest.md
+#             ls dist/ | grep -i '.*[.]deb'
+#       - run:
+#           name: Push .deb packages to Gemfury
+#           command: |
+#             curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_arm64v8.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
+#             curl -F package=@dist/blackboxd_${CIRCLE_TAG}_linux_x86_64.deb https://${GEMFURY_PUSH_TOKEN}@push.fury.io/crypdex/
 
 # AT THE MOMENT, CIRCLE CI DOES NOT SUPPORT ARM RELEASES
 # SO THIS SHOULD BE DONE LOCALLY.
