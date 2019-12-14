@@ -3,7 +3,7 @@
 set -e
 
 user=dash
-datadir="/home/${user}/.dash"
+datadir="/home/${user}/.dashcore"
 
 if [[ $(echo "$1" | cut -c1) = "-" ]]; then
   echo "$0: assuming arguments for dashd"
