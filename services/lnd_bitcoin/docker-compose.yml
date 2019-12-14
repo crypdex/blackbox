@@ -1,14 +1,12 @@
-version: "3.7"
+version: '3.7'
 
 services:
-
   lnd_bitcoin:
-    image: crypdex/lnd:0.7
+    container_name: lnd_bitcoin
+    image: crypdex/lnd:${LND_VERSION:-0.8}
     restart: on-failure
     ports:
       - ${LND_BITCOIN_RPCPORT:-10009}:10009
     volumes:
       - ${LND_BITCOIN_DATA_DIR:?LND_BITCOIN_DATA_DIR required}:/home/lnd/.lnd
-    command:
-      --configfile=/home/lnd/.lnd/lnd_bitcoin.conf
-
+    command: --configfile=/home/lnd/.lnd/lnd_bitcoin.conf

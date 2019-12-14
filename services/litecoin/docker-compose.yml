@@ -1,19 +1,19 @@
-version: "3.7"
+version: '3.7'
 
 services:
   litecoin:
+    container_name: litecoin
     image: crypdex/litecoin:${LITECOIN_VERSION:-0.17}
     restart: on-failure
     labels:
-      name: "litecoind"
+      name: 'litecoind'
     ports:
-      - "9332:9332" # RPC
-      - "9333:9333" # P2P
-      - "19332:19332"
-      - "19333:19333"
-      - "19444:19444"
+      - '9332:9332' # RPC
+      - '9333:9333' # P2P
+      - '19332:19332'
+      - '19333:19333'
+      - '19444:19444'
     volumes:
       - ${LITECOIN_DATA_DIR:?LITECOIN_DATA_DIR required}:/home/litecoin/.litecoin
     # Command-line options override values set in the configuration file.
-    command:  -printtoconsole
-
+    command: -printtoconsole

@@ -1,14 +1,12 @@
-version: "3.7"
+version: '3.7'
 
 services:
-
   lnd_litecoin:
-    image: crypdex/lnd:0.6
+    container_name: lnd_litecoin
+    image: crypdex/lnd:${LND_VERSION:-0.8}
     restart: on-failure
     ports:
       - ${LND_LITECOIN_RPCPORT:-10009}:10009
     volumes:
       - ${LND_LITECOIN_DATA_DIR:?LND_LITECOIN_DATA_DIR required}:/home/lnd/.lnd
-    command:
-      --configfile=/home/lnd/.lnd/lnd_litecoin.conf
-
+    command: --configfile=/home/lnd/.lnd/lnd_litecoin.conf

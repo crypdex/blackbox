@@ -1,7 +1,8 @@
-version: "3.7"
+version: '3.7'
 
 services:
   blocknetdx:
+    container_name: blocknetdx
     image: crypdex/blocknetdx:${BLOCKNETDX_VERSION:-3.13}
     restart: on-failure
     volumes:
