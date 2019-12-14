@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
 # docker exec -it -u ${USER} ${CONTAINER_NAME} ${COMMAND} $@
-cmd="docker exec -ti -u pivx $(docker ps -qf "label=name=dash" | head -1) dash-cli $@"
+cmd="docker exec -ti -u dash $(docker ps -qf "label=name=dash" | head -1) dash-cli $@"
 echo ${cmd}
 (${cmd})
