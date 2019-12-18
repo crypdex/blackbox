@@ -1,9 +1,13 @@
 rpcuser={{require . "PIVX_RPCUSER"}}
 rpcpassword={{require . "PIVX_RPCPASSWORD"}}
 rpcport={{or .PIVX_RPCPORT 51473}}
-rpcallowip={{or .PIVX_RPCALLOWIP "0.0.0.0/0"}}
+rpcallowip={{or .PIVX_RPCALLOWIP "127.0.0.1"}}
 testnet={{or .PIVX_TESTNET 0}}
 regtest={{or .PIVX_REGTEST 0}}
 walletnotify={{or .PIVX_WALLETNOTIFY ""}}
-masternode={{or .PIVX_MASTERNODE 0}}
+maxconnections={{or .PIVX_MAXCONNECTIONS 256}}
 enablezeromint={{or .PIVX_ENABLEZEROMINT 0}}
+
+masternode={{or .PIVX_MASTERNODE 0}}
+externalip={{or .PIVX_EXTERNALIP "127.0.0.1"}}
+masternodeprivkey={{or .PIVX_MASTERNODEPRIVKEY ""}}
