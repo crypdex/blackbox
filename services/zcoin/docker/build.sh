@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 minor=0.13.8
-patch=0.13.8.9
+patch=0.13.8.10
 
 docker buildx build \
   --build-arg VERSION=${patch} \
